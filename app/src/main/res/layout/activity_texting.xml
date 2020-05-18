@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Texting"
+    android:background="@android:color/black">
+
+
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/nittl"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:id="@+id/logo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="200dp"
+        android:layout_alignTop="@id/logo"
+        android:textColor="@android:color/holo_red_light"
+        android:text="A verification e-mail has been sent to your webmail.Please verify your webmail before logging in"
+        android:textSize="30sp"
+        android:id="@+id/texxt"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:onClick="webb"
+        android:layout_alignTop="@id/texxt"
+
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:background="@drawable/roundedcorner"
+        android:text="OPEN WEBMAIL" />
+    <Button
+        android:id="@+id/buttonl"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/button2"
+
+
+
+        android:layout_alignParentBottom="false"
+
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+
+        android:background="@drawable/roundedcorner"
+        android:text="CONTNUE TO LOGIN"
+        tools:layout_alignParentBottom="false"
+        android:onClick="hooray"/>
+
+
+
+</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loginscr"
+    tools:context=".Pdf1">
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:nestedScrollingEnabled="false">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            tools:context=".Pdf1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="106dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+
+
+                android:background="@android:color/background_dark"
+                android:gravity="center"
+
+
+                android:text="WELCOME"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold"
+
+                app:fontFamily="@font/almendra_sc" />
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="-84dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/nittl" />
+
+
+
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="time"
+                android:text="TIMETABLE"
+                android:textAlignment="center"
+
+                />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="announce"
+                android:text="ANNOUNCEMENTS"
+                android:textAlignment="center"
+
+                />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="set"
+                android:text="SET ALARM"
+                android:textAlignment="center"
+
+                />
+
+            <Button
+                android:id="@+id/atnd_status"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="status"
+                android:text="ATTENDANCE STATUS"
+
+                android:textAlignment="center" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="sm"
+                android:text="STUDY MATERIALS"
+                android:textAlignment="center"
+                />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="ass"
+                android:text="ASSIGNMENTS"
+                android:textAlignment="center"
+
+                />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="wha"
+                android:text="CHAT ROOM"
+                android:textAlignment="center"
+
+                />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="pddf"
+                android:text="COURSE PLAN"
+                android:textAlignment="center"
+
+
+                />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="poll"
+                android:text="POLL"
+                android:textAlignment="center"
+
+                />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="webmail"
+                android:text="WEBMAIL"
+                android:textAlignment="center"
+
+                />
+
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/roundedcorner"
+
+                android:gravity="center"
+                android:onClick="about"
+                android:text="ABOUT"
+                android:textAlignment="center" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="getty"
+                android:text="LOGOUT"
+                android:textAlignment="center" />
+            <Button
+                android:id="@+id/updates"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/roundedcorner"
+                android:gravity="center"
+                android:onClick="upd"
+                android:text="UPDATES"
+                android:textAlignment="center"
+                android:visibility="invisible"/>
+
+
+        </LinearLayout>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/whaic"
+                android:layout_marginTop="555dp"
+                android:layout_marginLeft="80dp"/>
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>
+

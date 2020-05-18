@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Chats"
+    android:background="@drawable/cch">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="NITT ICE"
+        android:background="@drawable/roundedcorner"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
+         android:onClick="nice"
+
+        />
+
+    <Button
+        android:id="@+id/atnd_status"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundedcorner"
+        android:gravity="center"
+        android:text="ICE-B OFFICIAL"
+        android:onClick="off"
+
+        android:textAlignment="center" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundedcorner"
+        android:gravity="center"
+        android:text="ICE-B UNOFFICIAL"
+        android:textAlignment="center"
+        android:onClick="unoff"
+/>
+</LinearLayout>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/whaic"
+
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="80dp"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/whaic"
+
+        android:layout_marginTop="224dp"
+        android:layout_marginLeft="80dp"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/whaic"
+
+        android:layout_marginTop="284dp"
+        android:layout_marginLeft="80dp"/>
+
+
+</RelativeLayout>
