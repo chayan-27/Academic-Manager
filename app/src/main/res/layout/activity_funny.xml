@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Funny"
-    android:background="@drawable/chill2">
+    android:background="@drawable/gradient6">
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/nittl"
+        android:src="@drawable/nittl1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:id="@+id/logo"/>

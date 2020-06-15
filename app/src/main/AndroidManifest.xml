@@ -17,77 +17,17 @@
         android:roundIcon="@mipmap/iceb_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Texting"></activity>
+        <activity android:name=".Testingg"></activity>
+        <activity android:name=".Loginf" />
+        <activity android:name=".Texting" />
         <activity android:name=".Funny" />
         <activity android:name=".Webmail" />
-        <activity android:name=".Announcenotify" />
-        <activity android:name=".Updatescl" />
-        <activity
-            android:name=".Poll"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Assignments"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Chats"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Forgetpass"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".About"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Percentage"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
             android:name=".Quote"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Study"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Alarm_scr"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Syllabus_scr"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Pdf1"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Timetable"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Attendance"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".Login_screen"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

@@ -21,6 +21,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main2);
         TextView t1=(TextView)findViewById(R.id.textView4);
         TextView t2=(TextView)findViewById(R.id.textView3);
@@ -136,7 +139,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                                 toast.show();
                             }else{
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent=new Intent(Information.this,Login_screen.class);
+                                Intent intent=new Intent(Information.this,Loginf.class);
                                 intent.putExtra("roll",rn);
                                 startActivity(intent);
 
@@ -257,7 +260,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
                             if(mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent = new Intent(Information.this, Login_screen.class);
+                                Intent intent = new Intent(Information.this, Loginf.class);
                                 intent.putExtra("roll", rn);
                                 flag=1;
                                 if(checkBox.isChecked()) {
@@ -357,19 +360,12 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
                     }
-
-
                     cursor.close();
                     db.close();
-
-
-
                 }catch(SQLiteException e) {
                     Toast toast = Toast.makeText(Information.this, "Invalid Username or Password", Toast.LENGTH_LONG);
                     toast.show();
                 }
-
-
             }
 
         });
