@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Calendar;
@@ -73,9 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+        FirebaseMessaging.getInstance().subscribeToTopic("test").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
         final SharedPreferences myuser=this.getSharedPreferences("Myapp2", Context.MODE_PRIVATE);
         first=myuser.getInt("first",0);
-
 
 
 

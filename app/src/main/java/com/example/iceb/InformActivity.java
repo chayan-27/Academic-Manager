@@ -64,6 +64,7 @@ public class InformActivity extends AppCompatActivity {
     EditText rollno;
     EditText password;
     EditText mobile;
+    EditText lastname;
     Button btn ;
     FirebaseAuth mFirebaseAuth;
     @Override
@@ -76,6 +77,7 @@ public class InformActivity extends AppCompatActivity {
          rollno = (EditText) findViewById(R.id.editText5);
          password = (EditText) findViewById(R.id.editText6);
          mobile=(EditText)findViewById(R.id.editText7);
+         lastname=(EditText)findViewById(R.id.editText9);
          mFirebaseAuth=FirebaseAuth.getInstance();
          progressBar=(ProgressBar)findViewById(R.id.situ);
 
@@ -114,8 +116,8 @@ public class InformActivity extends AppCompatActivity {
 
 
                         try {
-                            String name1 = name.getText().toString();
-                            String rollno1 = rollno.getText().toString();
+                            String name1 = name.getText().toString()+" "+lastname.getText().toString();
+                            String rollno1 = rollno.getText().toString()+"@nitt.edu";
                             String password1 = password.getText().toString();
                             String mobile1 = mobile.getText().toString();
 
@@ -123,13 +125,14 @@ public class InformActivity extends AppCompatActivity {
 
 
                             String usr = rollno1.substring(0, 9);
+                            String iu=rollno1.substring(9);
                             rn1 = Integer.parseInt(usr);
                             System.out.println(rn1);
 
 
                             // int rn1 = Integer.parseInt(rollno1);
 
-                            if (!(name1.equals("")) && (rn1 >= 110119002 && rn1 <= 110119128 && rn1 % 2 == 0)) {
+                            if (!(name1.equals("")) && (rn1 >= 110119001 && rn1 <= 110119129 )&&(iu.equals("@nitt.edu"))) {
                                 if ((mobile1.equals(password1)) && mobile1.length() >= 6) {
 
 
@@ -191,6 +194,15 @@ public class InformActivity extends AppCompatActivity {
 
                                                     }
                                                 });
+                                            }else {
+                                                progressBar.setVisibility(View.GONE);
+
+                                                Toast toast = Toast.makeText(InformActivity.this, "User Already Exists", Toast.LENGTH_LONG);
+                                                    toast.show();
+
+
+
+
                                             }
                                         }
                                     });

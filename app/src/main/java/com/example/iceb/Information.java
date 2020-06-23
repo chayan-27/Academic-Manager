@@ -139,7 +139,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                                 toast.show();
                             }else{
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent=new Intent(Information.this,Loginf.class);
+                                Intent intent=new Intent(Information.this,Testingg.class);
                                 intent.putExtra("roll",rn);
                                 startActivity(intent);
 
@@ -260,7 +260,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
                             if(mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent = new Intent(Information.this, Loginf.class);
+                                Intent intent = new Intent(Information.this, Testingg.class);
                                 intent.putExtra("roll", rn);
                                 flag=1;
                                 if(checkBox.isChecked()) {

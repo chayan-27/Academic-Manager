@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:image_view="http://schemas.android.com/tools"
+    android:layout_margin="8dp"
+    android:id="@+id/cards"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    card_view:cardCornerRadius="30dp"
+    card_view:cardBackgroundColor="#FFFFFF"
+
+
+
+
+    >
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linee">
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Title"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+
+
+            <TextView
+                android:id="@+id/sdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="time"
+                android:padding="8dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:textColor="#F44336"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

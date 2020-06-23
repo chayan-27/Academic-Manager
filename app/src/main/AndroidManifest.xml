@@ -4,6 +4,7 @@
     package="com.example.iceb">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,19 +12,36 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/iceb"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/iceb_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Testingg"></activity>
-        <activity android:name=".Loginf" />
-        <activity android:name=".Texting" />
-        <activity android:name=".Funny" />
-        <activity android:name=".Webmail" />
+        <activity android:name=".Testingg"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".Loginf"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".Texting"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".Funny"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".Webmail"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".Forgetpass"
+            android:configChanges="orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

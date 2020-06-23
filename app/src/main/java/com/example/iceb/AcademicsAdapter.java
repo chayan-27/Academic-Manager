@@ -37,23 +37,29 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
     public void onBindViewHolder(@NonNull AcadHolder acadHolder, int i) {
         acadHolder.textView.setText(components.get(i).toUpperCase());
         acadHolder.imageView.setImageResource(ar[i]);
-        AppCompatActivity appCompatActivity=(AppCompatActivity)context;
-        FragmentManager fragment=appCompatActivity.getSupportFragmentManager();
+        AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+        FragmentManager fragment = appCompatActivity.getSupportFragmentManager();
         acadHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (i) {
                     case 0:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.fragment_container,new Timet()).addToBackStack(null).commit();
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Timet()).addToBackStack(null).commit();
                         break;
                     case 1:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.fragment_container,new Studymf("https://drive.google.com/open?id=1Em0c6h8scxmh3ZInGDCI3FFrdWtNnYtq")).addToBackStack(null).commit();
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new StudyMaterialF("ICEB")).addToBackStack(null).commit();
                         break;
                     case 2:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.fragment_container,new Coursef()).addToBackStack(null).commit();
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new CoursePLanF("ICEB")).addToBackStack(null).commit();
                         break;
                     case 3:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.fragment_container,new Attendant()).addToBackStack(null).commit();
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Attendant()).addToBackStack(null).commit();
+                        break;
+                    case 4:
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Studymf("https://docs.google.com/forms/d/e/1FAIpQLScd26k0BVjrqC6LQ0UoTpg7a-BOSGI6de3J1cvu5JfPfEqVEg/viewform")).addToBackStack(null).commit();
+                        break;
+                    case 5:
+                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Studymf("https://drive.google.com/open?id=15zhjORLoDc6ib59Lg0cKCvFcKwGTGdgA")).addToBackStack(null).commit();
                         break;
                 }
             }

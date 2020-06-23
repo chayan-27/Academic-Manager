@@ -31,8 +31,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
         android:text="RESET PASSWORD"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         tools:layout_alignParentBottom="false" />
 
     <TextView

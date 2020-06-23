@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient5"
+    android:background="#e2e2e2"
     tools:context=".InformActivity">
 
 <ScrollView
@@ -32,7 +32,7 @@
         android:text="SIGN UP"
 
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#1e4072"
         android:textSize="35sp"
         android:textStyle="bold"
         app:fontFamily="@font/black_ops_one" />
@@ -45,35 +45,24 @@
         android:layout_marginTop="120dp"
 
         android:ems="17"
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:inputType="textPersonName"
-        android:hint="FirstName*"
+        android:hint="First Name"
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
     <EditText
         android:id="@+id/editText9"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignTop="@id/editText10"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/progress_round"
-        android:ems="17"
-        android:inputType="textPersonName"
-        android:hint="LastName*"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"/>
-    <EditText
-        android:id="@+id/editText10"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
         android:layout_alignTop="@id/editText2"
         android:layout_marginTop="50dp"
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:ems="17"
         android:inputType="textPersonName"
-        android:hint="MiddleName(optional)"
+        android:hint="Last Name"
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
+
 
     <EditText
         android:id="@+id/editText5"
@@ -81,11 +70,11 @@
         android:layout_height="40dp"
         android:ems="17"
         android:inputType="textEmailAddress"
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText9"
         android:layout_marginTop="50dp"
-        android:hint="Webmail id.*"
+        android:hint="Roll no"
         android:gravity="center"
         android:textAlignment="center"
 
@@ -97,11 +86,11 @@
         android:layout_height="40dp"
         android:ems="17"
 
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText5"
         android:layout_marginTop="50dp"
-        android:hint="Password*"
+        android:hint="Set Password"
         android:textAlignment="center"
         android:inputType="textPassword"
         android:gravity="center" />
@@ -112,11 +101,11 @@
         android:layout_height="40dp"
         android:ems="17"
 
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText6"
         android:layout_marginTop="50dp"
-        android:hint="Confirm Password*"
+        android:hint="Confirm Password"
         android:textAlignment="center"
         android:inputType="textPassword"
         android:gravity="center" />
@@ -130,8 +119,10 @@
         android:layout_alignTop="@id/editText7"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:background="@drawable/roundedcorner"
-        android:text="Sign Up" />
+        android:background="@drawable/roundtest"
+        android:text="Sign Up"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

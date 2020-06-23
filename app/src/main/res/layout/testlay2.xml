@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/atten"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    tools:context=".Attendant">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient3"
+        tools:context=".Attendance">
+
+
+        <ScrollView
+            android:id="@+id/ScrollView01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".Attendance"
+                android:orientation="vertical"
+                >
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                       android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/progress_round"
+
+
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_bar" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="46dp"
+                        android:layout_height="43dp"
+                       android:layout_gravity="center"
+
+                        android:background="@drawable/roundcorner2"
+
+                        android:tint="#FFFFFF"
+                        app:srcCompat="@android:drawable/ic_input_add" />
+                        <ImageButton
+                            android:id="@+id/iciu"
+
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/roundcorner2"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="50dp"
+                            android:tint="#402D2D"
+
+                            app:srcCompat="@android:drawable/ic_menu_revert" />
+                        <ImageButton
+                            android:id="@+id/icr"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/rouncorner3"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+
+                    <ImageButton
+                        android:id="@+id/imageButton3"
+                        android:layout_width="46dp"
+                        android:layout_height="43dp"
+
+                        android:layout_marginLeft="16dp"
+
+                        android:background="@drawable/rouncorner3"
+                        android:tint="#FFFFFF"
+                        app:srcCompat="@android:drawable/button_onoff_indicator_off"
+                         />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/icir3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="ICIR"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/present"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS PRESENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/absent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS ABSENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pericir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-206dp"
+                        android:text="0%"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/chemis"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/progress_round"
+
+
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_bar" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageButton
+                            android:id="@+id/pchem"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+
+                            android:background="@drawable/roundcorner2"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_input_add" />
+                        <ImageButton
+                            android:id="@+id/chu"
+
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/roundcorner2"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="50dp"
+                            android:tint="#402D2D"
+
+                            app:srcCompat="@android:drawable/ic_menu_revert" />
+                        <ImageButton
+                            android:id="@+id/chr"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/rouncorner3"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+
+                        <ImageButton
+                            android:id="@+id/abchem"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+
+                            android:layout_marginLeft="16dp"
+
+                            android:background="@drawable/rouncorner3"
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/button_onoff_indicator_off"
+                            />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/chemt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="CHIR"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtpchem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS PRESENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtabchem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS ABSENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/perchir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-206dp"
+                        android:text="0%"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progicpc"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/progress_round"
+
+
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_bar" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageButton
+                            android:id="@+id/picpc"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+
+                            android:background="@drawable/roundcorner2"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_input_add" />
+                        <ImageButton
+                            android:id="@+id/icpcu"
+
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/roundcorner2"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="50dp"
+                            android:tint="#402D2D"
+
+                            app:srcCompat="@android:drawable/ic_menu_revert" />
+                        <ImageButton
+                            android:id="@+id/icpcr"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/rouncorner3"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+
+                        <ImageButton
+                            android:id="@+id/abicpc"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+
+                            android:layout_marginLeft="16dp"
+
+                            android:background="@drawable/rouncorner3"
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/button_onoff_indicator_off"
+                            />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/icpc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="ICPC"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtpicpc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS PRESENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtabicpc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS ABSENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pericpc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-206dp"
+                        android:text="0%"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progeng"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/progress_round"
+
+
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_bar" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageButton
+                            android:id="@+id/peng"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+
+                            android:background="@drawable/roundcorner2"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_input_add" />
+                        <ImageButton
+                            android:id="@+id/engu"
+
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/roundcorner2"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="50dp"
+                            android:tint="#402D2D"
+
+                            app:srcCompat="@android:drawable/ic_menu_revert" />
+                        <ImageButton
+                            android:id="@+id/engr"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/rouncorner3"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+
+                        <ImageButton
+                            android:id="@+id/abeng"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+
+                            android:layout_marginLeft="16dp"
+
+                            android:background="@drawable/rouncorner3"
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/button_onoff_indicator_off"
+                            />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/english"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="HSIR"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtpeng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS PRESENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtabeng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS ABSENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/pereng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-206dp"
+                        android:text="0%"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progmath"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:background="@drawable/progress_round"
+
+
+                        android:max="100"
+                        android:progressDrawable="@drawable/progress_bar" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal">
+
+                        <ImageButton
+                            android:id="@+id/pmath"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+
+                            android:background="@drawable/roundcorner2"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_input_add" />
+                        <ImageButton
+                            android:id="@+id/mathu"
+
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/roundcorner2"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="50dp"
+                            android:tint="#402D2D"
+
+                            app:srcCompat="@android:drawable/ic_menu_revert" />
+                        <ImageButton
+                            android:id="@+id/mathr"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/rouncorner3"
+
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+
+                        <ImageButton
+                            android:id="@+id/abmath"
+                            android:layout_width="46dp"
+                            android:layout_height="43dp"
+
+                            android:layout_marginLeft="16dp"
+
+                            android:background="@drawable/rouncorner3"
+                            android:tint="#FFFFFF"
+                            app:srcCompat="@android:drawable/button_onoff_indicator_off"
+                            />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/maths"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="MAIR"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ptxtm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS PRESENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/abtxtm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_horizontal"
+
+                        android:layout_marginTop="16dp"
+                        android:text="DAYS ABSENT: 0"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/permath"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-206dp"
+                        android:text="0%"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

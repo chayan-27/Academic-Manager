@@ -1,6 +1,7 @@
 package com.example.iceb;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHolder> {
     List<String> components;
@@ -23,38 +27,44 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         this.components = components;
         this.context = context;
     }
+
     @NonNull
     @Override
     public CourseHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View view = layoutInflater.inflate(R.layout.compo, viewGroup, false);
+        View view = layoutInflater.inflate(R.layout.announ, viewGroup, false);
         return new CourseHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CourseHolder courseHolder, int i) {
-        courseHolder.textView.setText(components.get(i).toUpperCase());
-        courseHolder.imageView.setImageResource(R.drawable.planic);
-        AppCompatActivity appCompatActivity=(AppCompatActivity)context;
-        FragmentManager fragment=appCompatActivity.getSupportFragmentManager();
-        courseHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(i==0){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("ICPC13-Thermodynamics_and_Fluid_Mechanics_B.pdf")).addToBackStack(null).commit();
-                }else if(i==1){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("COURSE PLANicpc.pdf")).addToBackStack(null).commit();
-                }else if(i==2){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("HSIR11-English_for_Communication_B.pdf")).addToBackStack(null).commit();
-                }else if(i==3){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("MAIR22-Complex_Analyays_&_DE.pdf")).addToBackStack(null).commit();
-                }else if(i==4){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("CHIR11-Chemistry_Theory_B.pdf")).addToBackStack(null).commit();
-                }else if(i==5){
-                    fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right).replace(R.id.coursef,new Pdff("CHIR12-Chemistry_Lab_B.pdf")).addToBackStack(null).commit();
-                }
-            }
-        });
+        // courseHolder.textView.setText(components.get(i).substring(0,components.get(i).indexOf("$")).toUpperCase());
+        String j = components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$"));
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        Date mydate = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String yestr = dateFormat.format(mydate);
+
+
+        courseHolder.textView.setText(components.get(i).substring(components.get(i).indexOf(" ") + 1, components.get(i).indexOf("$")));
+        if (j.equals(currentDate)) {
+            courseHolder.imageView.setText("Today");
+        } else if (j.equals(yestr)) {
+            courseHolder.imageView.setText("Yesterday");
+        } else {
+            courseHolder.imageView.setText(components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$")));
+
+        }
+        courseHolder.cardView.setText(components.get(i).substring(components.get(i).lastIndexOf("$") + 1));
+
+
+        if (i == 0) {
+            courseHolder.cardView1.setCardBackgroundColor(Color.parseColor("#88F39E"));
+
+
+        } else {
+            courseHolder.cardView1.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
 
     }
@@ -64,15 +74,23 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         return components.size();
     }
 
-    public class CourseHolder extends RecyclerView.ViewHolder{
+    public class CourseHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        ImageView imageView;
-        CardView cardView;
+        TextView imageView;
+        TextView cardView;
+        CardView cardView1;
+
         public CourseHolder(@NonNull View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.textView);
-            cardView = (CardView) itemView.findViewById(R.id.cards);
-            imageView = (ImageView) itemView.findViewById(R.id.pokemi);
+            cardView = (TextView) itemView.findViewById(R.id.time);
+            imageView = (TextView) itemView.findViewById(R.id.date);
+            cardView1 = (CardView) itemView.findViewById(R.id.cards);
         }
+    }
+
+    public void updateData(List<String> list) {
+        this.components = list;
+        notifyDataSetChanged();
     }
 }

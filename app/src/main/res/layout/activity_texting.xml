@@ -6,19 +6,20 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars="none"
+
     xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Texting"
-    android:background="@drawable/gradient3">
+    android:background="#e2e2e2">
 
 
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/nittl"
+        android:src="@drawable/nittl1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:id="@+id/logo"/>
@@ -33,10 +34,10 @@
         android:layout_marginRight="16dp"
         android:gravity="center"
         android:text="A verification e-mail has been sent to your webmail.Please verify your webmail before logging in"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:fontFamily="@font/almendra_sc" />
+         />
 
     <Button
         android:id="@+id/button2"
@@ -48,7 +49,9 @@
 
         android:layout_centerHorizontal="true"
         android:layout_marginTop="240dp"
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:text="OPEN WEBMAIL" />
     <Button
         android:id="@+id/buttonl"
@@ -64,8 +67,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
 
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
         android:text="CONTNUE TO LOGIN"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         tools:layout_alignParentBottom="false"
         android:onClick="hooray"/>
 

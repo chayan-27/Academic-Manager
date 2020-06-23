@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient2">
+    android:background="#e2e2e2">
 <ScrollView
     android:id="@+id/ScrollView01"
     android:layout_width="match_parent"
@@ -37,7 +37,7 @@
         android:gravity="center"
         android:text="LOGIN"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#1e4072"
         android:textSize="45sp"
         android:textStyle="bold"
         app:fontFamily="@font/black_ops_one" />
@@ -51,10 +51,10 @@
 
         android:layout_marginBottom="-70dp"
 
-        android:background="@drawable/progress_round"
+        android:background="@drawable/progress_round_test"
         android:ems="10"
         android:gravity="center"
-        android:hint="roll_no.@nitt.edu"
+        android:hint="Roll_no@nitt.edu"
         android:inputType="textEmailAddress"
         android:textColor="@android:color/black"
         android:textColorHint="#8E8E8E"
@@ -70,7 +70,8 @@
 
         android:layout_marginBottom="-130dp"
 
-        android:background="@drawable/progress_round"
+
+        android:background="@drawable/progress_round_test"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -82,11 +83,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/editText3"
-        android:layout_marginLeft="100dp"
+
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
         android:checked="true"
         android:text="Remember Me"
-        android:textColor="#FFFFFF" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/button"
@@ -101,8 +104,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
         android:text="LOGIN"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         tools:layout_alignParentBottom="false"
         android:onClick="hooray"/>
 
@@ -134,7 +139,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/button"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:onClick="fffgg"
         android:text="Forgot Password?"
         android:textAlignment="center"
@@ -142,13 +147,15 @@
         android:textStyle="bold"
         android:gravity="center_horizontal" />
     <Button
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_alignTop="@id/textView4"
         android:layout_marginTop="40dp"
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
         android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:onClick="webmail"
         android:text="WEBMAIL"
         android:layout_centerHorizontal="true"
