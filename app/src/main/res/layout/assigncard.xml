@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:image_view="http://schemas.android.com/tools"
-    android:layout_margin="8dp"
     android:id="@+id/cards"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
 
 
-    card_view:cardCornerRadius="30dp"
     card_view:cardBackgroundColor="#FFFFFF"
-
-
+    card_view:cardCornerRadius="30dp"
 
 
     >
+
     <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:id="@+id/linee"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linee">
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:src="@drawable/pdfic" />
 
         <TextView
             android:id="@+id/subject"
@@ -29,52 +36,54 @@
             android:layout_gravity="center"
             android:padding="8dp"
             android:text="Subject"
+
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="8dp"
+            android:padding="6dp"
             android:text="Title"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="18sp"
-            android:textStyle="bold"/>
-        <RelativeLayout
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/sdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="2dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="time"
+            android:textColor="#F44336"
+            android:textStyle="bold" />
 
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/udate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="date"
-                android:textStyle="bold"
+        <TextView
+            android:id="@+id/udate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:text="date"
+            android:textAlignment="center"
+            android:textColor="#F44336"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
 
-                android:padding="8dp"
-                android:textColor="#F44336"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp" />
+            android:gravity="center_horizontal" />
 
-            <TextView
-                android:id="@+id/sdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="time"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:textColor="#F44336"
-                />
 
-        </RelativeLayout>
+
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

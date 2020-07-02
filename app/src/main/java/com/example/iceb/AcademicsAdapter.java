@@ -18,11 +18,14 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
     List<String> components;
     Context context;
     int ar[];
+    String section;
+    String url="";
 
-    public AcademicsAdapter(List<String> components, Context context, int[] ar) {
+    public AcademicsAdapter(List<String> components, Context context, int[] ar,String section) {
         this.components = components;
         this.context = context;
         this.ar = ar;
+        this.section=section;
     }
 
     @NonNull
@@ -44,22 +47,32 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
             public void onClick(View v) {
                 switch (i) {
                     case 0:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Timet()).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Timet(section)).addToBackStack(null).commit();
                         break;
                     case 1:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new StudyMaterialF("ICEB")).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section)).addToBackStack(null).commit();
                         break;
                     case 2:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new CoursePLanF("ICEB")).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new CoursePLanF(section)).addToBackStack(null).commit();
                         break;
                     case 3:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Attendant()).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Attendance_Test()).addToBackStack(null).commit();
                         break;
                     case 4:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Studymf("https://docs.google.com/forms/d/e/1FAIpQLScd26k0BVjrqC6LQ0UoTpg7a-BOSGI6de3J1cvu5JfPfEqVEg/viewform")).addToBackStack(null).commit();
+                        if(section.equals("ICEA")){
+                            url="https://docs.google.com/forms/d/e/1FAIpQLSel5KahoMyq6gfUXQolISYV5iyPum1BU4Kwxw-DLvyyGzOQiw/viewform";
+                        }else{
+                            url="https://docs.google.com/forms/d/e/1FAIpQLScd26k0BVjrqC6LQ0UoTpg7a-BOSGI6de3J1cvu5JfPfEqVEg/viewform";
+                        }
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Studymf(url)).addToBackStack(null).commit();
                         break;
                     case 5:
-                        fragment.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right).replace(R.id.fragment_container, new Studymf("https://drive.google.com/open?id=15zhjORLoDc6ib59Lg0cKCvFcKwGTGdgA")).addToBackStack(null).commit();
+                        if(section.equals("ICEA")){
+                            url="https://drive.google.com/drive/folders/1VOA7oh1lgWQq5TNyWMv6EAIHz_BEgny8?usp=sharing";
+                        }else{
+                            url="https://drive.google.com/drive/u/2/folders/1Em0c6h8scxmh3ZInGDCI3FFrdWtNnYtq";
+                        }
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Studymf(url)).addToBackStack(null).commit();
                         break;
                 }
             }

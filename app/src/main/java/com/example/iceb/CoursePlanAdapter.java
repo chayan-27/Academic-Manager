@@ -62,7 +62,7 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
+
                 downloadcourseplan(section, subject);
             }
         });
@@ -92,11 +92,11 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
         } else{
+            Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -132,7 +132,7 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
                 progressBar.setVisibility(View.GONE);
                // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
+                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
 
 

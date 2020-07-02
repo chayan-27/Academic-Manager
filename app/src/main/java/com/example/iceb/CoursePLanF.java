@@ -20,7 +20,10 @@ import com.example.iceb.server.Controller;
 import com.example.iceb.server.Courseplan;
 import com.example.iceb.server.Studymaterial;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,6 +70,29 @@ public class CoursePLanF extends Fragment {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(arrayAdapter);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        int month = Integer.parseInt(currentDate.substring(3, 5));
+        int year = Integer.parseInt(currentDate.substring(6));
+        if (month >= 1 && month <= 7) {
+            if (year == 2020) {
+                semester = 2;
+            } else if (year == 2021) {
+                semester = 4;
+            } else if (year == 2022) {
+                semester = 6;
+            } else if (year == 2023) {
+                semester = 8;
+            }
+        } else {
+            if (year == 2020) {
+                semester = 3;
+            } else if (year == 2021) {
+                semester = 5;
+            } else if (year == 2022) {
+                semester = 7;
+            }
+        }
+        sem.setSelection(semester-1);
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -76,7 +102,7 @@ public class CoursePLanF extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                semester = 0;
+
             }
         });
 

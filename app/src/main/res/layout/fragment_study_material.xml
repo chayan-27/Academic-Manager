@@ -65,7 +65,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
 
-            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminateDrawable="@drawable/proglog"
             android:visibility="gone"
 
 

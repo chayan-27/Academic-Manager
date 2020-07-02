@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Studymaterial;
 
@@ -39,12 +38,12 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
     String subject;
     ProgressBar progressBar;
 
-    public StudyMaterialAdapter(List<Studymaterial> components, Context context, String section,String subject,ProgressBar progressBar) {
+    public StudyMaterialAdapter(List<Studymaterial> components, Context context, String section, String subject, ProgressBar progressBar) {
         this.components = components;
         this.context = context;
         this.section = section;
-        this.subject=subject;
-        this.progressBar=progressBar;
+        this.subject = subject;
+        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -58,18 +57,17 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
 
     @Override
     public void onBindViewHolder(@NonNull StudyMaterialHolder studyMaterialHolder, int i) {
-      //  String subject = components.get(i).getSubject();
+        //  String subject = components.get(i).getSubject();
         String title = components.get(i).getTitle();
         String update = components.get(i).getUploadDate();
         //studyMaterialHolder.textView.setText(subject);
         studyMaterialHolder.textView1.setText(title);
-        studyMaterialHolder.textView3.setText(update);
+        studyMaterialHolder.textView3.setText("Sent : " + update);
         studyMaterialHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(context, "Processing Please Wait...." , Toast.LENGTH_LONG).show();
-                downloadstudymaterial(title,section,subject);
+                downloadstudymaterial(title, section, subject);
             }
         });
 
@@ -80,7 +78,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         return components.size();
     }
 
-    public class StudyMaterialHolder extends RecyclerView.ViewHolder{
+    public class StudyMaterialHolder extends RecyclerView.ViewHolder {
         TextView textView;
         TextView textView1;
         TextView textView3;
@@ -95,6 +93,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             cardView = (CardView) itemView.findViewById(R.id.cards);
         }
     }
+
     public void downloadstudymaterial(String title, String section, String subject) {
         String path = "StudyMaterials/" + subject;
         String name = "/" + title + ".pdf";
@@ -102,11 +101,11 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
+        } else {
+            Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
 
-        }else {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -141,8 +140,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
-
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
 
                 }

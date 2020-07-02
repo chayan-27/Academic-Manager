@@ -3,6 +3,7 @@ package com.example.iceb;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,9 +20,13 @@ import android.widget.Toast;
 import com.example.iceb.server.Assignment;
 import com.example.iceb.server.Controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,11 +49,13 @@ public class AssignmentF extends Fragment {
     String section;
     ProgressBar progressBar;
     List<Assignment> list1;
+    int roll;
 
     @SuppressLint("ValidFragment")
-    public AssignmentF(String section) {
+    public AssignmentF(String section,int roll) {
         // Required empty public constructor
         this.section = section;
+        this.roll=roll;
     }
 
 
@@ -62,12 +69,37 @@ public class AssignmentF extends Fragment {
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(arrayAdapter);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        int month = Integer.parseInt(currentDate.substring(3, 5));
+        int year = Integer.parseInt(currentDate.substring(6));
+        if (month >= 1 && month <= 7) {
+            if (year == 2020) {
+                semester = 2;
+            } else if (year == 2021) {
+                semester = 4;
+            } else if (year == 2022) {
+                semester = 6;
+            } else if (year == 2023) {
+                semester = 8;
+            }
+        } else {
+            if (year == 2020) {
+                semester = 3;
+            } else if (year == 2021) {
+                semester = 5;
+            } else if (year == 2022) {
+                semester = 7;
+            }
+        }
+        sem.setSelection(semester-1);
+
+
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -77,7 +109,7 @@ public class AssignmentF extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                semester = 0;
+
             }
         });
 
@@ -107,27 +139,27 @@ public class AssignmentF extends Fragment {
 
                             progressBar.setVisibility(View.INVISIBLE);
                             int i = 0;
-                            List<Integer> aid=new ArrayList<>();
-                            List<Assignment> list3=new ArrayList<>();
+                            List<Integer> aid = new ArrayList<>();
+                            List<Assignment> list3 = new ArrayList<>();
 
 
                             List<Assignment> list = response.body().getAssignments();
                             list1 = new ArrayList<>(list.size());
                             for (Assignment assignment : list) {
                                 aid.add(assignment.getAid());
-                                list1.add( assignment);
+                                list1.add(assignment);
                             }
                             Collections.sort(aid);
-                            for(int i1=0;i1<aid.size();i1++){
-                                int j=aid.get(i1);
-                                for(Assignment assignment:list1){
-                                    if(assignment.getAid()==j){
+                            for (int i1 = 0; i1 < aid.size(); i1++) {
+                                int j = aid.get(i1);
+                                for (Assignment assignment : list1) {
+                                    if (assignment.getAid() == j) {
                                         list3.add(assignment);
                                     }
                                 }
                             }
                             Collections.reverse(list3);
-                            recyclerView.setAdapter(new AssignmentAdapter(list3, getContext(), section,progressBar));
+                            recyclerView.setAdapter(new AssignmentAdapter(list3, getContext(), section, progressBar,roll,semester));
                         }
 
                         @Override

@@ -129,7 +129,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/situ"
-        android:visibility="invisible"/>
+        android:indeterminateDrawable="@drawable/proglog"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

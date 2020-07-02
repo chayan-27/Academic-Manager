@@ -1,9 +1,14 @@
 package com.example.iceb;
 
 import com.example.iceb.server.Controller;
+import com.example.iceb.server.UserFile;
+
+import java.util.Calendar;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface FetchInfo {
@@ -31,6 +36,9 @@ public interface FetchInfo {
 
     @GET("Service1.svc/DownloadCoursePlan")
     Call<Controller> downloadCoursePlan(@Query("Subject")String subject, @Query("section")String section);
+
+    @POST("Service1.svc/UploadUserFile")
+    Call<Controller> sendassign(@Body UserFile userFile);
 
 
 

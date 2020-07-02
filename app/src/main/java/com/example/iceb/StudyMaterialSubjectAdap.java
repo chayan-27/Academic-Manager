@@ -44,7 +44,7 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
             @Override
             public void onClick(View v) {
                 AppCompatActivity appCompatActivity=(AppCompatActivity)context;
-                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame,new StudyMaterialAF(semester,subject,section)).addToBackStack(null).commit();
+                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new StudyMaterialAF(semester,subject,section)).addToBackStack(null).commit();
             }
         });
 

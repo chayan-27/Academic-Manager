@@ -22,7 +22,7 @@ public class Notification_receiver extends BroadcastReceiver {
        PendingIntent pendingIntent=PendingIntent.getActivity(context,100,repeating_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"test")
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.iceb)
+                .setSmallIcon(R.mipmap.ice)
                 .setContentTitle("Check you progress!!!")
                 .setContentText("Don't forget to update your Attendance")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

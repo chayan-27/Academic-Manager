@@ -67,7 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver{
                 .setContentText(qt)
                 .setStyle(new Notification.BigTextStyle().bigText(qt))
                 .setTicker("New Message Alert!")
-                .setSmallIcon(R.mipmap.iceb)
+                .setSmallIcon(R.mipmap.ice)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent1).build();

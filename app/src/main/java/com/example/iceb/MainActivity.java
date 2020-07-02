@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             // assert notificationManager1 != null;
             notificationManager1.createNotificationChannel(channel1);
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+       /* FirebaseMessaging.getInstance().subscribeToTopic("weather")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
             }
-        });
+        });*/
         final SharedPreferences myuser=this.getSharedPreferences("Myapp2", Context.MODE_PRIVATE);
         first=myuser.getInt("first",0);
 

@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.BufferedReader;
 import java.util.Calendar;
 
 public class Information extends AppCompatActivity {
@@ -46,6 +47,9 @@ public class Information extends AppCompatActivity {
     public static int flag;
     public static int flag2=1;
     ProgressBar progressBar;
+    TextView logintext;
+    TextView passtext;
+    Button webmail;
 
 int x;
 public static int t=0;
@@ -59,6 +63,10 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
         setContentView(R.layout.activity_main2);
         TextView t1=(TextView)findViewById(R.id.textView4);
         TextView t2=(TextView)findViewById(R.id.textView3);
+        Button login=(Button)findViewById(R.id.button);
+        logintext=(TextView)findViewById(R.id.textView2);
+        passtext=(TextView)findViewById(R.id.ffg);
+        webmail=(Button)findViewById(R.id.webmail);
         mFirebaseAuth=FirebaseAuth.getInstance();
 
         progressBar=(ProgressBar)findViewById(R.id.logi);
@@ -127,6 +135,16 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                 if(!(rn.isEmpty()||pwd.isEmpty())){
                     if(isNetworkConnected()){
                         progressBar.setVisibility(View.VISIBLE);
+                        roll_no.setVisibility(View.GONE);
+                        pass.setVisibility(View.GONE);
+                        t1.setVisibility(View.GONE);
+                        t2.setVisibility(View.GONE);
+                        checkBox.setVisibility(View.GONE);
+                        login.setVisibility(View.GONE);
+                        logintext.setVisibility(View.GONE);
+                        passtext.setVisibility(View.GONE);
+                        webmail.setVisibility(View.GONE);
+
 
 
                     mFirebaseAuth.signInWithEmailAndPassword(rn,pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
@@ -135,7 +153,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
                             if(!(task.isSuccessful())){
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast toast = Toast.makeText(Information.this, "Error Occurred,Please Login Again!! ", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
                                 toast.show();
                             }else{
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -148,7 +166,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                         }
                     });}else{
                         progressBar.setVisibility(View.INVISIBLE);
-                    Toast toast = Toast.makeText(Information.this, "No Internet Connection ", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
                     toast.show();
                 }}
 
@@ -235,7 +253,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
 
-        Button login=(Button)findViewById(R.id.button);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,7 +264,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                 String rn=roll_no.getText().toString();
                 String pwd=pass.getText().toString();
 
-                if(!(rn.isEmpty()||pwd.isEmpty()&&isNetworkConnected())){
+                if(!((rn.isEmpty()||pwd.isEmpty())&&isNetworkConnected())){
                     progressBar.setVisibility(View.VISIBLE);
 
                 mFirebaseAuth.signInWithEmailAndPassword(rn,pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
@@ -254,7 +272,13 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!(task.isSuccessful())){
                             progressBar.setVisibility(View.INVISIBLE);
-                            Toast toast = Toast.makeText(Information.this, "Error Occurred,Please Login Again!! ", Toast.LENGTH_LONG);
+                            String k="";
+                            if(isNetworkConnected()){
+                                k="Invalid Login Id or Password";
+                            }else{
+                                k="Error! No Internet Access!";
+                            }
+                            Toast toast = Toast.makeText(Information.this, k, Toast.LENGTH_LONG);
                             toast.show();
                         }else{
 
@@ -294,7 +318,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                     }
                 });}else{
                     if(!isNetworkConnected()){
-                        Toast toast = Toast.makeText(Information.this, "No Internet Connection ", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
                         toast.show();
                     }else{
                         Toast toast = Toast.makeText(Information.this, "Invalid Username or Password", Toast.LENGTH_LONG);

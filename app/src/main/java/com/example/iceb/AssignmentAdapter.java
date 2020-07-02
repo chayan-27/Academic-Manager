@@ -39,12 +39,16 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     Context context;
     String section;
     ProgressBar progressBar;
+    int roll;
+    int semester;
 
-    public AssignmentAdapter(List<Assignment> components, Context context, String section, ProgressBar progressBar) {
+    public AssignmentAdapter(List<Assignment> components, Context context, String section, ProgressBar progressBar, int roll, int semester) {
         this.components = components;
         this.context = context;
         this.section = section;
         this.progressBar = progressBar;
+        this.roll = roll;
+        this.semester = semester;
     }
 
     @NonNull
@@ -63,7 +67,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         String subdate = components.get(i).getSubbmissionDate();
         assignmentHolder.textView.setText(subject);
         assignmentHolder.textView1.setText(title);
-        assignmentHolder.textView2.setText("Sent :" + update);
+        assignmentHolder.textView2.setText("Sent : " + update);
         assignmentHolder.textView3.setText("DeadLine : " + subdate);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date strDate = null;
@@ -81,9 +85,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         assignmentHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.VISIBLE);
-
                 downloadassign(title, section, subject);
             }
         });
@@ -120,11 +122,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
 
         } else {
+            Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -159,7 +161,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PDFViewfrag(file)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
 
 
                 }

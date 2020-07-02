@@ -19,6 +19,12 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linee">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:src="@drawable/pdfic" />
 
         <TextView
             android:id="@+id/subject"
@@ -43,11 +49,7 @@
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
 
-            android:orientation="horizontal">
 
 
 
@@ -56,12 +58,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="time"
-                android:padding="8dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
+                android:paddingTop="0dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textStyle="bold"
                 android:textColor="#F44336"
+                android:layout_marginBottom="8dp"
                 />
 
-        </RelativeLayout>
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

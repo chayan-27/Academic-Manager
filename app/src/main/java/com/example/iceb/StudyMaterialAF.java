@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,7 +52,7 @@ public class StudyMaterialAF extends Fragment {
         View view = inflater.inflate(R.layout.fragment_study_material_a, container, false);
         recyclerView = view.findViewById(R.id.recycle);
         progressBar = view.findViewById(R.id.pres);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(linearLayoutManager);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -88,4 +89,5 @@ public class StudyMaterialAF extends Fragment {
 
         return view;
     }
+
 }
