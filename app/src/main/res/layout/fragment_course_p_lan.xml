@@ -52,12 +52,7 @@
             android:textStyle="bold"
             android:text="ok" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+      
 
         <ProgressBar
             android:id="@+id/progresso"

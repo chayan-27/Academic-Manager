@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @SuppressLint("ValidFragment")
 public class AssignmentF extends Fragment {
-    RecyclerView recyclerView;
+   // RecyclerView recyclerView;
     Spinner sem;
     Button button;
     TextView textView;
@@ -64,13 +64,13 @@ public class AssignmentF extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assignment, container, false);
-        recyclerView = view.findViewById(R.id.recycle);
+     //   recyclerView = view.findViewById(R.id.recycle);
         sem = view.findViewById(R.id.spinner);
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(linearLayoutManager);
+       // GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
+     //   recyclerView.setLayoutManager(linearLayoutManager);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,7 +117,9 @@ public class AssignmentF extends Fragment {
             @Override
             public void onClick(View v) {
                 if (semester != 0) {
-                    button.setVisibility(View.GONE);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SecondAssignmentF(section,roll,semester)).addToBackStack(null).commit();
+
+                /*    button.setVisibility(View.GONE);
                     sem.setVisibility(View.GONE);
                     textView.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -170,7 +172,7 @@ public class AssignmentF extends Fragment {
                             Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
                         }
-                    });
+                    });*/
 
                 } else {
                     Toast.makeText(getContext(), "Enter Valid Semester", Toast.LENGTH_SHORT).show();

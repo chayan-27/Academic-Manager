@@ -59,13 +59,13 @@ public class CoursePLanF extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_course_p_lan, container, false);
-        recyclerView = view.findViewById(R.id.recycle);
+      //  recyclerView = view.findViewById(R.id.recycle);
         sem = view.findViewById(R.id.spinner);
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+    //    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+      //  recyclerView.setLayoutManager(linearLayoutManager);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,7 +110,9 @@ public class CoursePLanF extends Fragment {
             @Override
             public void onClick(View v) {
                 if (semester != 0) {
-                    button.setVisibility(View.GONE);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SecondCoursePlanF(section,semester)).addToBackStack(null).commit();
+
+                  /*  button.setVisibility(View.GONE);
                     sem.setVisibility(View.GONE);
                     textView.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
@@ -145,7 +147,7 @@ public class CoursePLanF extends Fragment {
                             Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
                         }
-                    });
+                    });*/
 
                 } else {
                     Toast.makeText(getContext(), "Enter Valid Semester", Toast.LENGTH_SHORT).show();

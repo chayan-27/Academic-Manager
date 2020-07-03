@@ -45,9 +45,10 @@
                 android:background="@drawable/progress_round_test"
                 android:drawableLeft="@android:drawable/ic_input_get"
                 android:drawableTint="#1e4072"
+                android:drawablePadding="2dp"
 
                 android:ems="10"
-                android:gravity="center"
+
                 android:hint="Roll_no@nitt.edu"
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
@@ -66,8 +67,9 @@
                 android:drawableLeft="@android:drawable/ic_lock_lock"
 
                 android:drawableTint="#1e4072"
+                android:drawablePadding="2dp"
                 android:ems="10"
-                android:gravity="center"
+
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="8dp"
