@@ -1,10 +1,10 @@
 package com.example.iceb;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +60,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         //  String subject = components.get(i).getSubject();
         String title = components.get(i).getTitle();
         String update = components.get(i).getUploadDate();
-        //studyMaterialHolder.textView.setText(subject);
+        studyMaterialHolder.textView.setVisibility(View.GONE);
         studyMaterialHolder.textView1.setText(title);
         studyMaterialHolder.textView3.setText("Sent : " + update);
         studyMaterialHolder.cardView.setOnClickListener(new View.OnClickListener() {

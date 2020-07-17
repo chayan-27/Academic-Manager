@@ -10,22 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Successfully Submitted!"
+            android:textColor="#076A06" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
+            android:layout_marginBottom="4dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/upload"
                 android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/roundtest"
                 android:src="@android:drawable/ic_menu_upload"
@@ -37,12 +49,24 @@
 
             <Button
                 android:id="@+id/send"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/roundtest"
-                android:text="SEND"
+                android:text="UPLOAD"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/preview"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/roundtest"
+                android:text="Preview"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 

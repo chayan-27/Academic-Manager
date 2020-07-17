@@ -2,10 +2,12 @@ package com.example.iceb;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -41,6 +44,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     ProgressBar progressBar;
     int roll;
     int semester;
+    String l;
 
     public AssignmentAdapter(List<Assignment> components, Context context, String section, ProgressBar progressBar, int roll, int semester) {
         this.components = components;
@@ -64,11 +68,34 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         String subject = components.get(i).getSubject();
         String title = components.get(i).getTitle();
         String update = components.get(i).getUploadDate();
+        String[] up1 = new String[2];
+        try {
+
+
+            up1 = update.split("&");
+            if (up1.length == 0) {
+                up1 = new String[2];
+                up1[1] = update;
+                l = "";
+                up1[0] = "";
+            } else {
+                l = up1[0];
+            }
+        } catch (Exception e) {
+        }
         String subdate = components.get(i).getSubbmissionDate();
         assignmentHolder.textView.setText(subject);
         assignmentHolder.textView1.setText(title);
-        assignmentHolder.textView2.setText("Sent : " + update);
-        assignmentHolder.textView3.setText("DeadLine : " + subdate);
+        try {
+
+
+            assignmentHolder.textView2.setText("Sent : " + up1[1]);
+            assignmentHolder.textView3.setText("DeadLine : " + subdate + "\n" + up1[0]);
+        } catch (Exception e) {
+            assignmentHolder.textView2.setText("Sent : " + update);
+            assignmentHolder.textView3.setText("DeadLine : " + subdate);
+
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date strDate = null;
         try {
@@ -80,6 +107,23 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#88F39E"));
         } else {
             assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#ff726f"));
+            if (subdate.equals(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()))) {
+                assignmentHolder.textView2.setTextColor(Color.BLACK);
+                try {
+                    if (up1[0].charAt(up1[0].length() - 1) == '0') {
+                        assignmentHolder.textView3.setText("DeadLine : Today");
+                    }else{
+                        assignmentHolder.textView3.setText("DeadLine : Today\n" + up1[0]);
+
+                    }
+
+                } catch (Exception e) {
+                    assignmentHolder.textView3.setText("DeadLine : Today");
+                }
+                assignmentHolder.textView3.setTextColor(Color.BLACK);
+            }
+            //Toast.makeText(context,new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()),Toast.LENGTH_LONG).show();
+
 
         }
         assignmentHolder.cardView.setOnClickListener(new View.OnClickListener() {

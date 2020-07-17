@@ -11,10 +11,13 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:paddingTop="16dp">
 
         <LinearLayout
+            android:id="@+id/linear"
+            android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -37,9 +40,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+
                 android:layout_marginRight="16dp"
                 android:layout_weight="3" />
+
+
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_marginTop="70dp"
+
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            />
 
         <Button
             android:id="@+id/button"
@@ -47,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
+            android:visibility="gone"
             android:background="@drawable/roundtest"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
@@ -60,7 +78,6 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-
             android:indeterminateDrawable="@drawable/proglog"
             android:visibility="gone"
 

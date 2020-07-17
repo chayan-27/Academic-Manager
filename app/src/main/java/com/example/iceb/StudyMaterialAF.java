@@ -1,12 +1,10 @@
 package com.example.iceb;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,11 +62,11 @@ public class StudyMaterialAF extends Fragment {
             @Override
             public void onResponse(Call<Controller> call, Response<Controller> response) {
                 if (!(response.isSuccessful())) {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
                     return;
                 }
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
 
 
                 List<Studymaterial> list = response.body().getStudymaterial();
@@ -78,7 +76,7 @@ public class StudyMaterialAF extends Fragment {
 
             @Override
             public void onFailure(Call<Controller> call, Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 

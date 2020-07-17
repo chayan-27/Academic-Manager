@@ -2,11 +2,14 @@ package com.example.iceb;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +18,20 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.UserFile;
 import com.github.barteksc.pdfviewer.PDFView;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +57,11 @@ public class UploadAssignF extends Fragment {
     Integer semester;
     String encoded = "";
     ProgressBar progressBar;
+    TextView submit;
+    Button preview;
+    String previewFile="";
+   Uri pr;
+
     private static final int REQUEST_CODE = 100;
 
 
@@ -74,6 +86,19 @@ public class UploadAssignF extends Fragment {
         PDFView pdfView = (PDFView) view.findViewById(R.id.pdfView);
         pdfView.fromFile(file).load();
         imageButton = (ImageButton) view.findViewById(R.id.upload);
+        submit=(TextView)view.findViewById(R.id.submit);
+        preview=(Button)view.findViewById(R.id.preview);
+         SharedPreferences myuser = getContext().getSharedPreferences("Myapp", Context.MODE_PRIVATE);
+        String pass = myuser.getString("pass"+title+rollno+section+subject, "");
+        previewFile=myuser.getString("preview"+title+rollno+section+subject,"");
+        if(pass.equals("submit")){
+            submit.setVisibility(View.VISIBLE);
+          //  button.setTextColor(Color.GREEN);
+        }else{
+            submit.setVisibility(View.GONE);
+        }
+
+
         button = (Button) view.findViewById(R.id.send);
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +133,7 @@ public class UploadAssignF extends Fragment {
                 if (!(encoded.equals(""))) {
                     AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
                     alertdialog.setCancelable(false)
-                            .setMessage("Are you sure to submit your assignment ?\n" +
-                                    "Please do note that no more changes can be made after submission!")
+                            .setMessage("Are you sure to submit your assignment ?")
                             .setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -132,10 +156,35 @@ public class UploadAssignF extends Fragment {
                 }
             }
         });
+
+        preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!previewFile.equals("")){
+                    //File file =new File(previewFile);
+                   // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setDataAndType(Uri.parse(previewFile), "application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }catch (Exception e){
+                        Toast.makeText(getContext(),"Unable to open file",Toast.LENGTH_LONG).show();
+
+                    }
+                }else{
+                    Toast.makeText(getContext(),"No File Selected",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
         return view;
     }
 
     public void send() {
+        SharedPreferences myuser = getContext().getSharedPreferences("Myapp", Context.MODE_PRIVATE);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -148,14 +197,26 @@ public class UploadAssignF extends Fragment {
                 if (!response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     assert response.body() != null;
-                    Toast.makeText(getContext(), "Error ! Please Try Again!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Could not complete request ! Please Try Again!!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 progressBar.setVisibility(View.GONE);
                 if (response.body().getErrMsg()!=null) {
-                    Toast.makeText(getContext(), "Assignment already uploaded", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Server Error : "+response.body().getErrMsg(), Toast.LENGTH_LONG).show();
+                   /* SharedPreferences.Editor editor = myuser.edit();
+                    editor.putString("pass"+title+rollno+section+subject, "submit");
+                    editor.commit();
+
+                    submit.setVisibility(View.VISIBLE);*/
+
 
                 } else {
+                    SharedPreferences.Editor editor = myuser.edit();
+                    editor.putString("pass"+title+rollno+section+subject, "submit");
+                    editor.putString("preview"+title+rollno+section+subject,pr.toString());
+                    editor.commit();
+                    submit.setVisibility(View.VISIBLE);
+                  //  button.setTextColor(Color.GREEN);
                     Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
                 }
 
@@ -177,9 +238,11 @@ public class UploadAssignF extends Fragment {
         if (resultCode == RESULT_OK) {
             if (data != null) {
                 final Uri uri = data.getData();
+                pr=data.getData();
                 try {
                     final String filepath = uri.getPath();
                     File file = new File(filepath);
+
 
 
                     InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -190,6 +253,7 @@ public class UploadAssignF extends Fragment {
 
                     encoded = encoded.replace("\n", "").replace("\r", "");
                     Toast.makeText(getContext(), "Selected File : " + filepath, Toast.LENGTH_LONG).show();
+                    previewFile=pr.toString();
 
 
                 } catch (Exception e) {

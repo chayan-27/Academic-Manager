@@ -7,16 +7,17 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,15 +90,15 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
     @Override
     public void onBindViewHolder(@NonNull Attendance_holder attendance_holder, int i) {
         attendance_holder.txname.setText(list.get(i));
-        sheet(attendance_holder.icir, attendance_holder.present, attendance_holder.absent, attendance_holder.tx1, attendance_holder.tx2, attendance_holder.tx3, i, attendance_holder.button1, attendance_holder.button2, attendance_holder.require, attendance_holder.missed,attendance_holder.stats,attendance_holder.txname);
+        sheet(attendance_holder.icir, attendance_holder.present, attendance_holder.absent, attendance_holder.tx1, attendance_holder.tx2, attendance_holder.tx3, i, attendance_holder.button1, attendance_holder.button2, attendance_holder.require, attendance_holder.missed, attendance_holder.stats, attendance_holder.txname);
         attendance_holder.stats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               try {
-                   getData(i);
-               }catch (Exception e){
-                   Toast.makeText(context,"No statistics data available",Toast.LENGTH_SHORT).show();
-               }
+                try {
+                    getData(i);
+                } catch (Exception e) {
+                    Toast.makeText(context, "No statistics data available", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -140,7 +141,7 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
         }
     }
 
-    public void sheet(ProgressBar icir, ImageButton present, ImageButton absent, TextView tx1, TextView tx2, TextView tx3, int c, ImageButton undoo, ImageButton reset, TextView require, TextView missed,Button iu,TextView yu) {
+    public void sheet(ProgressBar icir, ImageButton present, ImageButton absent, TextView tx1, TextView tx2, TextView tx3, int c, ImageButton undoo, ImageButton reset, TextView require, TextView missed, Button iu, TextView yu) {
         //  Subjects subjects=new Subjects(pr1,pr2,pr3);
 
 //else{
@@ -170,7 +171,7 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                         String name3 = dataSnapshot.child("b1").getValue().toString();
                         pr3[c] = Integer.parseInt(name3);
 
-                       // icir.setScaleY(2f);
+                        // icir.setScaleY(2f);
                         icir.setProgress((int) pr1[c]);
                         //  icir.setProgress((int) pr[c]);
                         if (pr1[c] < 75.0f) {
@@ -219,7 +220,7 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .setValue(subjects);
                         createStat(c);
-                       // statistics(c);
+                        // statistics(c);
                         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Subject" + c)
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                         firebaseDatabase.addValueEventListener(new ValueEventListener() {
@@ -291,7 +292,6 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                                 yu.setVisibility(View.GONE);
 
 
-
                             }
 
                             @Override
@@ -323,7 +323,7 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    List<String> xyz=new ArrayList<>();
+                    List<String> xyz = new ArrayList<>();
                     pr2[c]++;
                     int chek = 0;
                     String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
@@ -332,21 +332,26 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                         datap.get(c).add(currentDate + "\n" + currentTime);
                         statistics1[c] = new Statistics(datap.get(c), dataab.get(c));
 
-                        chek=0;
+                        chek = 0;
                     } catch (Exception e) {
-                        //createStat(c);
-                       // statistics(c);
+                        createStat(c);
+                        statistics(c);
+
+
+                       /* datap.get(c).add(currentDate + "\n" + currentTime);
+                        statistics1[c] = new Statistics(datap.get(c), dataab.get(c));*/
 
 
 
-                       xyz.add(currentDate+"\n"+currentTime);
-                        statistics1[c] = new Statistics(list, list);
+
+                       /* xyz.add(currentDate + "\n" + currentTime);
+                        statistics1[c] = new Statistics(xyz, xyz);*/
 
 
                         //statistics1[c] = new Statistics(datap.get(c), dataab.get(c));
 
 
-                       // Toast.makeText(context, "C is : " + c, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(context, "C is : " + c, Toast.LENGTH_LONG).show();
 
                     }
 
@@ -417,9 +422,8 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                     FirebaseDatabase.getInstance().getReference().child("Subject" + c)
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("b1").setValue(pr3[c]);
 
-                        FirebaseDatabase.getInstance().getReference().child("Subject" + c)
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Statistics").setValue(statistics1[c]);
-
+                    FirebaseDatabase.getInstance().getReference().child("Subject" + c)
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Statistics").setValue(statistics1[c]);
 
 
                 }
@@ -437,12 +441,19 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
                     // if(abs[c]<40 && ((abs[c]+pres[c])!=40)) {
                     String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                     String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-                    List<String> xyz=new ArrayList<>();
+                    List<String> xyz = new ArrayList<>();
 
 
                     pr3[c]++;
-                    dataab.get(c).add(currentDate + "\n" + currentTime);
-                    statistics1[c] = new Statistics(datap.get(c), dataab.get(c));
+                    try {
+                        dataab.get(c).add(currentDate + "\n" + currentTime);
+                        statistics1[c] = new Statistics(datap.get(c), dataab.get(c));
+                    } catch (Exception e) {
+                        createStat(c);
+                        statistics(c);
+                       /* xyz.add(currentDate + "\n" + currentTime);
+                        statistics1[c] = new Statistics(xyz, xyz);*/
+                    }
                     if ((pr2[c] + pr3[c]) != 0) {
                         pr1[c] = ((float) pr2[c] / (pr2[c] + pr3[c])) * 100.0f;
                     }
@@ -518,35 +529,41 @@ public class Attendance_test_Adap extends RecyclerView.Adapter<Attendance_test_A
             @Override
             public void onClick(View v) {
                 if (z != 12 && z == c) {
-                    undo(icir, present, absent, tx1, tx2, tx3, z);
+                    try {
+                        undo(icir, present, absent, tx1, tx2, tx3, z);
+                    } catch (Exception e) {
+                    }
                 }
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                z = c;
-                if (z == c) {
+                try {
+                    z = c;
+                    if (z == c) {
 
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setMessage("Are you sure to Reset your attendance progress for this subject to 0%!!\nThe statistics data for this subject will be cleared.")
-                            .setCancelable(false)
-                            .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    reset(icir, present, absent, tx1, tx2, tx3, z);
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alertDialog = alert.create();
-                    alertDialog.setTitle("Reset Progress");
-                    alertDialog.show();
+                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                        alert.setMessage("Are you sure to Reset your attendance progress for this subject to 0%!!\nThe statistics data for this subject will be cleared.")
+                                .setCancelable(false)
+                                .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        reset(icir, present, absent, tx1, tx2, tx3, z);
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alertDialog = alert.create();
+                        alertDialog.setTitle("Reset Progress");
+                        alertDialog.show();
+                    }
+                } catch (Exception e) {
                 }
             }
         });

@@ -7,25 +7,21 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,13 +32,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import static android.content.Intent.getIntent;
-import static android.content.Intent.getIntentOld;
 
 public class InformActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -216,7 +208,7 @@ public class InformActivity extends AppCompatActivity {
                                                     Toast toast = Toast.makeText(InformActivity.this, "Verification E-mail sent", Toast.LENGTH_LONG);
                                                     toast.show();
                                                     Information.flag2 = 0;
-                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    progressBar.setVisibility(View.GONE);
                                                     //  createNotificationChannel();
                                                     // notification();
                                                     //motivate();

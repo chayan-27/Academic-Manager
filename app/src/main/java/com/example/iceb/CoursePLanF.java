@@ -2,9 +2,11 @@ package com.example.iceb;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Courseplan;
-import com.example.iceb.server.Studymaterial;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,7 +51,7 @@ public class CoursePLanF extends Fragment {
     @SuppressLint("ValidFragment")
     public CoursePLanF(String section) {
         // Required empty public constructor
-        this.section=section;
+        this.section = section;
     }
 
 
@@ -58,14 +59,14 @@ public class CoursePLanF extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_course_p_lan, container, false);
-      //  recyclerView = view.findViewById(R.id.recycle);
+        View view = inflater.inflate(R.layout.fragment_course_p_lan, container, false);
+        recyclerView = view.findViewById(R.id.recycle);
         sem = view.findViewById(R.id.spinner);
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
-    //    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-      //  recyclerView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,12 +93,103 @@ public class CoursePLanF extends Fragment {
                 semester = 7;
             }
         }
-        sem.setSelection(semester-1);
+        sem.setSelection(semester - 1);
+        if (semester != 0) {
+            try {
+                progressBar.setVisibility(View.VISIBLE);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                fetchInfo = retrofit.create(FetchInfo.class);
+                Call<Controller> call = fetchInfo.getcourseplan(semester, section);
+                call.enqueue(new Callback<Controller>() {
+                    @Override
+                    public void onResponse(Call<Controller> call, Response<Controller> response) {
+                        if (!(response.isSuccessful())) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+
+
+                        List<Courseplan> list = response.body().getCourseplan();
+                        if (list != null) {
+                            recyclerView.setAdapter(new CoursePlanAdapter(list, getContext(), section, progressBar));
+                        }else {
+                          //  Toast.makeText(getContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Controller> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+
+
+                        Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            } catch (Exception e) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 semester = Integer.parseInt(text);
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    fetchInfo = retrofit.create(FetchInfo.class);
+                    Call<Controller> call = fetchInfo.getcourseplan(semester, section);
+                    call.enqueue(new Callback<Controller>() {
+                        @Override
+                        public void onResponse(Call<Controller> call, Response<Controller> response) {
+                            if (!(response.isSuccessful())) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            progressBar.setVisibility(View.GONE);
+
+
+                            List<Courseplan> list = response.body().getCourseplan();
+                            if (list != null) {
+                                recyclerView.setAdapter(new CoursePlanAdapter(list, getContext(), section, progressBar));
+                            } else {
+                               // Toast.makeText(getContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Controller> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
+
+
+                            Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+
+                    Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
@@ -106,11 +198,11 @@ public class CoursePLanF extends Fragment {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+       /* button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (semester != 0) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SecondCoursePlanF(section,semester)).addToBackStack(null).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SecondCoursePlanF(section, semester)).addToBackStack(null).commit();
 
                   /*  button.setVisibility(View.GONE);
                     sem.setVisibility(View.GONE);
@@ -127,12 +219,12 @@ public class CoursePLanF extends Fragment {
                         @Override
                         public void onResponse(Call<Controller> call, Response<Controller> response) {
                             if (!(response.isSuccessful())) {
-                                progressBar.setVisibility(View.INVISIBLE);
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
                                 return;
                             }
 
-                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
 
 
                             List<Courseplan> list = response.body().getCourseplan();
@@ -141,7 +233,7 @@ public class CoursePLanF extends Fragment {
 
                         @Override
                         public void onFailure(Call<Controller> call, Throwable t) {
-                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
 
 
                             Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
@@ -149,13 +241,15 @@ public class CoursePLanF extends Fragment {
                         }
                     });*/
 
-                } else {
+              /*  } else {
                     Toast.makeText(getContext(), "Enter Valid Semester", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
 
 
         return view;
     }
+
+
 }

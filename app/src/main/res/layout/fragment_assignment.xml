@@ -11,13 +11,18 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_height="match_parent"
+
+        >
 
         <LinearLayout
+            android:paddingTop="16dp"
+            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
+
             android:orientation="horizontal">
 
             <TextView
@@ -42,6 +47,18 @@
                 android:gravity="center" />
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+
+            android:layout_marginTop="50dp"
+
+
+            android:paddingTop="16dp" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
@@ -51,14 +68,9 @@
             android:background="@drawable/roundtest"
             android:text="ok"
             android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:textStyle="bold"
             android:visibility="gone" />
+
 
         <ProgressBar
             android:id="@+id/progresso"

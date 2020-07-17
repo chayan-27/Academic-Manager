@@ -2,10 +2,11 @@ package com.example.iceb;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.example.iceb.server.Controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @SuppressLint("ValidFragment")
 public class AssignmentF extends Fragment {
-   // RecyclerView recyclerView;
+    RecyclerView recyclerView;
     Spinner sem;
     Button button;
     TextView textView;
@@ -52,10 +52,10 @@ public class AssignmentF extends Fragment {
     int roll;
 
     @SuppressLint("ValidFragment")
-    public AssignmentF(String section,int roll) {
+    public AssignmentF(String section, int roll) {
         // Required empty public constructor
         this.section = section;
-        this.roll=roll;
+        this.roll = roll;
     }
 
 
@@ -64,13 +64,13 @@ public class AssignmentF extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_assignment, container, false);
-     //   recyclerView = view.findViewById(R.id.recycle);
+        recyclerView = view.findViewById(R.id.recycle);
         sem = view.findViewById(R.id.spinner);
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
-       // GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
-     //   recyclerView.setLayoutManager(linearLayoutManager);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -97,7 +97,73 @@ public class AssignmentF extends Fragment {
                 semester = 7;
             }
         }
-        sem.setSelection(semester-1);
+        sem.setSelection(semester - 1);
+
+        if (semester != 0) {
+            try {
+                progressBar.setVisibility(View.VISIBLE);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                fetchInfo = retrofit.create(FetchInfo.class);
+                Call<Controller> call = fetchInfo.getAssignment(semester, section);
+                call.enqueue(new Callback<Controller>() {
+                    @Override
+                    public void onResponse(Call<Controller> call, Response<Controller> response) {
+                        if (!(response.isSuccessful())) {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        progressBar.setVisibility(View.GONE);
+                        int i = 0;
+                        List<Integer> aid = new ArrayList<>();
+                        List<Assignment> list3 = new ArrayList<>();
+
+
+                        List<Assignment> list = response.body().getAssignments();
+                        if (list != null) {
+                            list1 = new ArrayList<>(list.size());
+                            for (Assignment assignment : list) {
+                                aid.add(assignment.getAid());
+                                list1.add(assignment);
+                            }
+                            Collections.sort(aid);
+                            for (int i1 = 0; i1 < aid.size(); i1++) {
+                                int j = aid.get(i1);
+                                for (Assignment assignment : list1) {
+                                    if (assignment.getAid() == j) {
+                                        list3.add(assignment);
+                                    }
+                                }
+                            }
+                            Collections.reverse(list3);
+
+                            recyclerView.setAdapter(new AssignmentAdapter(list3, getContext(), section, progressBar, roll, semester));
+                        } else {
+                          //  Toast.makeText(getContext(), "No Data Available!", Toast.LENGTH_LONG).show();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Controller> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+
+
+                        Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            } catch (Exception e) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+            }
+        }
 
 
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -105,6 +171,71 @@ public class AssignmentF extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 semester = Integer.parseInt(text);
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    fetchInfo = retrofit.create(FetchInfo.class);
+                    Call<Controller> call = fetchInfo.getAssignment(semester, section);
+                    call.enqueue(new Callback<Controller>() {
+                        @Override
+                        public void onResponse(Call<Controller> call, Response<Controller> response) {
+                            if (!(response.isSuccessful())) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            progressBar.setVisibility(View.GONE);
+                            int i = 0;
+                            List<Integer> aid = new ArrayList<>();
+                            List<Assignment> list3 = new ArrayList<>();
+
+
+                            List<Assignment> list = response.body().getAssignments();
+                            if (list != null) {
+                                list1 = new ArrayList<>(list.size());
+                                for (Assignment assignment : list) {
+                                    aid.add(assignment.getAid());
+                                    list1.add(assignment);
+                                }
+                                Collections.sort(aid);
+                                for (int i1 = 0; i1 < aid.size(); i1++) {
+                                    int j = aid.get(i1);
+                                    for (Assignment assignment : list1) {
+                                        if (assignment.getAid() == j) {
+                                            list3.add(assignment);
+                                        }
+                                    }
+                                }
+                                Collections.reverse(list3);
+                                recyclerView.setAdapter(new AssignmentAdapter(list3, getContext(), section, progressBar, roll, semester));
+                            }else {
+                                //Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Controller> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
+
+
+                            Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+
+                        }
+                    });
+                } catch (Exception e) {
+
+                    progressBar.setVisibility(View.GONE);
+
+                    Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
@@ -113,11 +244,11 @@ public class AssignmentF extends Fragment {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+      /*  button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (semester != 0) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SecondAssignmentF(section,roll,semester)).addToBackStack(null).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SecondAssignmentF(section, roll, semester)).addToBackStack(null).commit();
 
                 /*    button.setVisibility(View.GONE);
                     sem.setVisibility(View.GONE);
@@ -134,12 +265,12 @@ public class AssignmentF extends Fragment {
                         @Override
                         public void onResponse(Call<Controller> call, Response<Controller> response) {
                             if (!(response.isSuccessful())) {
-                                progressBar.setVisibility(View.INVISIBLE);
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
                                 return;
                             }
 
-                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             int i = 0;
                             List<Integer> aid = new ArrayList<>();
                             List<Assignment> list3 = new ArrayList<>();
@@ -166,7 +297,7 @@ public class AssignmentF extends Fragment {
 
                         @Override
                         public void onFailure(Call<Controller> call, Throwable t) {
-                            progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
 
 
                             Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
@@ -174,11 +305,11 @@ public class AssignmentF extends Fragment {
                         }
                     });*/
 
-                } else {
+               /* } else {
                     Toast.makeText(getContext(), "Enter Valid Semester", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
 
         return view;
     }
