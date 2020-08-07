@@ -36,7 +36,7 @@
 
             <ImageButton
                 android:id="@+id/upload"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/roundtest"
@@ -55,7 +55,7 @@
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/roundtest"
                 android:text="UPLOAD"
-                android:textColor="#FFFFFF"
+                android:textColor="#4CAF50"
                 android:textStyle="bold"
                 />
 
@@ -68,6 +68,17 @@
                 android:background="@drawable/roundtest"
                 android:text="Preview"
                 android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/unsub"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/roundtest"
+                android:text="unsubmit"
+                android:visibility="gone"
+                android:textColor="#F44336"
                 android:textStyle="bold" />
 
         </LinearLayout>

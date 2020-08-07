@@ -42,6 +42,9 @@ public class Controller {
     private List<User> user = null;
     @SerializedName("UserFile")
     private List<UserFile> userFiles=null;
+    @SerializedName("apk")
+    @Expose
+    private List<APKdown> apk = null;
 
     /**
      * No args constructor for use in serialization
@@ -64,7 +67,7 @@ public class Controller {
      * @param attendance
      * @param timetable
      */
-    public Controller(Object errMsg, List<Feedback> feedback, List<Announcement> announcements, List<Assignment> assignments, List<Attendance> attendance, List<Courseplan> courseplan, List<Poll> poll, List<Pollre> pollres, List<Studymaterial> studymaterial, List<Timetable> timetable, List<User> user,List<UserFile> userFiles) {
+    public Controller(Object errMsg, List<Feedback> feedback, List<Announcement> announcements, List<Assignment> assignments, List<Attendance> attendance, List<Courseplan> courseplan, List<Poll> poll, List<Pollre> pollres, List<Studymaterial> studymaterial, List<Timetable> timetable, List<User> user,List<UserFile> userFiles,List<APKdown> apk) {
         super();
         this.errMsg = errMsg;
         this.feedback = feedback;
@@ -78,6 +81,7 @@ public class Controller {
         this.timetable = timetable;
         this.user = user;
         this.userFiles=userFiles;
+        this.apk=apk;
     }
 
     public Object getErrMsg() {
@@ -174,5 +178,13 @@ public class Controller {
 
     public void setUserFiles(List<UserFile> userFiles) {
         this.userFiles = userFiles;
+    }
+
+    public List<APKdown> getApk() {
+        return apk;
+    }
+
+    public void setApk(List<APKdown> apk) {
+        this.apk = apk;
     }
 }

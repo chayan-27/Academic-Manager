@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:paddingTop="16dp"
-            android:src="@drawable/pdfic"
+            android:src="@drawable/ic_noun_file_"
             android:visibility="gone" />
 
         <RelativeLayout

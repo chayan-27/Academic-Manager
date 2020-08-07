@@ -142,21 +142,32 @@ public class Information extends AppCompatActivity {
                         webmail.setVisibility(View.GONE);
 
 
+                        EditText finalRoll_no = roll_no;
+                        EditText finalPass = pass;
                         mFirebaseAuth.signInWithEmailAndPassword(rn, pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (!(task.isSuccessful())) {
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                    progressBar.setVisibility(View.GONE);
                                     Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
+                                    finalRoll_no.setVisibility(View.VISIBLE);
+                                    finalPass.setVisibility(View.VISIBLE);
+                                    t1.setVisibility(View.VISIBLE);
+                                    t2.setVisibility(View.VISIBLE);
+                                    checkBox.setVisibility(View.VISIBLE);
+                                    login.setVisibility(View.VISIBLE);
+                                    logintext.setVisibility(View.VISIBLE);
+                                    passtext.setVisibility(View.VISIBLE);
+                                    webmail.setVisibility(View.VISIBLE);
                                     toast.show();
                                 } else {
-                                    progressBar.setVisibility(View.INVISIBLE);
+                                    progressBar.setVisibility(View.GONE);
                                     Intent intent = new Intent(Information.this, Testingg.class);
                                     intent.putExtra("roll", rn);
                                     startActivity(intent);
 
-                                    //finish();
+                                    finish();
                                 }
                             }
                         });
@@ -432,7 +443,7 @@ public class Information extends AppCompatActivity {
     public void onStop() {
 
         super.onStop();
-        finish();
+      //  finish();
 
     }
 
@@ -451,7 +462,7 @@ public class Information extends AppCompatActivity {
     }
 
     public void webmail(View view) {
-        Intent intent = new Intent(Information.this, Webmail.class);
+        Intent intent = new Intent(Information.this, WebmailReplace.class);
         startActivity(intent);
     }
 

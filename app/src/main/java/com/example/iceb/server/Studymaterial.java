@@ -24,6 +24,9 @@ public class Studymaterial {
     @SerializedName("UploadDate")
     @Expose
     private String uploadDate;
+    @SerializedName("ext")
+    @Expose
+    private String ext;
 
     /**
      * No args constructor for use in serialization
@@ -41,7 +44,7 @@ public class Studymaterial {
      * @param stuContent
      * @param title
      */
-    public Studymaterial(Object section, Integer sem, Object stuContent, String subject, String title, String uploadDate) {
+    public Studymaterial(Object section, Integer sem, Object stuContent, String subject, String title, String uploadDate,String ext) {
         super();
         this.section = section;
         this.sem = sem;
@@ -49,6 +52,7 @@ public class Studymaterial {
         this.subject = subject;
         this.title = title;
         this.uploadDate = uploadDate;
+        this.ext=ext;
     }
 
     public Object getSection() {
@@ -97,6 +101,13 @@ public class Studymaterial {
 
     public void setUploadDate(String uploadDate) {
         this.uploadDate = uploadDate;
+    }
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 
 }

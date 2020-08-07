@@ -17,7 +17,7 @@ public class Texting extends AppCompatActivity {
     }
 
     public void webb(View view) {
-        Intent intent=new Intent(Texting.this,Webmail.class);
+        Intent intent=new Intent(Texting.this,WebmailReplace.class);
         startActivity(intent);
     }
 

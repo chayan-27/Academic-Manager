@@ -2,11 +2,6 @@
     <string name="app_name">ICE 2K23</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_testinggg">Testinggg</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string-array name="semester">
         <item>1</item>
         <item>2</item>
@@ -19,5 +14,8 @@
 
     </string-array>
     <string name="announce">Announcements</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

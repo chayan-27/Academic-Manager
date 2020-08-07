@@ -35,6 +35,7 @@ public class PDFViewfrag extends Fragment {
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         PDFView pdfView = (PDFView) view.findViewById(R.id.pdfView);
         pdfView.fromFile(file).load();
+
         return view;
     }
 

@@ -1,17 +1,22 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Spannable;
@@ -26,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -178,6 +184,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
                     if (title.equals("CoursePlan")) {
                         progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setMax(100);
+                        animation(0, 50, 10000);
                         downloadcourseplan(section, subject);
                     } else {
                         String[] assign = title.split(" ");
@@ -185,6 +193,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
                             if (assign.length == 3) {
                                 progressBar.setVisibility(View.VISIBLE);
+                                progressBar.setMax(100);
+                                animation(0, 50, 10000);
                                 // Toast.makeText(context, "..." + subject + "   " + assign[1], Toast.LENGTH_LONG).show();
 
                                 downloadassign(assign[1], section, subject);
@@ -195,6 +205,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                                     y = y + assign[i] + " ";
                                 }
                                 progressBar.setVisibility(View.VISIBLE);
+                                progressBar.setMax(100);
+                                animation(0, 50, 10000);
                                 //Toast.makeText(context, "..." + subject + "   " +y, Toast.LENGTH_LONG).show();
 
                                 downloadassign(y, section, subject);
@@ -204,6 +216,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
                         } else {
                             progressBar.setVisibility(View.VISIBLE);
+                            progressBar.setMax(100);
+                            animation(0, 50, 10000);
+
                             downloadstudymaterial(title, section, subject);
                         }
                     }
@@ -324,6 +339,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
 
 
+
+
     }
 
     @Override
@@ -355,13 +372,40 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     }
 
     public void downloadstudymaterial(String title, String section, String subject) {
+        String extension = title.substring(title.lastIndexOf(".") + 1);
+        String hd=title;
+
         String path = "StudyMaterials/" + subject;
-        String name = "/" + title + ".pdf";
+        String name;
+        if (extension.equals("") ||extension.equals(title)) {
+            name = "/" + title + ".pdf";
+            hd=title+".pdf";
+        }else{
+            name="/"+title+"."+extension;
+            hd=title+"."+extension;
+        }
+
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
-            AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
+            if(name.substring(name.lastIndexOf(".")+1).equals("pdf")){
+                PdfViewAct.file1=file;
+                Intent intent=new Intent(context,PdfViewAct.class);
+                context.startActivity(intent);
+            }else{
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri apkURI = FileProvider.getUriForFile(
+                        context, context.getApplicationContext()
+
+                                .getPackageName() + ".provider", file);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setData(apkURI);
+                context.startActivity(intent);
+            }
+
+
+         /*   AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
 
         } else {
             Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
@@ -372,6 +416,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                     .build();
             FetchInfo fetchInfo = retrofit.create(FetchInfo.class);
             Call<Controller> call = fetchInfo.downloadStudyMaterial(title, section);
+            String finalHd = hd;
             call.enqueue(new Callback<Controller>() {
                 @Override
                 public void onResponse(Call<Controller> call, Response<Controller> response) {
@@ -380,11 +425,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                         Toast.makeText(context, "No Response From The Server", Toast.LENGTH_LONG).show();
                         return;
                     }
+                    String ext;
 
                     try {
                         List<Studymaterial> list = response.body().getStudymaterial();
                         String he = (String) list.get(0).getStuContent();
+                         ext = list.get(0).getExt();
                         byte[] decodedString = Base64.decode(he.getBytes(), Base64.DEFAULT);
+                        String path = "StudyMaterials/" + subject;
+                        String name = "/" + title + "."+ext;
                         File root = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
                         try {
                             OutputStream fileOutputStream = new FileOutputStream(root);
@@ -395,16 +444,34 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        if (ext.equals("pdf") || ext.equals(null) || ext.equals("")) {
+                            PdfViewAct.file1 = root;
+                            Intent intent = new Intent(context, PdfViewAct.class);
+                            context.startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri apkURI = FileProvider.getUriForFile(
+                                    context, context.getApplicationContext()
+
+                                            .getPackageName() + ".provider", root);
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setData(apkURI);
+                            context.startActivity(intent);
+                        }
+                        Toast.makeText(context, "Your File is Downloaded in your Internal storage/Android/data/com.example.iceb/files", Toast.LENGTH_LONG).show();
+
                     } catch (Exception e) {
-                        Toast.makeText(context, "..." + subject + "   " + title + "......", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "..." + subject + "   " + title + "......"+name+e.getMessage(), Toast.LENGTH_LONG).show();
 
                     }
-                    Toast.makeText(context, "Your File is Downloaded in your Internal storage/Android/data/com.example.iceb/files", Toast.LENGTH_LONG).show();
-                    AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+                    //  AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
+
+
+
+                    // appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
 
                 }
@@ -489,13 +556,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
     public void downloadassign(String title, String section, String subject) {
         String path = "Assignments/" + subject;
-        String name = "/" + title + ".pdf";
+        String name = "/" + title.trim() + ".pdf";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
+
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester, new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()))).addToBackStack(null).commit();
 
         } else {
             Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
@@ -537,7 +607,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester, new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()))).addToBackStack(null).commit();
 
 
                 }
@@ -550,5 +620,41 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                 }
             });
         }
+    }
+
+    public void animation(int a, int b, int time) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
+        animation.setDuration(time);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+                if (b == 50) {
+                    animation(50, 75, 20000);
+                } else if (b == 75) {
+                    animation(75, 88, 40000);
+                } else if (b == 88) {
+                    animation(88, 94, 80000);
+                } else if (b == 94) {
+                    animation(94, 97, 160000);
+                } else if (b == 97) {
+                    animation(97, 99, 320000);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animation.start();
     }
 }

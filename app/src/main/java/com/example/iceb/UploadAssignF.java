@@ -24,14 +24,22 @@ import android.widget.Toast;
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.UserFile;
 import com.github.barteksc.pdfviewer.PDFView;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,12 +69,14 @@ public class UploadAssignF extends Fragment {
     Button preview;
     String previewFile="";
    Uri pr;
+   String subdate;
+   Button unsub;
 
     private static final int REQUEST_CODE = 100;
 
 
     @SuppressLint("ValidFragment")
-    public UploadAssignF(File file, String section, Integer rollno, String subject, String title, Integer semester) {
+    public UploadAssignF(File file, String section, Integer rollno, String subject, String title, Integer semester,String subdate) {
         // Required empty public constructor
         this.file = file;
         this.section = section;
@@ -74,6 +84,7 @@ public class UploadAssignF extends Fragment {
         this.subject = subject;
         this.title = title;
         this.semester = semester;
+        this.subdate=subdate;
     }
 
 
@@ -88,14 +99,29 @@ public class UploadAssignF extends Fragment {
         imageButton = (ImageButton) view.findViewById(R.id.upload);
         submit=(TextView)view.findViewById(R.id.submit);
         preview=(Button)view.findViewById(R.id.preview);
+        unsub=(Button)view.findViewById(R.id.unsub);
          SharedPreferences myuser = getContext().getSharedPreferences("Myapp", Context.MODE_PRIVATE);
         String pass = myuser.getString("pass"+title+rollno+section+subject, "");
         previewFile=myuser.getString("preview"+title+rollno+section+subject,"");
         if(pass.equals("submit")){
             submit.setVisibility(View.VISIBLE);
+            unsub.setVisibility(View.VISIBLE);
           //  button.setTextColor(Color.GREEN);
         }else{
-            submit.setVisibility(View.GONE);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date strDate = null;
+            try {
+                strDate = sdf.parse(subdate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(System.currentTimeMillis()<=strDate.getTime()){
+                submit.setVisibility(View.GONE);
+            }else{
+                submit.setText("Missing!");
+                submit.setTextColor(Color.RED);
+            }
+
         }
 
 
@@ -160,23 +186,84 @@ public class UploadAssignF extends Fragment {
         preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // previewFile=myuser.getString("preview"+title+rollno+section+subject,"");
+
                 if(!previewFile.equals("")){
+
+                    //File file=new File(previewFile);
+
+                 //   byte[] decodedString = Base64.decode(previewFile.getBytes(), Base64.DEFAULT);
+                   // new File(Objects.requireNonNull(requireContext().getExternalFilesDir(path)).getAbsolutePath() + name);
+                    String path="Assignment Submissions/"+subject+"/"+title;
+                    String name="/"+rollno+".pdf";
+
+                    File root = new File(Objects.requireNonNull(requireContext().getExternalFilesDir(path)).getAbsolutePath() + name);
+                //    File root1=new File(getContext().getExternalFilesDir(previewFile).getAbsolutePath());
+
+
+                        /*try {
+                            OutputStream fileOutputStream = new FileOutputStream(root);
+                            fileOutputStream.write(decodedString);
+                            fileOutputStream.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }*/
+                        PdfViewAct.file1=root;
+                        Intent intent=new Intent(getContext(),PdfViewAct.class);
+                        startActivity(intent);
+
+
+
                     //File file =new File(previewFile);
                    // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
-                    try {
+                   /* try {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.setDataAndType(Uri.parse(previewFile), "application/pdf");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                         startActivity(intent);
                     }catch (Exception e){
                         Toast.makeText(getContext(),"Unable to open file",Toast.LENGTH_LONG).show();
 
-                    }
+                    }*/
+                   //PdfViewAct.file1=
                 }else{
                     Toast.makeText(getContext(),"No File Selected",Toast.LENGTH_LONG).show();
                 }
 
+            }
+        });
+
+        unsub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!(previewFile.equals(""))) {
+                    AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+                    alertdialog.setCancelable(false)
+                            .setMessage("Are you sure to UNSUBMIT your assignment ?")
+                            .setPositiveButton("UNSUBMIT", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    progressBar.setVisibility(View.VISIBLE);
+                                    unsubmit();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alertDialog = alertdialog.create();
+                    alertDialog.setTitle("Unsubmit Assignment!");
+                    alertDialog.show();
+
+                } else {
+                    Toast.makeText(getContext(), "File not available", Toast.LENGTH_LONG).show();
+                }
             }
         });
         return view;
@@ -213,9 +300,11 @@ public class UploadAssignF extends Fragment {
                 } else {
                     SharedPreferences.Editor editor = myuser.edit();
                     editor.putString("pass"+title+rollno+section+subject, "submit");
-                    editor.putString("preview"+title+rollno+section+subject,pr.toString());
+                    editor.putString("preview"+title+rollno+section+subject,previewFile);
                     editor.commit();
                     submit.setVisibility(View.VISIBLE);
+                    submit.setText("Successfully Submitted");
+                    unsub.setVisibility(View.VISIBLE);
                   //  button.setTextColor(Color.GREEN);
                     Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
                 }
@@ -253,7 +342,20 @@ public class UploadAssignF extends Fragment {
 
                     encoded = encoded.replace("\n", "").replace("\r", "");
                     Toast.makeText(getContext(), "Selected File : " + filepath, Toast.LENGTH_LONG).show();
-                    previewFile=pr.toString();
+                    previewFile=filepath;
+                    String path="Assignment Submissions/"+subject+"/"+title;
+                    String name="/"+rollno+".pdf";
+                    byte[] decodedString = Base64.decode(encoded.getBytes(), Base64.DEFAULT);
+                    File root = new File(requireContext().getExternalFilesDir(path).getAbsolutePath() + name);
+                    try {
+                        OutputStream fileOutputStream = new FileOutputStream(root);
+                        fileOutputStream.write(decodedString);
+                        fileOutputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
 
                 } catch (Exception e) {
@@ -276,6 +378,59 @@ public class UploadAssignF extends Fragment {
             byteBuffer.write(buffer, 0, len);
         }
         return byteBuffer.toByteArray();
+    }
+
+    public void unsubmit(){
+        SharedPreferences myuser = getContext().getSharedPreferences("Myapp", Context.MODE_PRIVATE);
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+
+                .build();
+        FetchInfo fetchInfo = retrofit.create(FetchInfo.class);
+        Call<Controller> call = fetchInfo.unsubassign(new UserFile(null, section, semester, rollno, subject, title));
+        call.enqueue(new Callback<Controller>() {
+            @Override
+            public void onResponse(Call<Controller> call, Response<Controller> response) {
+                if (!response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    assert response.body() != null;
+                    Toast.makeText(getContext(), "Could not complete request ! Please Try Again!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                progressBar.setVisibility(View.GONE);
+                if (response.body().getErrMsg()!=null) {
+                    Toast.makeText(getContext(), "Server Error : "+response.body().getErrMsg(), Toast.LENGTH_LONG).show();
+                   /* SharedPreferences.Editor editor = myuser.edit();
+                    editor.putString("pass"+title+rollno+section+subject, "submit");
+                    editor.commit();
+
+                    submit.setVisibility(View.VISIBLE);*/
+
+
+                } else {
+                    SharedPreferences.Editor editor = myuser.edit();
+                    editor.putString("pass"+title+rollno+section+subject, "");
+                    editor.putString("preview"+title+rollno+section+subject,"");
+                    editor.commit();
+                    submit.setVisibility(View.GONE);
+                    unsub.setVisibility(View.GONE);
+                    previewFile="";
+                    //  button.setTextColor(Color.GREEN);
+                    Toast.makeText(getContext(), "Successfully Unsubmitted", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Controller> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error ! Please Try Again!!", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 
 }

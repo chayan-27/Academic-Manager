@@ -1,17 +1,23 @@
 package com.example.iceb;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.pdf.PdfRenderer;
+import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +51,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     int roll;
     int semester;
     String l;
+    String subh;
 
     public AssignmentAdapter(List<Assignment> components, Context context, String section, ProgressBar progressBar, int roll, int semester) {
         this.components = components;
@@ -63,6 +70,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         return new AssignmentHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull AssignmentHolder assignmentHolder, int i) {
         String subject = components.get(i).getSubject();
@@ -84,6 +92,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         } catch (Exception e) {
         }
         String subdate = components.get(i).getSubbmissionDate();
+        subh=subdate;
         assignmentHolder.textView.setText(subject);
         assignmentHolder.textView1.setText(title);
         try {
@@ -126,11 +135,35 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
 
 
         }
+        String path = "Assignments/" + subject;
+        String name = "/" + title + ".pdf";
+        File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
+        if (file.exists()) {
+            ParcelFileDescriptor parcelFileDescriptor= null;
+            try {
+                parcelFileDescriptor = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            PdfRenderer renderer = null;
+            try {
+                renderer = new PdfRenderer(parcelFileDescriptor);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
+            PdfRenderer.Page page = renderer.openPage(0);
+            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+            assignmentHolder.imgpdf.setImageBitmap(bitmap);
+
+        }
+
+
         assignmentHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                downloadassign(title, section, subject);
+                downloadassign(title, section, subject,assignmentHolder.imgpdf);
             }
         });
 
@@ -148,6 +181,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         TextView textView2;
         TextView textView3;
         CardView cardView;
+        ImageView imgpdf;
 
         public AssignmentHolder(@NonNull View itemView) {
             super(itemView);
@@ -156,10 +190,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             textView2 = (TextView) itemView.findViewById(R.id.udate);
             textView3 = (TextView) itemView.findViewById(R.id.sdate);
             cardView = (CardView) itemView.findViewById(R.id.cards);
+            imgpdf=(ImageView)itemView.findViewById(R.id.imgpdf);
         }
     }
 
-    public void downloadassign(String title, String section, String subject) {
+    public void downloadassign(String title, String section, String subject,ImageView imgpdf) {
         String path = "Assignments/" + subject;
         String name = "/" + title + ".pdf";
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
@@ -167,7 +202,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             progressBar.setVisibility(View.GONE);
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
 
         } else {
             Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
@@ -179,6 +214,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             FetchInfo fetchInfo = retrofit.create(FetchInfo.class);
             Call<Controller> call = fetchInfo.downloadAssignment(title, section);
             call.enqueue(new Callback<Controller>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onResponse(Call<Controller> call, Response<Controller> response) {
                     if (!(response.isSuccessful())) {
@@ -205,7 +241,24 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
+
+                    ParcelFileDescriptor parcelFileDescriptor= null;
+                    try {
+                        parcelFileDescriptor = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    PdfRenderer renderer = null;
+                    try {
+                        renderer = new PdfRenderer(parcelFileDescriptor);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
+                    PdfRenderer.Page page = renderer.openPage(0);
+                    page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                    imgpdf.setImageBitmap(bitmap);
 
 
                 }

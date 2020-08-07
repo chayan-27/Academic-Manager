@@ -1,5 +1,7 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,6 +55,7 @@ public class StudyMaterialAF extends Fragment {
         progressBar = view.findViewById(R.id.pres);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(linearLayoutManager);
+        animation();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -66,18 +70,15 @@ public class StudyMaterialAF extends Fragment {
                     Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
                     return;
                 }
-                progressBar.setVisibility(View.GONE);
-
-
                 List<Studymaterial> list = response.body().getStudymaterial();
                 recyclerView.setAdapter(new StudyMaterialAdapter(list, getContext(), section,subject,progressBar));
-
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<Controller> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
 
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
 
@@ -86,6 +87,28 @@ public class StudyMaterialAF extends Fragment {
 
 
         return view;
+    }
+
+    public void animation(){
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 180);
+        animation.setDuration(20000);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) { }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) { }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) { }
+        });
+        animation.start();
     }
 
 }

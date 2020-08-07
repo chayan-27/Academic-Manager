@@ -1,7 +1,0 @@
-<ripple
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?colorControlHighlight">
-
-    <item android:drawable="@drawable/classroom" />
-
-</ripple>
