@@ -89,52 +89,7 @@ public class PdfViewAct extends AppCompatActivity {
                 total.setText("/" + pageCount);
                 totalpages = pageCount;
             }
-        }).onTap(new OnTapListener() {
-            @Override
-            public boolean onTap(MotionEvent e) {
-                if (brush) {
-                    x = e.getX();
-                    y = e.getY();
-                    switch (e.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            path.moveTo(x, y);
-                            Toast.makeText(PdfViewAct.this, "Drawn from d " + x + " " + y, Toast.LENGTH_SHORT).show();
-                            break;
-                     //   return true;
-
-                        case MotionEvent.ACTION_MOVE:
-                            Toast.makeText(PdfViewAct.this, "Drawn from d2 " + x + " " + y, Toast.LENGTH_SHORT).show();
-
-                            path.lineTo(x, y);
-
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            break;
-
-                        default:
-                            return false;
-                    }
-                    Toast.makeText(PdfViewAct.this, "Drawn from fi " + x + " " + y, Toast.LENGTH_SHORT).show();
-
-                    pdfView.postInvalidate();
-
-                    return false;
-                }
-                return false;
-            }
-        }).onDraw(new OnDrawListener() {
-            @Override
-            public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
-                if (brush) {
-
-                    // Toast.makeText(PdfViewAct.this,"Drawn",Toast.LENGTH_SHORT).show();
-                    canvas.drawLine(x,y,x+500,y,paint);
-                    //canvas.drawPath(path, paint);
-
-                }
-
-            }
-        })
+        }).enableAntialiasing(true)
                 .load();
 
 

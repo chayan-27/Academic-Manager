@@ -71,4 +71,21 @@
 
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pres"
+        android:indeterminateOnly="false"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+
+        android:layout_gravity="center"
+android:visibility="gone"
+        android:indeterminate="false"
+
+
+
+
+
+        android:progressDrawable="@drawable/proglog3"
+        />
 </androidx.cardview.widget.CardView>

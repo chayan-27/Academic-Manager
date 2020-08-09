@@ -31,6 +31,14 @@ public class Poll {
     @Expose
     private Integer rollno;
 
+    @SerializedName("deadline")
+    @Expose
+    private String deadline;
+
+    @SerializedName("currentTime")
+    @Expose
+    private String currentTime;
+
     /**
      * No args constructor for use in serialization
      * 
@@ -49,7 +57,7 @@ public class Poll {
      * @param pid
      * @param type
      */
-    public Poll(String options, String pTitle, Object section, Integer sem, String type, Integer pid, Object response, Integer rollno) {
+    public Poll(String options, String pTitle, Object section, Integer sem, String type, Integer pid, Object response, Integer rollno,String deadline,String currentTime) {
         super();
         this.options = options;
         this.pTitle = pTitle;
@@ -59,6 +67,8 @@ public class Poll {
         this.pid = pid;
         this.response = response;
         this.rollno = rollno;
+        this.deadline=deadline;
+        this.currentTime=currentTime;
     }
 
     public String getOptions() {
@@ -123,6 +133,21 @@ public class Poll {
 
     public void setRollno(Integer rollno) {
         this.rollno = rollno;
+    }
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
     }
 
 }

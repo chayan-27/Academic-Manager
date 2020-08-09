@@ -70,6 +70,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     private Integer semester;
     ProgressBar progressBar;
     int roll;
+    String uu;
 
 
     public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar) {
@@ -169,6 +170,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
         if (body.substring(body.lastIndexOf(" ") + 1).equals("Uploaded!")) {
             courseHolder.pdf.setVisibility(View.VISIBLE);
+            imageview(courseHolder.pdf,body);
             courseHolder.cardView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -177,49 +179,51 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                     // String subject = body.substring(0, body.indexOf("\n"));
                     //String title = body.substring(body.indexOf("\n\n") + 2, body.lastIndexOf(" "));
                     String subject = by[0];
+                    if(subject.contains("*")){
+                        subject=subject.substring(1,subject.lastIndexOf("*"));
+                    }
                     String h = by[1];
-                    System.out.println("//////////" + subject + h);
+                    //System.out.println("//////////" + subject + h);
                     String title = h.substring(0, h.lastIndexOf(" "));
 
 
                     if (title.equals("CoursePlan")) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        progressBar.setMax(100);
-                        animation(0, 50, 10000);
-                        downloadcourseplan(section, subject);
+                        courseHolder.progressBar.setVisibility(View.VISIBLE);
+                        courseHolder.progressBar.setMax(100);
+                        animation(0, 50, 10000,courseHolder.progressBar);
+                        downloadcourseplan(section, subject,courseHolder.progressBar);
                     } else {
                         String[] assign = title.split(" ");
                         if (assign[0].equals("New")) {
 
                             if (assign.length == 3) {
-                                progressBar.setVisibility(View.VISIBLE);
-                                progressBar.setMax(100);
-                                animation(0, 50, 10000);
+                                courseHolder.progressBar.setVisibility(View.VISIBLE);
+                                courseHolder.progressBar.setMax(100);
+                                animation(0, 50, 10000,courseHolder.progressBar);
                                 // Toast.makeText(context, "..." + subject + "   " + assign[1], Toast.LENGTH_LONG).show();
 
-                                downloadassign(assign[1], section, subject);
+                                downloadassign(assign[1], section, subject,courseHolder.progressBar);
                             } else {
                                 int c = assign.length - 3;
                                 String y = "";
                                 for (int i = 1; i <= c + 1; i++) {
                                     y = y + assign[i] + " ";
                                 }
-                                progressBar.setVisibility(View.VISIBLE);
-                                progressBar.setMax(100);
-                                animation(0, 50, 10000);
+                                courseHolder.progressBar.setVisibility(View.VISIBLE);
+                                courseHolder.progressBar.setMax(100);
+                                animation(0, 50, 10000,courseHolder.progressBar);
                                 //Toast.makeText(context, "..." + subject + "   " +y, Toast.LENGTH_LONG).show();
 
-                                downloadassign(y, section, subject);
+                                downloadassign(y, section, subject,courseHolder.progressBar);
 
                             }
 
 
                         } else {
-                            progressBar.setVisibility(View.VISIBLE);
-                            progressBar.setMax(100);
-                            animation(0, 50, 10000);
-
-                            downloadstudymaterial(title, section, subject);
+                            courseHolder.progressBar.setVisibility(View.VISIBLE);
+                           courseHolder. progressBar.setMax(100);
+                            animation(0, 50, 10000,courseHolder.progressBar);
+                            downloadstudymaterial(title, section, subject,courseHolder.progressBar);
                         }
                     }
 
@@ -354,6 +358,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         TextView cardView;
         CardView cardView1;
         ImageView pdf;
+        ProgressBar progressBar;
 
         public CourseHolder(@NonNull View itemView) {
             super(itemView);
@@ -362,6 +367,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             imageView = (TextView) itemView.findViewById(R.id.date);
             cardView1 = (CardView) itemView.findViewById(R.id.cards);
             pdf = (ImageView) itemView.findViewById(R.id.pdf);
+            progressBar=(ProgressBar)itemView.findViewById(R.id.pres);
+
 
         }
     }
@@ -371,7 +378,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         notifyDataSetChanged();
     }
 
-    public void downloadstudymaterial(String title, String section, String subject) {
+    public void downloadstudymaterial(String title, String section, String subject,ProgressBar progressBar) {
         String extension = title.substring(title.lastIndexOf(".") + 1);
         String hd=title;
 
@@ -486,7 +493,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public void downloadcourseplan(String section, String subject) {
+    public void downloadcourseplan(String section, String subject,ProgressBar progressBar) {
         String path = "CoursePlan/" + subject;
         String name = "/" + subject + ".pdf";
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
@@ -554,7 +561,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public void downloadassign(String title, String section, String subject) {
+    public void downloadassign(String title, String section, String subject,ProgressBar progressBar) {
         String path = "Assignments/" + subject;
         String name = "/" + title.trim() + ".pdf";
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -622,7 +629,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public void animation(int a, int b, int time) {
+    public void animation(int a, int b, int time,ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
         animation.setDuration(time);
         animation.setInterpolator(new DecelerateInterpolator());
@@ -635,15 +642,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             public void onAnimationEnd(Animator animator) {
                 //do something when the countdown is complete
                 if (b == 50) {
-                    animation(50, 75, 20000);
+                    animation(50, 75, 20000,progressBar);
                 } else if (b == 75) {
-                    animation(75, 88, 40000);
+                    animation(75, 88, 40000,progressBar);
                 } else if (b == 88) {
-                    animation(88, 94, 80000);
+                    animation(88, 94, 80000,progressBar);
                 } else if (b == 94) {
-                    animation(94, 97, 160000);
+                    animation(94, 97, 160000,progressBar);
                 } else if (b == 97) {
-                    animation(97, 99, 320000);
+                    animation(97, 99, 320000,progressBar);
                 }
             }
 
@@ -656,5 +663,51 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             }
         });
         animation.start();
+    }
+
+    public void imageview(ImageView imageView,String body){
+        String[] by = body.split("\n\n");
+
+        // String subject = body.substring(0, body.indexOf("\n"));
+        //String title = body.substring(body.indexOf("\n\n") + 2, body.lastIndexOf(" "));
+        String subject = by[0];
+        String h = by[1];
+        //System.out.println("//////////" + subject + h);
+        String title = h.substring(0, h.lastIndexOf(" "));
+
+
+        if (title.equals("CoursePlan")) {
+           imageView.setImageResource(R.drawable.pdfic);
+        } else {
+            String[] assign = title.split(" ");
+            if (assign[0].equals("New")) {
+
+                if (assign.length == 3) {
+                    imageView.setImageResource(R.drawable.pdfic);
+                } else {
+                    imageView.setImageResource(R.drawable.pdfic);
+
+                }
+
+
+            } else {
+                String extension = title.substring(title.lastIndexOf(".") + 1);
+                if (extension.equals("") || extension.equals(title)) {
+                    imageView.setImageResource(R.drawable.pdfic);
+                }else{
+                    if (extension.equals("pptx") || extension.equals("ppt")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                    } else if (extension.equals("doc")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
+                    } else if (extension.equals("jpg") || extension.equals("png") || extension.equalsIgnoreCase("jpeg")) {
+                        imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                    }else if(extension.equals("pdf")){
+                        imageView.setImageResource(R.drawable.pdfic);
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_noun_file_);
+                    }
+                }
+            }
+        }
     }
 }

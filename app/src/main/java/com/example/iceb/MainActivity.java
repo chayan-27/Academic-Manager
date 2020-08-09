@@ -115,14 +115,4 @@ public class MainActivity extends AppCompatActivity {
        };
        timer.start();
     }
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,5 +1,7 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -148,6 +151,7 @@ public class CoursePLanF extends Fragment {
                 semester = Integer.parseInt(text);
                 try {
                     progressBar.setVisibility(View.VISIBLE);
+                    animation(0,50,10000,progressBar);
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -249,6 +253,42 @@ public class CoursePLanF extends Fragment {
 
 
         return view;
+    }
+
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
+        animation.setDuration(time);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+                if (b == 50) {
+                    animation(50, 75, 20000, progressBar);
+                } else if (b == 75) {
+                    animation(75, 88, 40000, progressBar);
+                } else if (b == 88) {
+                    animation(88, 94, 80000, progressBar);
+                } else if (b == 94) {
+                    animation(94, 97, 160000, progressBar);
+                } else if (b == 97) {
+                    animation(97, 99, 320000, progressBar);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animation.start();
     }
 
 

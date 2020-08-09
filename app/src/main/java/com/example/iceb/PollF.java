@@ -1,5 +1,7 @@
 package com.example.iceb;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +39,7 @@ public class PollF extends Fragment {
     ProgressBar progressBar;
     FetchInfo fetchInfo;
     int roll;
+    SharedPreferences myuser;
 
     public PollF(String section,int roll) {
         // Required empty public constructor
@@ -54,6 +57,7 @@ public class PollF extends Fragment {
         View view = inflater.inflate(R.layout.fragment_poll, container, false);
         recyclerView = view.findViewById(R.id.recycle);
         progressBar = view.findViewById(R.id.progresso);
+        myuser=getContext().getSharedPreferences("Myapp2", Context.MODE_PRIVATE);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
@@ -93,7 +97,7 @@ public class PollF extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         fetchInfo = retrofit.create(FetchInfo.class);
-        Call<Controller> call = fetchInfo.getpolllist(2, section);
+        Call<Controller> call = fetchInfo.getpolllist(semester, section);
         call.enqueue(new Callback<Controller>() {
             @Override
             public void onResponse(Call<Controller> call, Response<Controller> response) {
@@ -105,7 +109,7 @@ public class PollF extends Fragment {
 
                 List<Poll> list = response.body().getPoll();
                 if (list != null) {
-                    recyclerView.setAdapter(new PollAdapter(list, section, 2,roll,getContext(),progressBar));
+                    recyclerView.setAdapter(new PollAdapter(list, section, semester,roll,getContext(),progressBar));
                   //  Toast.makeText(getContext(), "list found"+list.size(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getContext(), "list not found", Toast.LENGTH_LONG).show();

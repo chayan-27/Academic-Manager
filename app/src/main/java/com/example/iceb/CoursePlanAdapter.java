@@ -1,14 +1,19 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,11 +41,11 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
     String section;
     ProgressBar progressBar;
 
-    public CoursePlanAdapter(List<Courseplan> components, Context context, String section,ProgressBar progressBar) {
+    public CoursePlanAdapter(List<Courseplan> components, Context context, String section, ProgressBar progressBar) {
         this.components = components;
         this.context = context;
         this.section = section;
-        this.progressBar=progressBar;
+        this.progressBar = progressBar;
     }
 
     @NonNull
@@ -60,6 +65,7 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
+                animation(0,50,10000,progressBar);
 
                 downloadcourseplan(section, subject);
             }
@@ -93,56 +99,91 @@ public class CoursePlanAdapter extends RecyclerView.Adapter<CoursePlanAdapter.Co
 
             appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
 
-        } else{
+        } else {
             Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        FetchInfo fetchInfo = retrofit.create(FetchInfo.class);
-        Call<Controller> call = fetchInfo.downloadCoursePlan(subject, section);
-        call.enqueue(new Callback<Controller>() {
-            @Override
-            public void onResponse(Call<Controller> call, Response<Controller> response) {
-                if (!(response.isSuccessful())) {
+            FetchInfo fetchInfo = retrofit.create(FetchInfo.class);
+            Call<Controller> call = fetchInfo.downloadCoursePlan(subject, section);
+            call.enqueue(new Callback<Controller>() {
+                @Override
+                public void onResponse(Call<Controller> call, Response<Controller> response) {
+                    if (!(response.isSuccessful())) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context, "No Response From The Server", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+
+                    List<Courseplan> list = response.body().getCourseplan();
+                    String he = (String) list.get(0).getCouContent();
+                    byte[] decodedString = Base64.decode(he.getBytes(), Base64.DEFAULT);
+
+                    File root = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
+                    try {
+                        OutputStream fileOutputStream = new FileOutputStream(root);
+                        fileOutputStream.write(decodedString);
+                        fileOutputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(context, "Your File is Downloaded in your Internal storage/Android/data/com.example.iceb/files", Toast.LENGTH_LONG).show();
+                    AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(context, "No Response From The Server", Toast.LENGTH_LONG).show();
-                    return;
+                    // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
+
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
+
+
                 }
 
+                @Override
+                public void onFailure(Call<Controller> call, Throwable t) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(context, "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
-                List<Courseplan> list = response.body().getCourseplan();
-                String he = (String) list.get(0).getCouContent();
-                byte[] decodedString = Base64.decode(he.getBytes(), Base64.DEFAULT);
-
-                File root = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
-                try {
-                    OutputStream fileOutputStream = new FileOutputStream(root);
-                    fileOutputStream.write(decodedString);
-                    fileOutputStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-                Toast.makeText(context, "Your File is Downloaded in your Internal storage/Android/data/com.example.iceb/files", Toast.LENGTH_LONG).show();
-                AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-                progressBar.setVisibility(View.GONE);
-               // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
+            });
+        }
+    }
 
-                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
-
-
-
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
+        animation.setDuration(time);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
             }
 
             @Override
-            public void onFailure(Call<Controller> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(context, "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+                if (b == 50) {
+                    animation(50, 75, 20000, progressBar);
+                } else if (b == 75) {
+                    animation(75, 88, 40000, progressBar);
+                } else if (b == 88) {
+                    animation(88, 94, 80000, progressBar);
+                } else if (b == 94) {
+                    animation(94, 97, 160000, progressBar);
+                } else if (b == 97) {
+                    animation(97, 99, 320000, progressBar);
+                }
+            }
 
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
             }
         });
-    }
+        animation.start();
     }
 }
