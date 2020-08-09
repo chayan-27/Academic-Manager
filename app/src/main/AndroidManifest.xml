@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PdfViewAct"></activity>
+        <activity
+            android:name=".PdfViewAct"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".WebmailReplace"
             android:configChanges="orientation"

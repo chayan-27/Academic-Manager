@@ -74,11 +74,21 @@
 
         <ProgressBar
             android:id="@+id/progresso"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
+            android:indeterminateOnly="false"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:layout_gravity="center"
+
+            android:indeterminate="false"
+            tools:progress="19"
             android:layout_centerVertical="true"
-            android:indeterminateDrawable="@drawable/proglog"
+            android:layout_centerHorizontal="true"
+
+
+
+
+            android:progressDrawable="@drawable/proglog2"
             android:visibility="gone"
 
 

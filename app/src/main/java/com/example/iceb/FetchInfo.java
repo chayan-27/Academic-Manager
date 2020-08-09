@@ -54,4 +54,7 @@ public interface FetchInfo {
 
     @POST("Service1.svc/downloadapk")
     Call<Controller> downloadapk(@Body APKcl apKcl);
+
+    @GET("Service1.svc/viewpoll")
+    Call<Controller> viewpoll(@Query("pid") Integer pid);
 }

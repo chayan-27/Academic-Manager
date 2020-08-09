@@ -10,6 +10,10 @@ public class APKdown {
     @Expose
     private String con;
 
+    @SerializedName("ver")
+    @Expose
+    private String ver;
+
     /**
      * No args constructor for use in serialization
      * 
@@ -24,6 +28,14 @@ public class APKdown {
     public APKdown(String con) {
         super();
         this.con = con;
+    }
+
+    public String getVer() {
+        return ver;
+    }
+
+    public void setVer(String ver) {
+        this.ver = ver;
     }
 
     public String getCon() {

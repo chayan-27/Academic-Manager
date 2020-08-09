@@ -1,5 +1,7 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -162,8 +165,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         assignmentHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                downloadassign(title, section, subject,assignmentHolder.imgpdf);
+               assignmentHolder. progressBar.setVisibility(View.VISIBLE);
+               animation(0,50,10000,assignmentHolder.progressBar);
+                downloadassign(title, section, subject,assignmentHolder.imgpdf,assignmentHolder.progressBar);
             }
         });
 
@@ -182,6 +186,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         TextView textView3;
         CardView cardView;
         ImageView imgpdf;
+        ProgressBar progressBar;
 
         public AssignmentHolder(@NonNull View itemView) {
             super(itemView);
@@ -191,10 +196,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             textView3 = (TextView) itemView.findViewById(R.id.sdate);
             cardView = (CardView) itemView.findViewById(R.id.cards);
             imgpdf=(ImageView)itemView.findViewById(R.id.imgpdf);
+            progressBar=(ProgressBar)itemView.findViewById(R.id.pres);
         }
     }
 
-    public void downloadassign(String title, String section, String subject,ImageView imgpdf) {
+    public void downloadassign(String title, String section, String subject,ImageView imgpdf,ProgressBar progressBar) {
         String path = "Assignments/" + subject;
         String name = "/" + title + ".pdf";
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
@@ -271,5 +277,41 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 }
             });
         }
+    }
+
+    public void animation(int a, int b, int time,ProgressBar progressBar) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
+        animation.setDuration(time);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+                if (b == 50) {
+                    animation(50, 75, 20000,progressBar);
+                } else if (b == 75) {
+                    animation(75, 88, 40000,progressBar);
+                } else if (b == 88) {
+                    animation(88, 94, 80000,progressBar);
+                } else if (b == 94) {
+                    animation(94, 97, 160000,progressBar);
+                } else if (b == 97) {
+                    animation(97, 99, 320000,progressBar);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animation.start();
     }
 }

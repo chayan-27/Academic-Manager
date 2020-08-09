@@ -10,7 +10,7 @@
 
 
     card_view:cardBackgroundColor="#FFFFFF"
-    card_view:cardCornerRadius="30dp"
+    card_view:cardCornerRadius="16dp"
 
 
     >
@@ -49,6 +49,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_weight="2"
                 android:text="OPTIONS"
+                android:id="@+id/options"
                 android:textColor="#000000"
                 android:textStyle="bold"
 
@@ -63,6 +64,35 @@
                 android:layout_weight="1"
                 android:padding="8dp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/dead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+
+            android:text="Deadline : "
+            android:textAlignment="center"
+            android:textColor="#FF0000"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:visibility="visible"
+
+            android:text="Click here to View Results"
+            android:textAlignment="center"
+            android:textColor="#34B7F1"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/response"

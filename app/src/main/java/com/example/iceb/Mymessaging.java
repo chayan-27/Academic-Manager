@@ -52,7 +52,7 @@ public class Mymessaging extends FirebaseMessagingService {
             list.addAll(set);
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        s = body + "$" + currentDate + "$" + currentTime;
+        s = "*"+title+"*"+"\n\n"+body + "$" + currentDate + "$" + currentTime;
 
         if (set != null) {
             list.add(set.size() + " " + s);

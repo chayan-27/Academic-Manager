@@ -84,7 +84,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         String extension = components.get(i).getTitle().substring(components.get(i).getTitle().lastIndexOf(".") + 1);
         studyMaterialHolder.textView.setVisibility(View.GONE);
         studyMaterialHolder.textView1.setText(title);
-        studyMaterialHolder.textView3.setText("Sent : " + update);
+        studyMaterialHolder.textView3.setText(update);
         String path = "StudyMaterials/" + subject;
         String name = "/" + title + ".pdf";
         final boolean[] check = {false};
@@ -115,22 +115,31 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         } else {
             if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
 
-            }else{
-                studyMaterialHolder.imgpdf.setImageResource(R.drawable.ic_noun_file_);
+            } else {
+                if (extension.equals("pptx") || extension.equals("ppt")) {
+                    studyMaterialHolder.imgpdf.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                } else if (extension.equals("doc")) {
+                    studyMaterialHolder.imgpdf.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
+                } else if (extension.equals("jpg") || extension.equals("png") || extension.equalsIgnoreCase("jpeg")) {
+                    studyMaterialHolder.imgpdf.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                } else {
+                    studyMaterialHolder.imgpdf.setImageResource(R.drawable.ic_noun_file_);
+                }
             }
 
         }
         studyMaterialHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                progressBar.setMax(100);
-                animation(0, 50, 10000);
+                studyMaterialHolder.progressBar.setVisibility(View.VISIBLE);
+                studyMaterialHolder.progressBar.setMax(100);
+                // progressBar=studyMaterialHolder.progressBar;
+                animation(0, 50, 10000, studyMaterialHolder.progressBar);
                 try {
                     if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
-                        downloadstudymaterial(title, section, subject, studyMaterialHolder.imgpdf, "pdf");
+                        downloadstudymaterial(title, section, subject, studyMaterialHolder.imgpdf, "pdf", studyMaterialHolder.progressBar);
                     } else {
-                        downloadstudymaterial(title, section, subject, studyMaterialHolder.imgpdf, extension);
+                        downloadstudymaterial(title, section, subject, studyMaterialHolder.imgpdf, extension, studyMaterialHolder.progressBar);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -151,6 +160,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         TextView textView3;
         CardView cardView;
         ImageView imgpdf;
+        ProgressBar progressBar;
 
         public StudyMaterialHolder(@NonNull View itemView) {
             super(itemView);
@@ -160,11 +170,12 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             textView3 = (TextView) itemView.findViewById(R.id.sdate);
             cardView = (CardView) itemView.findViewById(R.id.cards);
             imgpdf = (ImageView) itemView.findViewById(R.id.imgpdf);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pres);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void downloadstudymaterial(String title, String section, String subject, ImageView imgpdf, String extension) throws IOException {
+    public void downloadstudymaterial(String title, String section, String subject, ImageView imgpdf, String extension, ProgressBar progressBar) throws IOException {
         String path = "StudyMaterials/" + subject;
         String name;
         if (extension.equals("pdf")) {
@@ -297,7 +308,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         }
     }
 
-    public void animation(int a, int b, int time) {
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
         animation.setDuration(time);
         animation.setInterpolator(new DecelerateInterpolator());
@@ -310,15 +321,15 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             public void onAnimationEnd(Animator animator) {
                 //do something when the countdown is complete
                 if (b == 50) {
-                    animation(50, 75, 20000);
+                    animation(50, 75, 20000, progressBar);
                 } else if (b == 75) {
-                    animation(75, 88, 40000);
+                    animation(75, 88, 40000, progressBar);
                 } else if (b == 88) {
-                    animation(88, 94, 80000);
+                    animation(88, 94, 80000, progressBar);
                 } else if (b == 94) {
-                    animation(94, 97, 160000);
+                    animation(94, 97, 160000, progressBar);
                 } else if (b == 97) {
-                    animation(97, 99, 320000);
+                    animation(97, 99, 320000, progressBar);
                 }
             }
 

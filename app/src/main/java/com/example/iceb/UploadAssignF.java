@@ -1,5 +1,7 @@
 package com.example.iceb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -116,10 +119,10 @@ public class UploadAssignF extends Fragment {
                 e.printStackTrace();
             }
             if(System.currentTimeMillis()<=strDate.getTime()){
-                submit.setVisibility(View.GONE);
+               // submit.setVisibility(View.GONE);
             }else{
-                submit.setText("Missing!");
-                submit.setTextColor(Color.RED);
+               /* submit.setText("Missing!");
+                submit.setTextColor(Color.RED);*/
             }
 
         }
@@ -164,6 +167,7 @@ public class UploadAssignF extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     progressBar.setVisibility(View.VISIBLE);
+                                    animation(0,50,10000,progressBar);
                                     send();
                                 }
                             })
@@ -248,6 +252,7 @@ public class UploadAssignF extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     progressBar.setVisibility(View.VISIBLE);
+                                    animation(0,50,10000,progressBar);
                                     unsubmit();
                                 }
                             })
@@ -431,6 +436,42 @@ public class UploadAssignF extends Fragment {
 
             }
         });
+    }
+
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
+        animation.setDuration(time);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //do something when the countdown is complete
+                if (b == 50) {
+                    animation(50, 75, 20000, progressBar);
+                } else if (b == 75) {
+                    animation(75, 88, 40000, progressBar);
+                } else if (b == 88) {
+                    animation(88, 94, 80000, progressBar);
+                } else if (b == 94) {
+                    animation(94, 97, 160000, progressBar);
+                } else if (b == 97) {
+                    animation(97, 99, 320000, progressBar);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+        animation.start();
     }
 
 }
