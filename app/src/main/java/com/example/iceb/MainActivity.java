@@ -1,32 +1,20 @@
 package com.example.iceb;
 
-import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Calendar;
 
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
@@ -43,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         //ImageButton btn=(ImageButton)findViewById(R.id.imageButton);
         TextView textView=(TextView)findViewById(R.id.textView);
@@ -58,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             // assert notificationManager1 != null;
             notificationManager1.createNotificationChannel(channel1);
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+       /* FirebaseMessaging.getInstance().subscribeToTopic("weather")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -70,9 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+        FirebaseMessaging.getInstance().subscribeToTopic("test").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });*/
         final SharedPreferences myuser=this.getSharedPreferences("Myapp2", Context.MODE_PRIVATE);
         first=myuser.getInt("first",0);
-
 
 
 

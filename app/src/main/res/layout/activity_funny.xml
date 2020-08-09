@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Funny"
-    android:background="@drawable/chill2">
+    android:background="#e2e2e2">
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/nittl"
+        android:src="@drawable/nittl1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:id="@+id/logo"/>
@@ -23,8 +23,10 @@
 android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="260dp"
-        android:background="@drawable/roundedcorner"
-        android:text="Sign Up" />
+        android:background="@drawable/roundtest"
+        android:text="Sign Up"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"/>
     <Button
         android:id="@+id/buttonl"
         android:layout_width="300dp"
@@ -39,7 +41,9 @@ android:layout_alignTop="@id/button2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
 
-        android:background="@drawable/roundedcorner"
+        android:background="@drawable/roundtest"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         android:text="LOGIN"
         tools:layout_alignParentBottom="false"
         android:onClick="hooray"/>

@@ -11,16 +11,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.text.IDNA;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -41,38 +41,46 @@ public class Information extends AppCompatActivity {
     String pdgot;
     public static String name;
     public static int del;
-   // public static byte[] nii;
+    // public static byte[] nii;
     public static int flag;
-    public static int flag2=1;
+    public static int flag2 = 1;
     ProgressBar progressBar;
+    TextView logintext;
+    TextView passtext;
+    Button webmail;
 
-int x;
-public static int t=0;
-FirebaseAuth mFirebaseAuth;
-private FirebaseAuth.AuthStateListener mAuthStateListener;
+    int x;
+    public static int t = 0;
+    FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main2);
-        TextView t1=(TextView)findViewById(R.id.textView4);
-        TextView t2=(TextView)findViewById(R.id.textView3);
-        mFirebaseAuth=FirebaseAuth.getInstance();
+        TextView t1 = (TextView) findViewById(R.id.textView4);
+        TextView t2 = (TextView) findViewById(R.id.textView3);
+        Button login = (Button) findViewById(R.id.button);
+        logintext = (TextView) findViewById(R.id.textView2);
+        passtext = (TextView) findViewById(R.id.ffg);
+        webmail = (Button) findViewById(R.id.webmail);
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        progressBar=(ProgressBar)findViewById(R.id.logi);
-       final SharedPreferences myuser=this.getSharedPreferences("Myapp", Context.MODE_PRIVATE);
-        x=myuser.getInt("sign",0);
+        progressBar = (ProgressBar) findViewById(R.id.logi);
+        final SharedPreferences myuser = this.getSharedPreferences("Myapp", Context.MODE_PRIVATE);
+        x = myuser.getInt("sign", 0);
 
-        if(x==1&&t!=10)
-        {
+        if (x == 1 && t != 10) {
             t1.setVisibility(View.VISIBLE);
             t2.setVisibility(View.VISIBLE);
 
         }
-        if(t==10)
-        {
-            x=0;
-            SharedPreferences.Editor editor=myuser.edit();
-            editor.putInt("sign",x);
+        if (t == 10) {
+            x = 0;
+            SharedPreferences.Editor editor = myuser.edit();
+            editor.putInt("sign", x);
             editor.commit();
         }
 
@@ -81,13 +89,13 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
             @Override
             public void onClick(View v) {
 
-                x=1;
-                t=0;
-                SharedPreferences.Editor editor=myuser.edit();
-                editor.putInt("sign",x);
+                x = 1;
+                t = 0;
+                SharedPreferences.Editor editor = myuser.edit();
+                editor.putInt("sign", x);
                 editor.commit();
 
-                Intent intent=new Intent(Information.this,InformActivity.class);
+                Intent intent = new Intent(Information.this, InformActivity.class);
                 startActivity(intent);
 
             }
@@ -95,85 +103,104 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
         // myuser = this.getSharedPreferences("Myapp", Context.MODE_PRIVATE);
         //SharedPreferences myuser = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //final SharedPreferences myuser=this.getSharedPreferences("Myapp", Context.MODE_PRIVATE);
-        final CheckBox checkBox=(CheckBox)findViewById(R.id.checkBox);
-        if(checkBox.isChecked()) {
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
+        if (checkBox.isChecked()) {
 
-            SharedPreferences.Editor editor=myuser.edit();
-            editor.putInt("flag",flag2);
+            SharedPreferences.Editor editor = myuser.edit();
+            editor.putInt("flag", flag2);
             editor.commit();
-            flag2=1;
+            flag2 = 1;
 
 
-            flag=myuser.getInt("flag",0);
+            flag = myuser.getInt("flag", 0);
 
 
             rngot = myuser.getString("username", "");
             pdgot = myuser.getString("password", "");
-            EditText roll_no=(EditText)findViewById(R.id.editText);
-            EditText pass=(EditText)findViewById(R.id.editText3);
+            EditText roll_no = (EditText) findViewById(R.id.editText);
+            EditText pass = (EditText) findViewById(R.id.editText3);
             roll_no.setText(rngot);
             pass.setText(pdgot);
 
-            if(!(rngot.equals(""))&&flag==1)
-            {
-                 roll_no=(EditText)findViewById(R.id.editText);
-                pass=(EditText)findViewById(R.id.editText3);
-                String rn=roll_no.getText().toString();
-                String pwd=pass.getText().toString();
+            if (!(rngot.equals("")) && flag == 1) {
+                roll_no = (EditText) findViewById(R.id.editText);
+                pass = (EditText) findViewById(R.id.editText3);
+                String rn = roll_no.getText().toString();
+                String pwd = pass.getText().toString();
 
-                if(!(rn.isEmpty()||pwd.isEmpty())){
-                    if(isNetworkConnected()){
+                if (!(rn.isEmpty() || pwd.isEmpty())) {
+                    if (isNetworkConnected()) {
                         progressBar.setVisibility(View.VISIBLE);
+                        roll_no.setVisibility(View.GONE);
+                        pass.setVisibility(View.GONE);
+                        t1.setVisibility(View.GONE);
+                        t2.setVisibility(View.GONE);
+                        checkBox.setVisibility(View.GONE);
+                        login.setVisibility(View.GONE);
+                        logintext.setVisibility(View.GONE);
+                        passtext.setVisibility(View.GONE);
+                        webmail.setVisibility(View.GONE);
 
 
-                    mFirebaseAuth.signInWithEmailAndPassword(rn,pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        EditText finalRoll_no = roll_no;
+                        EditText finalPass = pass;
+                        mFirebaseAuth.signInWithEmailAndPassword(rn, pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(!(task.isSuccessful())){
-                                progressBar.setVisibility(View.INVISIBLE);
-                                Toast toast = Toast.makeText(Information.this, "Error Occurred,Please Login Again!! ", Toast.LENGTH_LONG);
-                                toast.show();
-                            }else{
-                                progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent=new Intent(Information.this,Login_screen.class);
-                                intent.putExtra("roll",rn);
-                                startActivity(intent);
+                                if (!(task.isSuccessful())) {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
+                                    finalRoll_no.setVisibility(View.VISIBLE);
+                                    finalPass.setVisibility(View.VISIBLE);
+                                    t1.setVisibility(View.VISIBLE);
+                                    t2.setVisibility(View.VISIBLE);
+                                    checkBox.setVisibility(View.VISIBLE);
+                                    login.setVisibility(View.VISIBLE);
+                                    logintext.setVisibility(View.VISIBLE);
+                                    passtext.setVisibility(View.VISIBLE);
+                                    webmail.setVisibility(View.VISIBLE);
+                                    toast.show();
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Intent intent = new Intent(Information.this, Testingg.class);
+                                    intent.putExtra("roll", rn);
+                                    startActivity(intent);
 
-                                //finish();
+                                    finish();
+                                }
                             }
-                        }
-                    });}else{
+                        });
+                    } else {
                         progressBar.setVisibility(View.INVISIBLE);
-                    Toast toast = Toast.makeText(Information.this, "No Internet Connection ", Toast.LENGTH_LONG);
-                    toast.show();
-                }}
-
+                        Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
 
 
                 SQLiteOpenHelper dtb = new StudentDTB(Information.this);
 
-                try
-                {
-                    SQLiteDatabase db=dtb.getReadableDatabase();
-                    Cursor cursor = db.query ("USERS",
-                            new String[] {"_id","ROLL_NO", "PASSWORD","NAME"},
+                try {
+                    SQLiteDatabase db = dtb.getReadableDatabase();
+                    Cursor cursor = db.query("USERS",
+                            new String[]{"_id", "ROLL_NO", "PASSWORD", "NAME"},
                             "ROLL_NO = ?",
-                            new String[] {rn},
-                            null, null,null);
+                            new String[]{rn},
+                            null, null, null);
 
-                    if(cursor.moveToFirst()) {
-                        del=cursor.getInt(0);
+                    if (cursor.moveToFirst()) {
+                        del = cursor.getInt(0);
                         rngot = cursor.getString(1);
                         pdgot = cursor.getString(2);
-                        name=cursor.getString(3);
+                        name = cursor.getString(3);
                         //nii=cursor.getBlob(4);
-                        flag=1;
-                        flag2=1;
+                        flag = 1;
+                        flag2 = 1;
                         if (rngot.equals(rn) && pdgot.equals(pwd)) {
 
 
-                            if(checkBox.isChecked()) {
+                            if (checkBox.isChecked()) {
 
                                 /* editor = myuser.edit();
                                 editor.putString("username", rngot);
@@ -181,8 +208,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                                 editor.putInt("flag",flag);
                                 editor.commit();
                                 System.out.println("success");*/
-                            }else
-                            {
+                            } else {
                                /* editor=myuser.edit();
                                 editor.putString("username","");
                                 editor.putString("password","");
@@ -197,8 +223,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                             toast.show();
                             System.out.println("failure");*/
                         }
-                    }else
-                    {
+                    } else {
 
                        /*  db=dtb.getReadableDatabase();
                         Cursor newCursor=db.query ("USERS",
@@ -216,8 +241,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                     db.close();
 
 
-
-                }catch(SQLiteException e) {
+                } catch (SQLiteException e) {
                     Toast toast = Toast.makeText(Information.this, "Invalid Username or Password", Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -227,100 +251,99 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
         }
 
 
-
-
-
-
-
-        Button login=(Button)findViewById(R.id.button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText roll_no=(EditText)findViewById(R.id.editText);
-                EditText pass=(EditText)findViewById(R.id.editText3);
+                EditText roll_no = (EditText) findViewById(R.id.editText);
+                EditText pass = (EditText) findViewById(R.id.editText3);
 
 
-                String rn=roll_no.getText().toString();
-                String pwd=pass.getText().toString();
+                String rn = roll_no.getText().toString();
+                String pwd = pass.getText().toString();
 
-                if(!(rn.isEmpty()||pwd.isEmpty()&&isNetworkConnected())){
+                if (!((rn.isEmpty() || pwd.isEmpty()) && isNetworkConnected())) {
                     progressBar.setVisibility(View.VISIBLE);
 
-                mFirebaseAuth.signInWithEmailAndPassword(rn,pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!(task.isSuccessful())){
-                            progressBar.setVisibility(View.INVISIBLE);
-                            Toast toast = Toast.makeText(Information.this, "Error Occurred,Please Login Again!! ", Toast.LENGTH_LONG);
-                            toast.show();
-                        }else{
-
-                            if(mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                    mFirebaseAuth.signInWithEmailAndPassword(rn, pwd).addOnCompleteListener(Information.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!(task.isSuccessful())) {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Intent intent = new Intent(Information.this, Login_screen.class);
-                                intent.putExtra("roll", rn);
-                                flag=1;
-                                if(checkBox.isChecked()) {
-
-                                    SharedPreferences.Editor editor = myuser.edit();
-                                    editor.putString("username", rn);
-                                    editor.putString("password", pwd);
-                                    editor.putInt("flag",flag);
-                                    editor.commit();
-                                    System.out.println("success");
-                                }else{
-                                    SharedPreferences.Editor editor=myuser.edit();
-                                    editor=myuser.edit();
-                                    editor.putString("username","");
-                                    editor.putString("password","");
-                                    editor.putInt("flag",0);
-                                    editor.commit();
+                                String k = "";
+                                if (isNetworkConnected()) {
+                                    k = "Invalid Login Id or Password";
+                                } else {
+                                    k = "Error! No Internet Access!";
                                 }
-                                startActivity(intent);
-                                finish();
-
-                            }else {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                mFirebaseAuth.getInstance().signOut();
-                                Toast toast = Toast.makeText(Information.this, "E-mail not verified ", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(Information.this, k, Toast.LENGTH_LONG);
                                 toast.show();
-                            }
+                            } else {
 
-                            //finish();
+                                if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    Intent intent = new Intent(Information.this, Testingg.class);
+                                    intent.putExtra("roll", rn);
+                                    flag = 1;
+                                    if (checkBox.isChecked()) {
+
+                                        SharedPreferences.Editor editor = myuser.edit();
+                                        editor.putString("username", rn);
+                                        editor.putString("password", pwd);
+                                        editor.putInt("flag", flag);
+                                        editor.commit();
+                                        System.out.println("success");
+                                    } else {
+                                        SharedPreferences.Editor editor = myuser.edit();
+                                        editor = myuser.edit();
+                                        editor.putString("username", "");
+                                        editor.putString("password", "");
+                                        editor.putInt("flag", 0);
+                                        editor.commit();
+                                    }
+                                    startActivity(intent);
+                                    finish();
+
+                                } else {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    mFirebaseAuth.getInstance().signOut();
+                                    Toast toast = Toast.makeText(Information.this, "E-mail not verified ", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+
+                                //finish();
+                            }
                         }
-                    }
-                });}else{
-                    if(!isNetworkConnected()){
-                        Toast toast = Toast.makeText(Information.this, "No Internet Connection ", Toast.LENGTH_LONG);
+                    });
+                } else {
+                    if (!isNetworkConnected()) {
+                        Toast toast = Toast.makeText(Information.this, "Error! No Internet Access!", Toast.LENGTH_LONG);
                         toast.show();
-                    }else{
+                    } else {
                         Toast toast = Toast.makeText(Information.this, "Invalid Username or Password", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }
 
 
-
                 SQLiteOpenHelper dtb = new StudentDTB(Information.this);
 
-                try
-                {
-                    SQLiteDatabase db=dtb.getReadableDatabase();
-                     Cursor cursor = db.query ("USERS",
-                            new String[] {"_id","ROLL_NO", "PASSWORD","NAME"},
+                try {
+                    SQLiteDatabase db = dtb.getReadableDatabase();
+                    Cursor cursor = db.query("USERS",
+                            new String[]{"_id", "ROLL_NO", "PASSWORD", "NAME"},
                             "ROLL_NO = ?",
-                            new String[] {rn},
-                            null, null,null);
+                            new String[]{rn},
+                            null, null, null);
 
-                    if(cursor.moveToFirst()) {
+                    if (cursor.moveToFirst()) {
                         rngot = cursor.getString(1);
                         pdgot = cursor.getString(2);
-                        name=cursor.getString(3);
+                        name = cursor.getString(3);
                         //nii=cursor.getBlob(4);
-                      //  flag=1;
+                        //  flag=1;
                         if (rngot.equals(rn) && pdgot.equals(pwd)) {
 
-                            if(checkBox.isChecked()) {
+                            if (checkBox.isChecked()) {
 
                                /* SharedPreferences.Editor editor = myuser.edit();
                                 editor.putString("username", rngot);
@@ -328,8 +351,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                                 editor.putInt("flag",flag);
                                 editor.commit();
                                 System.out.println("success");*/
-                            }else
-                            {
+                            } else {
                                /* SharedPreferences.Editor editor=myuser.edit();
                                 editor.putString("username","");
                                 editor.putString("password","");
@@ -344,8 +366,7 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
                             toast.show();*/
                             System.out.println("failure");
                         }
-                    }else
-                    {
+                    } else {
 
                        /*  db=dtb.getReadableDatabase();
                         Cursor newCursor=db.query ("USERS",
@@ -357,104 +378,94 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
                     }
-
-
                     cursor.close();
                     db.close();
-
-
-
-                }catch(SQLiteException e) {
+                } catch (SQLiteException e) {
                     Toast toast = Toast.makeText(Information.this, "Invalid Username or Password", Toast.LENGTH_LONG);
                     toast.show();
                 }
-
-
             }
 
         });
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void motivate()
-    {
+    public void motivate() {
         AlarmManager alarmManager1 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent notificationIntent1 = new Intent(this, AlarmReceiver.class);
         PendingIntent broadcast = PendingIntent.getBroadcast(this, 200, notificationIntent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY,7);
-        cal.set(Calendar.MINUTE,0);
-        cal.set(Calendar.SECOND,0);
+        cal.set(Calendar.HOUR_OF_DAY, 7);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
 
 
         //assert alarmManager1 != null;
-        alarmManager1.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY, broadcast);
+        alarmManager1.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
     }
-    public void createNotificationChannel()
-    {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            CharSequence name="Attendance";
-            String description="Channel for Attendance";
-            int importance= NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel notificationChannel=new NotificationChannel("test",name,importance);
+
+    public void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Attendance";
+            String description = "Channel for Attendance";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel notificationChannel = new NotificationChannel("test", name, importance);
             notificationChannel.setDescription(description);
 
-            NotificationManager notificationManager =getSystemService(NotificationManager.class);
-           // assert notificationManager != null;
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            // assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
-    public void notification()
-    {
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,21);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
-        Intent intent=new Intent(getApplicationContext(),Notification_receiver.class);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
-       // assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+    public void notification() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Intent intent = new Intent(getApplicationContext(), Notification_receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        // assert alarmManager != null;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
+
     @Override
     public void onPause() {
 
         super.onPause();
 
     }
+
     @Override
     public void onStop() {
 
         super.onStop();
-        finish();
+      //  finish();
 
     }
 
 
     public void fffgg(View view) {
 
-        Intent intent=new Intent(Information.this,Forgetpass.class);
+        Intent intent = new Intent(Information.this, Forgetpass.class);
         startActivity(intent);
 
     }
+
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public void webmail(View view){
-        Intent intent=new Intent(Information.this,Webmail.class);
+    public void webmail(View view) {
+        Intent intent = new Intent(Information.this, WebmailReplace.class);
         startActivity(intent);
     }
 
 
-
-
-
-
-
-    }
+}
 

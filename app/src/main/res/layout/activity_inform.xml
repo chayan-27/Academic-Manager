@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ret"
+    android:background="#e2e2e2"
     tools:context=".InformActivity">
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
     android:id="@+id/ScrollView01"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars="none" >
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -28,51 +26,43 @@
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
-        android:background="@android:color/black"
+        android:layout_marginTop="45dp"
+
         android:gravity="center"
         android:text="SIGN UP"
+
         android:textAlignment="center"
-        android:textColor="#FBF7F6"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textColor="#1e4072"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/black_ops_one" />
 
     <EditText
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignTop="@id/imageView"
+        android:layout_alignTop="@id/textView5"
         android:layout_marginTop="120dp"
-        android:background="#FFFFFF"
+
         android:ems="17"
+        android:background="@drawable/progress_round_test"
         android:inputType="textPersonName"
-        android:hint="FirstName*"
+        android:hint="First Name"
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
     <EditText
         android:id="@+id/editText9"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignTop="@id/editText10"
-        android:layout_marginTop="50dp"
-        android:background="#FFFFFF"
-        android:ems="17"
-        android:inputType="textPersonName"
-        android:hint="LastName*"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"/>
-    <EditText
-        android:id="@+id/editText10"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
         android:layout_alignTop="@id/editText2"
         android:layout_marginTop="50dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/progress_round_test"
         android:ems="17"
         android:inputType="textPersonName"
-        android:hint="MiddleName(optional)"
+        android:hint="Last Name"
         android:layout_centerHorizontal="true"
         android:gravity="center"/>
+
 
     <EditText
         android:id="@+id/editText5"
@@ -80,11 +70,11 @@
         android:layout_height="40dp"
         android:ems="17"
         android:inputType="textEmailAddress"
-        android:background="#FFFFFF"
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText9"
         android:layout_marginTop="50dp"
-        android:hint="Webmail id.*"
+        android:hint="Roll no"
         android:gravity="center"
         android:textAlignment="center"
 
@@ -96,36 +86,31 @@
         android:layout_height="40dp"
         android:ems="17"
 
-        android:background="#FFFFFF"
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText5"
         android:layout_marginTop="50dp"
-        android:hint="Password*"
+        android:hint="Set Password"
         android:textAlignment="center"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:gravity="center" />
 
     <EditText
         android:id="@+id/editText7"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:ems="17"
-        android:background="#FFFFFF"
+
+        android:background="@drawable/progress_round_test"
         android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/editText6"
         android:layout_marginTop="50dp"
-        android:hint="Confirm Password*"
+        android:hint="Confirm Password"
         android:textAlignment="center"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:gravity="center" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignTop="@id/textView5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/nii"
-        android:visibility="invisible"/>
+
 
     <Button
         android:id="@+id/button2"
@@ -134,15 +119,18 @@
         android:layout_alignTop="@id/editText7"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:background="@drawable/roundedcorner"
-        android:text="Sign Up" />
+        android:background="@drawable/roundtest"
+        android:text="Sign Up"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/situ"
-        android:visibility="invisible"/>
+        android:indeterminateDrawable="@drawable/proglog"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

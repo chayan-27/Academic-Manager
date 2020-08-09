@@ -1,159 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bk">
-<ScrollView
-    android:id="@+id/ScrollView01"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none" >
+    android:background="#e2e2e2">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+
+                android:layout_alignParentTop="true"
+
+                android:layout_centerInParent="true"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                android:text="LOGIN"
+                android:textAlignment="center"
+                android:textColor="#1e4072"
+                android:textSize="45sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/black_ops_one" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@id/textView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-70dp"
+                android:background="@drawable/progress_round_test"
+                android:drawableLeft="@android:drawable/ic_input_get"
+                android:drawableTint="#1e4072"
+                android:drawablePadding="2dp"
+
+                android:ems="10"
+
+                android:hint="Roll_no@nitt.edu"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="#8E8E8E" />
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@id/textView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="-130dp"
+
+                android:background="@drawable/progress_round_test"
+                android:drawableLeft="@android:drawable/ic_lock_lock"
+
+                android:drawableTint="#1e4072"
+                android:drawablePadding="2dp"
+                android:ems="10"
+
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="#8E8E8E" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/editText3"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="45dp"
+                android:checked="true"
+                android:text="Remember Me"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:layout_alignTop="@id/checkBox"
+                android:layout_alignParentBottom="false"
+
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/roundtest"
+                android:onClick="hooray"
+                android:text="LOGIN"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                tools:layout_alignParentBottom="false" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/button"
+                android:layout_marginTop="120dp"
+                android:gravity="center_horizontal"
+                android:text="New User?"
+
+                android:textAlignment="center"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/textView3"
+                android:layout_centerHorizontal="true"
+
+
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text="SignUp"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ffg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:gravity="center_horizontal"
+                android:onClick="fffgg"
+                android:text="Forgot Password?"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/webmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/textView4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/roundtest"
+                android:gravity="center"
+                android:onClick="webmail"
+                android:text="WEBMAIL"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+
+
+                />
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
 
     <ProgressBar
+        android:id="@+id/logi"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/logi"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-
-        android:layout_marginTop="100dp"
-        android:gravity="center"
-        android:text="Enter Your Details"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="35sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@id/textView2"
-        android:layout_centerHorizontal="true"
-
-        android:layout_marginBottom="-70dp"
-
-        android:background="@drawable/progress_round"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Webmail id"
-        android:inputType="textEmailAddress"
-        android:textColor="@android:color/black"
-        android:textColorHint="#8E8E8E"
-         />
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@id/textView2"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-
-        android:layout_marginBottom="-115dp"
-
-        android:background="@drawable/progress_round"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColor="@android:color/black"
-        android:textColorHint="#8E8E8E" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/editText3"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="45dp"
-        android:checked="true"
-        android:text="Remember Me"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-
-        android:layout_alignTop="@id/checkBox"
-        android:layout_alignParentBottom="false"
-
-
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/roundedcorner"
-        android:text="LOGIN"
-        tools:layout_alignParentBottom="false"
-        android:onClick="hooray"/>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New User?"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:layout_alignTop="@id/button"
-        android:layout_marginTop="120dp"/>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/textView3"
-        android:layout_marginTop="20dp"
-        android:text="SignUp"
-        android:textAlignment="center"
-        android:textColor="#07D9F4"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/ffg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/button"
-        android:layout_marginTop="100dp"
-        android:onClick="fffgg"
-        android:text="Forgot Password?"
-        android:textAlignment="center"
-        android:textColor="#07D9F4"
-        android:textStyle="bold" />
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-
-        android:layout_alignTop="@id/textView4"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/roundedcorner"
-        android:gravity="center"
-        android:onClick="webmail"
-        android:text="WEBMAIL"
-        android:layout_centerHorizontal="true"
-
-
-        />
-
-
-</RelativeLayout>
-
-</ScrollView>
+        android:indeterminateDrawable="@drawable/proglog"
+        android:visibility="gone" />
 </RelativeLayout>

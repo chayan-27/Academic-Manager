@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:image_view="http://schemas.android.com/tools"
+    android:id="@+id/cards"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+
+
+    card_view:cardBackgroundColor="#FFFFFF"
+    card_view:cardCornerRadius="30dp"
+
+
+    >
+
+    <LinearLayout
+        android:id="@+id/linee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgpdf"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:src="@drawable/pdfic" />
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:text="Subject"
+
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:text="Title"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/sdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="2dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="time"
+            android:textColor="#F44336"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/udate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:text="date"
+            android:textAlignment="center"
+            android:textColor="#F44336"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+
+            android:gravity="center_horizontal" />
+
+
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

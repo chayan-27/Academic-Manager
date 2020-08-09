@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="#e2e2e2"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+
+    card_view:cardCornerRadius="20dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e2e2e2"
+        android:orientation="vertical"
+
+        android:paddingBottom="8dp">
+
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+
+                android:background="@drawable/progress_round"
+
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar">
+            </ProgressBar>
+            <TextView
+                android:id="@+id/pericir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+
+                android:gravity="center"
+                android:text="0%"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="46dp"
+
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/roundcorner2"
+
+                android:foreground="?android:attr/selectableItemBackground"
+
+                android:tint="#FFFFFF"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <ImageButton
+                android:id="@+id/iciu"
+                android:layout_width="46dp"
+
+                android:layout_height="43dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/roundcorner2"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tint="#FFFFFF"
+
+                app:srcCompat="@android:drawable/ic_menu_revert" />
+
+            <ImageButton
+                android:id="@+id/icr"
+                android:layout_width="46dp"
+                android:layout_height="43dp"
+                android:background="@drawable/rouncorner3"
+                android:foreground="?android:attr/selectableItemBackground"
+
+                android:tint="#FFFFFF"
+                app:srcCompat="@android:drawable/ic_notification_clear_all" />
+
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="46dp"
+                android:layout_height="43dp"
+
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rouncorner3"
+
+
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tint="#FFFFFF"
+                app:srcCompat="@android:drawable/button_onoff_indicator_off" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/icir3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="ICIR"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/present"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="DAYS PRESENT: 0"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/absent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="DAYS ABSENT: 0"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/icirreq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+
+            android:layout_marginTop="8dp"
+            android:text="Classes required to reach 75%: 0"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/icirmis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+
+            android:layout_marginTop="4dp"
+            android:text="Classes that can be missed: 0"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/statistics"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/roundtest"
+            android:text="statistics"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-326dp"
+            android:text="0%"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

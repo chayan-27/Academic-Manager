@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
         <item>@font/almendra_sc</item>
         <item>@font/aref_ruqaa</item>
         <item>@font/armata</item>
+        <item>@font/atomic_age</item>
+        <item>@font/black_ops_one</item>
+        <item>@font/gafata</item>
+        <item>@font/margarine</item>
         <item>@font/pacifico</item>
     </array>
 </resources>

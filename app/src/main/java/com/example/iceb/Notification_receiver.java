@@ -1,17 +1,15 @@
 package com.example.iceb;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
 
-import static android.support.v4.content.ContextCompat.getSystemService;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class Notification_receiver extends BroadcastReceiver {
     @Override
@@ -22,7 +20,7 @@ public class Notification_receiver extends BroadcastReceiver {
        PendingIntent pendingIntent=PendingIntent.getActivity(context,100,repeating_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"test")
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.iceb)
+                .setSmallIcon(R.mipmap.ice)
                 .setContentTitle("Check you progress!!!")
                 .setContentText("Don't forget to update your Attendance")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
