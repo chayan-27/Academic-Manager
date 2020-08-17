@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/coursef"
+    android:background="#e2e2e2"
+    tools:context=".Coursef">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        />
+    <ProgressBar
+        android:id="@+id/pres"
+        android:indeterminateOnly="false"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+
+        android:layout_gravity="center"
+
+        android:indeterminate="false"
+
+        android:visibility="gone"
+
+
+
+
+        android:progressDrawable="@drawable/proglog3"/>
+
+</FrameLayout>
