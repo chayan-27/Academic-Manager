@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Spannable;
@@ -71,6 +72,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     ProgressBar progressBar;
     int roll;
     String uu;
+
 
 
     public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar) {
@@ -170,7 +172,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
         if (body.substring(body.lastIndexOf(" ") + 1).equals("Uploaded!")) {
             courseHolder.pdf.setVisibility(View.VISIBLE);
-            imageview(courseHolder.pdf,body);
+            new TestBack(courseHolder.pdf,body).execute();
+          //  imageview(courseHolder.pdf,body);
             courseHolder.cardView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -706,6 +709,74 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                     } else {
                         imageView.setImageResource(R.drawable.ic_noun_file_);
                     }
+                }
+            }
+        }
+    }
+
+    public class TestBack extends AsyncTask<Void,Void,String>{
+
+        ImageView imageView;
+        String body;
+
+        public TestBack(ImageView imageView, String body) {
+            this.imageView = imageView;
+            this.body = body;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String[] by = body.split("\n\n");
+
+            // String subject = body.substring(0, body.indexOf("\n"));
+            //String title = body.substring(body.indexOf("\n\n") + 2, body.lastIndexOf(" "));
+            String subject = by[0];
+            String h = by[1];
+            //System.out.println("//////////" + subject + h);
+            String title = h.substring(0, h.lastIndexOf(" "));
+
+            if (title.equals("CoursePlan")) {
+                return "pdf";
+            } else {
+                String[] assign = title.split(" ");
+                if (assign[0].equals("New")) {
+
+                    if (assign.length == 3) {
+                       return "pdf";
+                    } else {
+                        return "pdf";
+
+                    }
+
+
+                } else {
+                    String extension = title.substring(title.lastIndexOf(".") + 1);
+                    if (extension.equals("") || extension.equals(title)) {
+                       return "pdf";
+                    }else{
+                       return extension;
+                    }
+                }
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s.equals("pdf")){
+                imageView.setImageResource(R.drawable.pdfic);
+            }else{
+                if (s.equals("pptx") || s.equals("ppt")) {
+                    imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                } else if (s.equals("doc")) {
+                    imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
+                } else if (s.equals("jpg") || s.equals("png") || s.equalsIgnoreCase("jpeg")) {
+                    imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                }else if(s.equals("pdf")){
+                    imageView.setImageResource(R.drawable.pdfic);
+                } else {
+                    imageView.setImageResource(R.drawable.ic_noun_file_);
                 }
             }
         }

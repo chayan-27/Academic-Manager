@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.ParcelFileDescriptor;
@@ -89,8 +90,10 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         String name = "/" + title + ".pdf";
         final boolean[] check = {false};
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
+        new TestBack(studyMaterialHolder.imgpdf, components.get(i).getTitle().substring(components.get(i).getTitle().lastIndexOf(".") + 1),title).execute(file);
 
-        if (file.exists()) {
+
+       /* if (file.exists()) {
             check[0] = true;
             ParcelFileDescriptor parcelFileDescriptor = null;
             try {
@@ -109,8 +112,8 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
             studyMaterialHolder.imgpdf.setImageBitmap(bitmap);
 
-           /* AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
+           *//* AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*//*
 
         } else {
             if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
@@ -127,7 +130,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
                 }
             }
 
-        }
+        }*/
         studyMaterialHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,5 +345,106 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             }
         });
         animation.start();
+    }
+
+    public class TestBack extends AsyncTask<File,Void,String>{
+
+
+        ImageView imageView;
+        String extension;
+        String title;
+        Bitmap bitmap1;
+
+        public TestBack(ImageView imageView,String extension,String title) {
+            this.imageView= imageView;
+            this.extension=extension;
+            this.title=title;
+        }
+
+        /**
+         * Override this method to perform a computation on a background thread. The
+         * specified parameters are the parameters passed to {@link #execute}
+         * by the caller of this task.
+         * <p>
+         * This will normally run on a background thread. But to better
+         * support testing frameworks, it is recommended that this also tolerates
+         * direct execution on the foreground thread, as part of the {@link #execute} call.
+         * <p>
+         * This method can call {@link #publishProgress} to publish updates
+         * on the UI thread.
+         *
+         * @param files The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        protected String doInBackground(File... files) {
+            if (files[0].exists()) {
+
+                ParcelFileDescriptor parcelFileDescriptor = null;
+                try {
+                    parcelFileDescriptor = ParcelFileDescriptor.open(files[0], ParcelFileDescriptor.MODE_READ_ONLY);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                PdfRenderer renderer = null;
+                try {
+                    renderer = new PdfRenderer(parcelFileDescriptor);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                 bitmap1 = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
+                PdfRenderer.Page page = renderer.openPage(0);
+                page.render(bitmap1, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                return "exists";
+
+           /* AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
+
+            } else {
+               return "no";
+
+            }
+
+        }
+
+        /**
+         * <p>Runs on the UI thread after {@link #doInBackground}. The
+         * specified result is the value returned by {@link #doInBackground}.
+         * To better support testing frameworks, it is recommended that this be
+         * written to tolerate direct execution as part of the execute() call.
+         * The default version does nothing.</p>
+         *
+         * <p>This method won't be invoked if the task was cancelled.</p>
+         *
+         * @param s The result of the operation computed by {@link #doInBackground}.
+         * @see #onPreExecute
+         * @see #doInBackground
+         *
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            if(s.equals("exists")){
+                imageView.setImageBitmap(bitmap1);
+
+            }else{
+                if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
+
+                } else {
+                    if (extension.equals("pptx") || extension.equals("ppt")) {
+                       imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                    } else if (extension.equals("doc")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
+                    } else if (extension.equals("jpg") || extension.equals("png") || extension.equalsIgnoreCase("jpeg")) {
+                        imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_noun_file_);
+                    }
+                }
+            }
+        }
     }
 }

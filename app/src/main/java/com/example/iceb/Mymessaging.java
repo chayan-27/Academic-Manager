@@ -32,11 +32,13 @@ public class Mymessaging extends FirebaseMessagingService {
     List<String> list = new ArrayList<>();
     String s;
     String ima;
+    DataBase dataBase;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        dataBase=DataBase.getInstance(getApplicationContext());
         Map<String, String> data = remoteMessage.getData();
         int c = 0;
         String title = data.get("title");
@@ -44,26 +46,26 @@ public class Mymessaging extends FirebaseMessagingService {
         ima = data.get("image");
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date());
-        sharedPreferences = getSharedPreferences("App_settings", MODE_PRIVATE);
+        /*sharedPreferences = getSharedPreferences("App_settings", MODE_PRIVATE);
         set = sharedPreferences.getStringSet("DATE_LIST", null);
         if (set != null) {
-
-
             list.addAll(set);
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        s = "*"+title+"*"+"\n\n"+body + "$" + currentDate + "$" + currentTime;
+        */s = "*"+title+"*"+"\n\n"+body + "$" + currentDate + "$" + currentTime;
 
-        if (set != null) {
+       /* if (set != null) {
             list.add(set.size() + " " + s);
         } else {
             list.add(0 + " " + s);
-        }
+        }*/
 
-        set = new TreeSet<String>();
+       /* set = new TreeSet<String>();
+       // set.clear();
         set.addAll(list);
         editor.putStringSet("DATE_LIST", set);
-        editor.apply();
+        editor.apply();*/
+        dataBase.getDao().insert(new LiveTest(15,s));
         // String url=remoteMessage.getNotification().getLink().toString();
         // if(url!=null) {
         shownotification(title, body);
