@@ -263,7 +263,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollHolder> {
         progressBar.setVisibility(View.VISIBLE);
 
 
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()
@@ -349,7 +350,8 @@ public class PollAdapter extends RecyclerView.Adapter<PollAdapter.PollHolder> {
 
     public void send(int pid, final List<String> list, final TextView textView){
         progressBar.setVisibility(View.VISIBLE);
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()

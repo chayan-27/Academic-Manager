@@ -161,7 +161,8 @@ public class PollF extends Fragment {
     }*/
 
     private void getPollList(){
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(base)
                 .addConverterFactory(GsonConverterFactory.create())

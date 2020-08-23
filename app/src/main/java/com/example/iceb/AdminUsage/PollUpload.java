@@ -216,7 +216,8 @@ public class PollUpload extends Fragment {
 
     public void send(String[] options, String title, String deadline) {
         progressBar.setVisibility(View.VISIBLE);
-       String base = "http://192.168.1.6:8000/";
+      String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()
@@ -245,6 +246,9 @@ public class PollUpload extends Fragment {
                 Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
                 notification("New Poll Launched", "Make sure to cast your vote without fail before " + timee + " " + subtime + "!\nYour decision is our destination");
+                FragmentTransaction tr = getFragmentManager().beginTransaction();
+                tr.replace(R.id.fragment_container, new PollUpload(section));
+                tr.commit();
 
 
 

@@ -116,7 +116,7 @@ public interface FetchInfo2 {
     Call<AdminAssignment> assignAssignment(@Part("subject_id") RequestBody subject_id, @Part("topic") RequestBody topic, @Part("upload_date") RequestBody upload_date, @Part("deadline") RequestBody deadline, @Part MultipartBody.Part file);
 
     @GET("api/load/classroom/subjects/assignassignment/submitassignment")
-    Call<List<AssignmentRe>> getResponsesofAssign(@Query("assignment_id") String assignment_id);
+    Call<List<AssignmentRe>> getResponsesofAssign(@Query("assigned_assignment_id") String assignment_id);
 
     @GET("api/load/classroom/poll")
     Call<List<AdminPollUP>> getPollforClassroom(@Query("classroom_id") String classroom_id);

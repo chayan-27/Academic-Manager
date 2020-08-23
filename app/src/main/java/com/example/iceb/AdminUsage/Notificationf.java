@@ -100,6 +100,7 @@ public class Notificationf extends Fragment {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Successfully sent", Toast.LENGTH_SHORT).show();
                                 Log.d("Sent_topic",topic);
+                                getActivity().onBackPressed();
 
 
                             }

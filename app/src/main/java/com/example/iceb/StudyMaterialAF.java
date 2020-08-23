@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,13 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.Studymf;
+import com.example.iceb.AdminUsage.Studymf2;
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Studymaterial;
 import com.example.iceb.server2.FetchInfo2;
 import com.example.iceb.server2.SubjectResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -40,15 +45,17 @@ public class StudyMaterialAF extends Fragment {
     ProgressBar progressBar;
     String subject_id;
     String courseplan;
+    boolean admin;
 
     @SuppressLint("ValidFragment")
-    public StudyMaterialAF(Integer semester, String subject, String section,String subject_id,String courseplan) {
+    public StudyMaterialAF(Integer semester, String subject, String section, String subject_id, String courseplan, boolean admin) {
         // Required empty public constructor
         this.section = section;
         this.semester = semester;
         this.subject = subject;
-        this.subject_id=subject_id;
-        this.courseplan=courseplan;
+        this.subject_id = subject_id;
+        this.courseplan = courseplan;
+        this.admin = admin;
     }
 
 
@@ -59,7 +66,7 @@ public class StudyMaterialAF extends Fragment {
         View view = inflater.inflate(R.layout.fragment_study_material_a, container, false);
         recyclerView = view.findViewById(R.id.recycle);
         progressBar = view.findViewById(R.id.pres);
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(linearLayoutManager);
         animation();
 
@@ -93,17 +100,34 @@ public class StudyMaterialAF extends Fragment {
             }
         });*/
 
+        if (admin) {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+
+                }
+            });
+        } else {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.GONE);
+        }
+
 
         return view;
     }
 
-    public void animation(){
+    public void animation() {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 180);
         animation.setDuration(20000);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) { }
+            public void onAnimationStart(Animator animator) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animator) {
@@ -111,24 +135,27 @@ public class StudyMaterialAF extends Fragment {
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) { }
+            public void onAnimationCancel(Animator animator) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animator) { }
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
         animation.start();
     }
 
-    public void materials(String subject_id){
-        String base = "http://192.168.1.6:8000/";
-       // String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
+    public void materials(String subject_id) {
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(base)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
-        Call<List<SubjectResponse>> call=fetchInfo.loadsubjectmaterial(subject_id);
+        Call<List<SubjectResponse>> call = fetchInfo.loadsubjectmaterial(subject_id);
         call.enqueue(new Callback<List<SubjectResponse>>() {
             @Override
             public void onResponse(Call<List<SubjectResponse>> call, Response<List<SubjectResponse>> response) {
@@ -138,7 +165,7 @@ public class StudyMaterialAF extends Fragment {
                     return;
                 }
 
-                recyclerView.setAdapter(new StudyMaterialAdapter(response.body(), getContext(), section,subject,progressBar,courseplan));
+                recyclerView.setAdapter(new StudyMaterialAdapter(response.body(), getContext(), section, subject, progressBar, courseplan));
                 progressBar.setVisibility(View.GONE);
 
 

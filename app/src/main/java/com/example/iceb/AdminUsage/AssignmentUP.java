@@ -554,7 +554,8 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
 
     public void getSubjects(String class_id,String semester){
         //String base = "http://192.168.1.6:8000/";
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         
@@ -600,7 +601,8 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
 
     public void getFiletoBeSent(String subject_id,String topic,String deadline){
         //String base = "http://192.168.1.6:8000/";
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         

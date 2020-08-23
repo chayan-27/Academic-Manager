@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e2e2e2"
+    android:layout_gravity="center"
+
     android:clickable="true"
     tools:context=".Notificationf">
 
@@ -50,9 +52,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:background="@drawable/roundtest"
-            android:text="Send"
-            android:textColor="#FFFFFF"
+            android:background="#00FFFFFF"
+            android:text="SEND"
+
+
+            android:drawableTint="@android:color/holo_blue_dark"
+            android:drawableRight="@android:drawable/ic_menu_send"
+
+
+            android:textColor="@android:color/holo_blue_dark"
             android:textStyle="bold" />
 
 

@@ -1,7 +1,9 @@
 package com.example.iceb.AdminUsage;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -104,6 +106,7 @@ public class TimeTablef extends Fragment {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(arrayAdapter);
+        showChooser(getContext());
         /*String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int month = Integer.parseInt(currentDate.substring(3, 5));
         int year = Integer.parseInt(currentDate.substring(6));
@@ -227,6 +230,26 @@ public class TimeTablef extends Fragment {
 
                     textView.setText(filepath);
 
+                    AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+                    alertdialog.setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                  sendTimetable();
+
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    getActivity().onBackPressed();
+                                }
+                            }).setMessage("Are you sure to change the timetable file of Semester"+semester+" to selected file");
+                    AlertDialog alertDialog = alertdialog.create();
+                    alertDialog.setTitle("Upload Timetable");
+                    alertDialog.show();
+
                    /* String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
                     encoded = encoded.replace("\n", "").replace("\r", "");
 */
@@ -283,7 +306,8 @@ public class TimeTablef extends Fragment {
     }*/
 
     public void sendTimetable(){
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()
@@ -309,6 +333,7 @@ public class TimeTablef extends Fragment {
                 }
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
 
             }
 

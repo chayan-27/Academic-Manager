@@ -199,7 +199,8 @@ public class Timet extends Fragment {
 
     public void getTimetablecredits(String class_id) {
         //String base = "http://192.168.1.6:8000/";
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
         // String base="https://academic-manager-nitt.el.r.appspot.com/";
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -223,7 +224,7 @@ public class Timet extends Fragment {
 
 
                     String fileurl = base + response.body().get(0).getFile().substring(1);
-                    Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(fileurl);
+                    Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(response.body().get(0).getFile());
                     call1.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

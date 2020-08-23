@@ -26,10 +26,11 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
     String assignment;
     int roll;
     String courseplan;
+    boolean admin;
 
 
     public StudyMaterialSubjectAdap(List<Studymaterial> components, Context context, String section, Integer semester, List<String> subject_ids,
-                                    List<String> subject_names, String assignment,int roll,String courseplan) {
+                                    List<String> subject_names, String assignment,int roll,String courseplan,boolean admin) {
         this.components = components;
         this.context = context;
         this.section = section;
@@ -39,6 +40,7 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
         this.assignment = assignment;
         this.roll=roll;
         this.courseplan=courseplan;
+        this.admin=admin;
     }
 
     @NonNull
@@ -61,7 +63,7 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
                 if (assignment.equals("yes")) {
                     appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AssignmentF(subject_ids.get(i),roll,subject_names.get(i),subject_ids,subject_names)).addToBackStack(null).commit();
                 } else {
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialAF(semester, subject_names.get(i), section, subject_ids.get(i),courseplan)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialAF(semester, subject_names.get(i), section, subject_ids.get(i),courseplan,admin)).addToBackStack(null).commit();
                 }
             }
         });

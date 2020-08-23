@@ -97,7 +97,8 @@ public class TitlesF extends Fragment {
     }
 
     public void getResponses(String assignment_id){
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()
@@ -124,7 +125,8 @@ public class TitlesF extends Fragment {
     }
 
     public void materials(String subject_id){
-        String base = "http://192.168.1.6:8000/";
+       String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()

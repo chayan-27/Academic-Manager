@@ -503,8 +503,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 context.startActivity(intent);
             }
         } else {
-           // String base = "http://192.168.1.6:8000/";
-            String base = "http://192.168.1.6:8000/";
+           //String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
+           String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
             Retrofit retrofit = new Retrofit.Builder()
@@ -513,7 +515,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     .build();
             FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
             String fileurl = base + url.substring(1);
-            Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(fileurl);
+            Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(url);
             call1.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -19,9 +19,12 @@
         <ImageView
             android:id="@+id/timetable"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
+
             android:layout_gravity="center"
             android:scaleType="fitXY"
+            android:rotation="90"
+
 
             android:src="@drawable/stfinal"
 
@@ -45,10 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_menu_report_image"
         android:tint="@android:color/white"
         app:rippleColor="#1e4072"
-        android:visibility="invisible"
+        android:visibility="visible"
 
 
         android:layout_margin="16dp" />

@@ -38,7 +38,7 @@
                 android:inputType="textMultiLine"
 
 
-                android:text="Official \t Class \t App \t specially \t designed \t to \t serve \t for \t the \t customised \t needs \t of \t Students \t of \t ICE \t from \t the \t academic perspective \t in \t the \t system \t of \t Flexible \t Curriculum \t here \t at \t NITT"
+                android:text="Official \t Class \t App \t specially \t designed \t to \t serve \t for \t the \t customised \t needs \t of \t Students  \t from \t the \t academic perspective \t in \t the \t system \t of \t Flexible \t Curriculum \t here \t at \t NITT"
 
 
                 android:textColor="#000000" />
@@ -106,7 +106,7 @@
                 android:layout_alignTop="@+id/ii"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="34dp"
-                android:text="IDEATOR AND PUBLISHER"
+                android:text="SERVER MANAGEMENT"
 
                 android:textColor="#000000"
                 android:textSize="13sp"
@@ -124,52 +124,9 @@
                 android:textColor="#000000"
                 android:textSize="11sp" />
 
-            <TextView
-                android:id="@+id/server"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ideate"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="SERVER MANAGEMENT"
-                android:textColor="#000000"
-                android:textSize="13sp"
-                android:textStyle="bold" />
 
-            <TextView
 
-                android:id="@+id/mukil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/server"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:text="MUKIL KUMAR"
-                android:textColor="#000000"
-                android:textSize="11sp" />
 
-            <TextView
-                android:id="@+id/ux"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/mukil"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="UX DESIGNER"
-                android:textColor="#000000"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-            <TextView
-
-                android:id="@+id/ashwin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ux"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:text="ASWIN SAMAY"
-                android:textColor="#000000"
-                android:textSize="11sp" />
 
 
         </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.iceb;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +45,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +74,9 @@ public class StudyMaterialF extends Fragment {
     int roll;
     String courseplan;
     String batch;
+    LinearLayout subject_add;
+    Button button1;
+    EditText editText;
 
 
     @SuppressLint("ValidFragment")
@@ -92,6 +101,10 @@ public class StudyMaterialF extends Fragment {
         button = view.findViewById(R.id.button);
         textView = view.findViewById(R.id.textView);
         progressBar = view.findViewById(R.id.progresso);
+        subject_add = view.findViewById(R.id.subject_add);
+        button1 = (Button) view.findViewById(R.id.button2);
+        editText = (EditText) view.findViewById(R.id.editText4);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -246,34 +259,120 @@ public class StudyMaterialF extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if (assignment.equals("yes")) {
-                        if (subject_ids != null&&subject_ids.size()>0) {
+                        if (subject_ids != null && subject_ids.size() > 0) {
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
-                        }else{
-                            Toast.makeText(getContext(),"No subjects available for this semester",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "No subjects available for this semester", Toast.LENGTH_SHORT).show();
                         }
 
                     } else {
-                        if (subject_ids != null&&subject_ids.size()>0) {
+                        fab.setVisibility(View.GONE);
+                        subject_add.setVisibility(View.VISIBLE);
+                        button1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (!editText.getText().toString().equals("")) {
+                                    AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+                                    alertdialog.setCancelable(false)
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Sty();
+                                                    subject_add.setVisibility(View.GONE);
+                                                    fab.setVisibility(View.VISIBLE);
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                    subject_add.setVisibility(View.GONE);
+                                                    fab.setVisibility(View.VISIBLE);
+
+                                                }
+                                            }).setMessage("Are you sure to add " + editText.getText().toString() + " to Subjects");
+                                    AlertDialog alertDialog = alertdialog.create();
+                                    alertDialog.setTitle("Add Subject");
+                                    alertDialog.show();
+
+                                } else {
+                                    Toast.makeText(getContext(), "Enter Valid Details", Toast.LENGTH_LONG).show();
+                                    subject_add.setVisibility(View.GONE);
+                                    fab.setVisibility(View.VISIBLE);
+
+                                }
+
+                            }
+                        });
+
+                       /* if (subject_ids != null&&subject_ids.size()>0) {
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
                         }else{
                             Toast.makeText(getContext(),"No subjects available for this semester",Toast.LENGTH_SHORT).show();
 
-                        }
+                        }*/
                     }
 
                 }
             });
 
+
             FloatingActionButton fab1 = view.findViewById(R.id.fab2);
-            fab1.setVisibility(View.VISIBLE);
-            fab1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if (assignment.equals("yes")) {
+                fab1.setVisibility(View.VISIBLE);
 
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectAdd(section, batch)).addToBackStack(null).commit();
+                fab1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fab1.setVisibility(View.GONE);
 
-                }
-            });
+                        subject_add.setVisibility(View.VISIBLE);
+                        button1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (!editText.getText().toString().equals("")) {
+                                    AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+                                    alertdialog.setCancelable(false)
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Sty();
+                                                    subject_add.setVisibility(View.GONE);
+                                                    fab1.setVisibility(View.VISIBLE);
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                    subject_add.setVisibility(View.GONE);
+                                                    fab1.setVisibility(View.VISIBLE);
+
+                                                }
+                                            }).setMessage("Are you sure to add " + editText.getText().toString() + " to Subjects");
+                                    AlertDialog alertDialog = alertdialog.create();
+                                    alertDialog.setTitle("Add Subject");
+                                    alertDialog.show();
+
+                                } else {
+                                    Toast.makeText(getContext(), "Enter Valid Details", Toast.LENGTH_LONG).show();
+                                    subject_add.setVisibility(View.GONE);
+                                    fab1.setVisibility(View.VISIBLE);
+
+                                }
+
+                            }
+                        });
+
+                        // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectAdd(section, batch)).addToBackStack(null).commit();
+
+                    }
+                });
+            }else{
+                fab1.setVisibility(View.GONE);
+            }
         } else {
 
             FloatingActionButton fab = view.findViewById(R.id.fab);
@@ -339,7 +438,8 @@ public class StudyMaterialF extends Fragment {
     }
 
     public void getSubjects(String class_id, String semester) {
-        String base = "http://192.168.1.6:8000/";
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
         // String base="https://academic-manager-nitt.el.r.appspot.com/";
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -363,7 +463,7 @@ public class StudyMaterialF extends Fragment {
                     subject_name.add(adminSubject.getSubjectCode());
                 }
 
-                recyclerView.setAdapter(new StudyMaterialSubjectAdap(null, getContext(), section, Integer.parseInt(semester), subject_ids, subject_name, assignment, roll, courseplan));
+                recyclerView.setAdapter(new StudyMaterialSubjectAdap(null, getContext(), section, Integer.parseInt(semester), subject_ids, subject_name, assignment, roll, courseplan, admin));
                 progressBar.setVisibility(View.GONE);
 
 
@@ -436,5 +536,49 @@ public class StudyMaterialF extends Fragment {
 
     }
 
+    public void Sty() {
+        progressBar.setVisibility(View.VISIBLE);
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(base)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+        RequestBody class_id = RequestBody.create(MediaType.parse("text/plain"), section);
+        RequestBody semester1 = RequestBody.create(MediaType.parse("text/plain"), manipulatesem(batch));
+        RequestBody subject_code = RequestBody.create(MediaType.parse("text/plain"), editText.getText().toString());
+        Call<AdminSubject> call = fetchInfo.sendSubjects(class_id, semester1, subject_code);
+        call.enqueue(new Callback<AdminSubject>() {
+            @Override
+            public void onResponse(Call<AdminSubject> call, Response<AdminSubject> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getContext(), "No response from the server", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                Toast.makeText(getContext(), "Subject Successfully Added", Toast.LENGTH_SHORT).show();
+                editText.setText("");
+                progressBar.setVisibility(View.GONE);
+                getSubjects(section, manipulatesem(batch));
+                sem.setSelection(Integer.parseInt(manipulatesem(batch)) - 1);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<AdminSubject> call, Throwable t) {
+                Toast.makeText(getContext(), "No response from the server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
 
 }
+
+
+
+

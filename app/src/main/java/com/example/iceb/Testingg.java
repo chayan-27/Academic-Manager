@@ -111,8 +111,8 @@ public class Testingg extends AppCompatActivity {
         }
         myuser = this.getSharedPreferences("myuser", MODE_PRIVATE);
         check = myuser.getString("checkadminclass", "");
-        base = "http://192.168.1.6:8000/";
-       // base="https://academic-manager-nitt.el.r.appspot.com/";
+       // base = "http://192.168.1.6:8000/";
+        base="https://academic-manager-nitt.el.r.appspot.com/";
 
 
         Intent intent = getIntent();
@@ -552,11 +552,20 @@ public class Testingg extends AppCompatActivity {
 
                 List<CreateClass> list = response.body();
                 assert response.body() != null;
-                classid = response.body().get(0).getId();
-                batch = response.body().get(0).getBatch().toString();
-                SharedPreferences.Editor editor = myuser.edit();
-                editor.putInt("class", classid);
-                editor.apply();
+                if (list != null || list.size() != 0) {
+                    try {
+                        classid = response.body().get(0).getId();
+                        batch = response.body().get(0).getBatch().toString();
+                        SharedPreferences.Editor editor = myuser.edit();
+                        editor.putInt("class", classid);
+                        editor.apply();
+                    }catch (Exception e){
+
+                    }
+                } else {
+                    getClassId(roll);
+                }
+
 
                 String topic="class"+classid;
 

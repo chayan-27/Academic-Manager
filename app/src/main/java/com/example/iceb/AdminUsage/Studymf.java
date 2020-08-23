@@ -378,7 +378,8 @@ public class Studymf extends Fragment {
     }
 
     public void getFiletoBeSent(String subject_id,String topic){
-       String base = "http://192.168.1.6:8000/";
+      String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()
@@ -438,7 +439,8 @@ public class Studymf extends Fragment {
     }
 
     public void getSubjects(String class_id,String semester){
-       String base = "http://192.168.1.6:8000/";
+      String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
         Retrofit retrofit = new Retrofit.Builder()

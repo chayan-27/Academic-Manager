@@ -38,9 +38,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
+        android:tint="@android:color/black"
         app:rippleColor="#1e4072"
-        android:visibility="invisible"
+        android:visibility="visible"
+        app:backgroundTint="#DCF8C6"
 
 
         android:layout_margin="16dp" />

@@ -43,6 +43,8 @@
                 android:layout_weight="3" />
         </LinearLayout>
 
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle"
             android:layout_width="match_parent"
@@ -88,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_open_book_top_view_svgrepo_com"
         android:tint="@android:color/white"
         app:rippleColor="#1e4072"
         android:visibility="visible"
@@ -100,11 +102,46 @@
         android:layout_gravity="start|bottom"
 
 
-        android:src="@android:drawable/ic_menu_slideshow"
+        android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
         app:rippleColor="#1e4072"
         android:visibility="visible"
         android:layout_margin="16dp" />
+    <LinearLayout
+
+        android:layout_below="@id/linear"
+        android:layout_width="match_parent"
+        android:id="@+id/subject_add"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/progress_round_test"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="SUBJECT_CODE"
+            android:layout_marginRight="2dp"
+
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/roundtest"
+            android:text="OK"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </FrameLayout>

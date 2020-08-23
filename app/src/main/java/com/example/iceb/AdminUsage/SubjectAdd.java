@@ -58,7 +58,8 @@ public class SubjectAdd extends Fragment {
             public void onClick(View v) {
                 if(!editText.getText().toString().equals("")){
                     progressBar.setVisibility(View.VISIBLE);
-                    String base = "http://192.168.1.6:8000/";
+                   String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
        // String base="https://academic-manager-nitt.el.r.appspot.com/";
         
                     Retrofit retrofit = new Retrofit.Builder()
