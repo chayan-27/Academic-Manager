@@ -18,8 +18,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.AssignmentUP;
+import com.example.iceb.AdminUsage.Studymf;
 import com.example.iceb.server.Assignment;
 import com.example.iceb.server.Controller;
+import com.example.iceb.server2.AdminAssignment;
+import com.example.iceb.server2.FetchInfo2;
+import com.example.iceb.server2.SubjectResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,12 +56,18 @@ public class AssignmentF extends Fragment {
     ProgressBar progressBar;
     List<Assignment> list1;
     int roll;
+    String subjectt;
+    List<String> subject_id;
+    List<String> subject_name;
 
     @SuppressLint("ValidFragment")
-    public AssignmentF(String section, int roll) {
+    public AssignmentF(String section, int roll,String subjectt,List<String> subject_id,List<String> subject_name) {
         // Required empty public constructor
         this.section = section;
         this.roll = roll;
+        this.subjectt=subjectt;
+        this.subject_id=subject_id;
+        this.subject_name=subject_name;
     }
 
 
@@ -100,7 +112,8 @@ public class AssignmentF extends Fragment {
         sem.setSelection(semester - 1);
 
         if (semester != 0) {
-            try {
+            materials(section);
+            /*try {
                 progressBar.setVisibility(View.VISIBLE);
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -162,7 +175,7 @@ public class AssignmentF extends Fragment {
                 progressBar.setVisibility(View.GONE);
 
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
-            }
+            }*/
         }
 
 
@@ -171,7 +184,8 @@ public class AssignmentF extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 semester = Integer.parseInt(text);
-                try {
+                materials(section);
+                /*try {
                     progressBar.setVisibility(View.VISIBLE);
 
                     Retrofit retrofit = new Retrofit.Builder()
@@ -235,7 +249,7 @@ public class AssignmentF extends Fragment {
 
                     Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
-                }
+                }*/
             }
 
             @Override
@@ -311,6 +325,51 @@ public class AssignmentF extends Fragment {
             }
         });*/
 
+        /*FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section,"",subject_id,subject_name)).addToBackStack(null).commit();
+
+            }
+        });*/
+
         return view;
     }
+
+    public void materials(String subject_id){
+        //String base = "http://192.168.1.6:8000/";
+        String base = "http://192.168.1.6:8000/";
+       // String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(base)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+       Call<List<AdminAssignment>> call=fetchInfo.getAssignments(subject_id);
+       call.enqueue(new Callback<List<AdminAssignment>>() {
+           @Override
+           public void onResponse(Call<List<AdminAssignment>> call, Response<List<AdminAssignment>> response) {
+               if (!response.isSuccessful()) {
+                   progressBar.setVisibility(View.GONE);
+                   Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                   return;
+               }
+               recyclerView.setAdapter(new AssignmentAdapter(roll,response.body(),subjectt,getContext()));
+
+               progressBar.setVisibility(View.GONE);
+           }
+
+           @Override
+           public void onFailure(Call<List<AdminAssignment>> call, Throwable t) {
+               progressBar.setVisibility(View.GONE);
+               Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+           }
+       });
+    }
+
+
 }

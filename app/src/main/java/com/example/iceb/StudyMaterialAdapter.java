@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.ParcelFileDescriptor;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,8 @@ import android.widget.Toast;
 
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Studymaterial;
+import com.example.iceb.server2.FetchInfo2;
+import com.example.iceb.server2.SubjectResponse;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
@@ -39,11 +44,13 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.ResponseBody;
 import okio.Timeout;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,20 +58,24 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdapter.StudyMaterialHolder> {
-    List<Studymaterial> components;
+    List<SubjectResponse> components;
     Context context;
     String section;
     String subject;
     ProgressBar progressBar;
+    String courseplan;
 
 
-    public StudyMaterialAdapter(List<Studymaterial> components, Context context, String section, String subject, ProgressBar progressBar) {
+    public StudyMaterialAdapter(List<SubjectResponse> components, Context context, String section, String subject, ProgressBar progressBar, String courseplan) {
         this.components = components;
         this.context = context;
         this.section = section;
         this.subject = subject;
         this.progressBar = progressBar;
+        this.courseplan = courseplan;
     }
 
     @NonNull
@@ -79,18 +90,32 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull StudyMaterialHolder studyMaterialHolder, int i) {
-        //  String subject = components.get(i).getSubject();
-        String title = components.get(i).getTitle();
+        String title = components.get(i).getTopic();;
+        if (!(courseplan.equals("yes"))) {
+
+
+            //  String subject = components.get(i).getSubject();
+             title = components.get(i).getTopic();
+        } else {
+            if (components.get(i).getTopic().equalsIgnoreCase("Courseplan")) {
+               // studyMaterialHolder.cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                studyMaterialHolder.cardView.setVisibility(View.VISIBLE);
+            }else{
+                //studyMaterialHolder.cardView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                studyMaterialHolder.cardView.setVisibility(View.GONE);
+
+            }
+        }
         String update = components.get(i).getUploadDate();
-        String extension = components.get(i).getTitle().substring(components.get(i).getTitle().lastIndexOf(".") + 1);
+        String extension = components.get(i).getFile().substring(components.get(i).getFile().lastIndexOf("."));
         studyMaterialHolder.textView.setVisibility(View.GONE);
         studyMaterialHolder.textView1.setText(title);
-        studyMaterialHolder.textView3.setText(update);
+        studyMaterialHolder.textView3.setText(getDate(update));
         String path = "StudyMaterials/" + subject;
-        String name = "/" + title + ".pdf";
-        final boolean[] check = {false};
+        String name = "/" + title + extension;
+
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
-        new TestBack(studyMaterialHolder.imgpdf, components.get(i).getTitle().substring(components.get(i).getTitle().lastIndexOf(".") + 1),title).execute(file);
+        new TestBack(studyMaterialHolder.imgpdf, extension, title).execute(file);
 
 
        /* if (file.exists()) {
@@ -138,7 +163,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
                 studyMaterialHolder.progressBar.setMax(100);
                 // progressBar=studyMaterialHolder.progressBar;
                 animation(0, 50, 10000, studyMaterialHolder.progressBar);
-                try {
+               /* try {
                     if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
                         downloadstudymaterial(title, section, subject, studyMaterialHolder.imgpdf, "pdf", studyMaterialHolder.progressBar);
                     } else {
@@ -146,9 +171,12 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
+
+                downloadstudymaterial(file, extension, components.get(i).getFile(), studyMaterialHolder.imgpdf, studyMaterialHolder.progressBar);
             }
         });
+
 
     }
 
@@ -190,7 +218,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
-            if (extension.equals("pdf")) {
+            if (extension.equals(".pdf")) {
                 PdfViewAct.file1 = file;
                 Intent intent = new Intent(context, PdfViewAct.class);
                 context.startActivity(intent);
@@ -311,6 +339,75 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         }
     }
 
+    public void downloadstudymaterial(File file, String extension, String url, ImageView imageView, ProgressBar progressBar) {
+        if (file.exists()) {
+            progressBar.setVisibility(View.GONE);
+            if (extension.equals(".pdf")) {
+                PdfViewAct.file1 = file;
+                Intent intent = new Intent(context, PdfViewAct.class);
+                context.startActivity(intent);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri apkURI = FileProvider.getUriForFile(
+                        context, context.getApplicationContext()
+
+                                .getPackageName() + ".provider", file);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setData(apkURI);
+                context.startActivity(intent);
+            }
+        } else {
+            String base = "http://192.168.1.6:8000/";
+       // String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(base)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+            String fileurl = base + url.substring(1);
+            Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(fileurl);
+            call1.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (!response.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context, "No Response From The Server", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    boolean b = writeResponseBodyToDisk(response.body(), file);
+                    progressBar.setVisibility(View.GONE);
+                    if (b) {
+                        if (extension.equals(".pdf")) {
+                            PdfViewAct.file1 = file;
+                            Intent intent = new Intent(context, PdfViewAct.class);
+                            context.startActivity(intent);
+                            new TestBack(imageView, extension, "").execute(file);
+                        } else {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri apkURI = FileProvider.getUriForFile(
+                                    context, context.getApplicationContext()
+
+                                            .getPackageName() + ".provider", file);
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setData(apkURI);
+                            context.startActivity(intent);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(context, "Some Error Occured!Please Try Again", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }
+
+    }
+
     public void animation(int a, int b, int time, ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
         animation.setDuration(time);
@@ -347,7 +444,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         animation.start();
     }
 
-    public class TestBack extends AsyncTask<File,Void,String>{
+    public class TestBack extends AsyncTask<File, Void, String> {
 
 
         ImageView imageView;
@@ -355,10 +452,10 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         String title;
         Bitmap bitmap1;
 
-        public TestBack(ImageView imageView,String extension,String title) {
-            this.imageView= imageView;
-            this.extension=extension;
-            this.title=title;
+        public TestBack(ImageView imageView, String extension, String title) {
+            this.imageView = imageView;
+            this.extension = extension;
+            this.title = title;
         }
 
         /**
@@ -382,7 +479,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected String doInBackground(File... files) {
-            if (files[0].exists()) {
+            if (files[0].exists() && extension.equals(".pdf")) {
 
                 ParcelFileDescriptor parcelFileDescriptor = null;
                 try {
@@ -396,7 +493,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                 bitmap1 = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
+                bitmap1 = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
                 PdfRenderer.Page page = renderer.openPage(0);
                 page.render(bitmap1, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
                 return "exists";
@@ -405,7 +502,7 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
             appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();*/
 
             } else {
-               return "no";
+                return "no";
 
             }
 
@@ -423,28 +520,102 @@ public class StudyMaterialAdapter extends RecyclerView.Adapter<StudyMaterialAdap
          * @param s The result of the operation computed by {@link #doInBackground}.
          * @see #onPreExecute
          * @see #doInBackground
-         *
          */
         @Override
         protected void onPostExecute(String s) {
-            if(s.equals("exists")){
+            if (s.equals("exists")) {
                 imageView.setImageBitmap(bitmap1);
 
-            }else{
-                if (extension.equals("") || extension.equals("pdf") || extension.equals(title)) {
+            } else {
+                if (extension.equals("") || extension.equals(title)) {
 
                 } else {
-                    if (extension.equals("pptx") || extension.equals("ppt")) {
-                       imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
-                    } else if (extension.equals("doc")) {
+                    if (extension.equals(".pptx") || extension.equals(".ppt")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                    } else if (extension.equals(".doc")) {
                         imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
-                    } else if (extension.equals("jpg") || extension.equals("png") || extension.equalsIgnoreCase("jpeg")) {
+                    } else if (extension.equals(".jpg") || extension.equals(".png") || extension.equalsIgnoreCase(".jpeg")) {
                         imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                    } else if (extension.equals(".pdf")) {
+                        imageView.setImageResource(R.drawable.pdfic);
                     } else {
                         imageView.setImageResource(R.drawable.ic_noun_file_);
                     }
                 }
             }
         }
+    }
+
+    private boolean writeResponseBodyToDisk(ResponseBody body, File file) {
+        try {
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(file);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public String getDate(String date) {
+        String actual_date = date.substring(0, date.indexOf("T"));
+        String actual_time = date.substring(date.indexOf("T") + 1, date.indexOf("Z"));
+        String now = actual_date + " " + actual_time;
+        String[] dead = now.split(" ");
+        String[] dead1 = dead[0].split("-");
+        String dead2 = dead1[2] + "-" + dead1[1] + "-" + dead1[0];
+        String[] dead3 = dead[1].split(":");
+        Integer h1 = Integer.parseInt(dead3[0]);
+        String period = "";
+        if (h1 > 12) {
+            h1 = h1 - 12;
+            period = "PM";
+        } else {
+            if (h1 == 0) {
+                h1 = 12;
+            }
+            period = "AM";
+        }
+        String findead = dead2 + " " + h1 + ":" + dead3[1] + " " + period;
+
+        return findead;
     }
 }

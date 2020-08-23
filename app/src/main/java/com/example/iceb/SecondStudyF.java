@@ -51,7 +51,7 @@ public class SecondStudyF extends Fragment {
         progressBar = view.findViewById(R.id.progresso);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        Retrofit retrofit = new Retrofit.Builder()
+       /* Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -81,7 +81,7 @@ public class SecondStudyF extends Fragment {
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
         return view;
     }
 }

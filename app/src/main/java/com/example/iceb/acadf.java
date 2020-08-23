@@ -25,12 +25,16 @@ public class acadf extends Fragment {
     RecyclerView recyclerView;
     String section;
     int roll;
+    boolean admin;
+    String batch;
 
     @SuppressLint("ValidFragment")
-    public acadf(String section,int roll) {
+    public acadf(String section,int roll,boolean admin,String batch) {
         // Required empty public constructor
         this.section = section;
         this.roll=roll;
+        this.admin=admin;
+        this.batch=batch;
     }
 
 
@@ -50,8 +54,11 @@ public class acadf extends Fragment {
         list.add("Drive");
         ar = new int[]{R.drawable.timeic, R.drawable.stfinal, R.drawable.planic, R.drawable.attendanceic, R.drawable.ic_pollic, R.drawable.driveic1};
         // Inflate the layout for this fragment
-        recyclerView.setAdapter(new AcademicsAdapter(list, getContext(), ar, section,roll));
-        return view;
+
+        recyclerView.setAdapter(new AcademicsAdapter(list, getContext(), ar, section,roll,admin,batch));
+
+
+         return view;
     }
 
 }

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Studymaterial;
+import com.example.iceb.server2.FetchInfo2;
+import com.example.iceb.server2.SubjectResponse;
 
 import java.util.List;
 
@@ -36,13 +38,17 @@ public class StudyMaterialAF extends Fragment {
     String section;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    String subject_id;
+    String courseplan;
 
     @SuppressLint("ValidFragment")
-    public StudyMaterialAF(Integer semester, String subject, String section) {
+    public StudyMaterialAF(Integer semester, String subject, String section,String subject_id,String courseplan) {
         // Required empty public constructor
         this.section = section;
         this.semester = semester;
         this.subject = subject;
+        this.subject_id=subject_id;
+        this.courseplan=courseplan;
     }
 
 
@@ -56,7 +62,9 @@ public class StudyMaterialAF extends Fragment {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(linearLayoutManager);
         animation();
-        Retrofit retrofit = new Retrofit.Builder()
+
+        materials(subject_id);
+        /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -83,7 +91,7 @@ public class StudyMaterialAF extends Fragment {
 
 
             }
-        });
+        });*/
 
 
         return view;
@@ -109,6 +117,41 @@ public class StudyMaterialAF extends Fragment {
             public void onAnimationRepeat(Animator animator) { }
         });
         animation.start();
+    }
+
+    public void materials(String subject_id){
+        String base = "http://192.168.1.6:8000/";
+       // String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(base)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+        Call<List<SubjectResponse>> call=fetchInfo.loadsubjectmaterial(subject_id);
+        call.enqueue(new Callback<List<SubjectResponse>>() {
+            @Override
+            public void onResponse(Call<List<SubjectResponse>> call, Response<List<SubjectResponse>> response) {
+                if (!(response.isSuccessful())) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                recyclerView.setAdapter(new StudyMaterialAdapter(response.body(), getContext(), section,subject,progressBar,courseplan));
+                progressBar.setVisibility(View.GONE);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SubjectResponse>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
     }
 
 }

@@ -72,16 +72,19 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     ProgressBar progressBar;
     int roll;
     String uu;
+    String batch;
+    boolean admin;
 
 
-
-    public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar) {
+    public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar, String batch, boolean admin) {
         this.components = components;
         this.context = context;
         this.section = section;
         this.semester = semester;
         this.roll = roll;
         this.progressBar = progressBar;
+        this.batch = batch;
+        this.admin = admin;
     }
 
     @NonNull
@@ -102,7 +105,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String yestr = dateFormat.format(mydate);
         String body = components.get(i).substring(components.get(i).indexOf(" ") + 1, components.get(i).indexOf("$"));
-        SpannableStringBuilder sb = new SpannableStringBuilder(body+" ");
+        SpannableStringBuilder sb = new SpannableStringBuilder(body + " ");
         List<Integer> list = new ArrayList<>();
 
         for (int k = 0; k < body.length(); k++) {
@@ -118,12 +121,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
         }
 
-        for(int k = 0; k < sb.length() ; k ++){
+        for (int k = 0; k < sb.length(); k++) {
 
-            if(sb.charAt(k)=='*'){
-                sb.delete(k,k+1);
+            if (sb.charAt(k) == '*') {
+                sb.delete(k, k + 1);
             }
-           // sb.delete(list.get(k+1),list.get(k+1)+1);
+            // sb.delete(list.get(k+1),list.get(k+1)+1);
         }
 
 
@@ -139,7 +142,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             @Override
             public boolean onLongClick(TextView textView, String url) {
                 ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("label",url));
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("label", url));
                 Toast.makeText(context, "Link copied", Toast.LENGTH_LONG).show();
 
 
@@ -171,17 +174,34 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
 
         if (body.substring(body.lastIndexOf(" ") + 1).equals("Uploaded!")) {
-            courseHolder.pdf.setVisibility(View.VISIBLE);
-            new TestBack(courseHolder.pdf,body).execute();
-          //  imageview(courseHolder.pdf,body);
+            /*courseHolder.pdf.setVisibility(View.VISIBLE);
+            new TestBack(courseHolder.pdf, body).execute();
+            *//* *//* //  imageview(courseHolder.pdf,body);
             courseHolder.cardView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String[] by = body.split("\n\n");
+                    String[] by = body.split(" ");
+                    if (by[0].equals("New")) {
+                        AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+
+                        appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section, "yes", roll, "no", admin,batch)).addToBackStack(null).commit();
+
+                    } else if(by[0].equalsIgnoreCase("Courseplan")) {
+                        AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+
+                        appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section, "no", roll, "yes", admin,batch)).addToBackStack(null).commit();
+
+
+                    }else{
+                        AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+
+                        appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section, "no", roll, "no", admin,batch)).addToBackStack(null).commit();
+
+                    }*/
 
                     // String subject = body.substring(0, body.indexOf("\n"));
                     //String title = body.substring(body.indexOf("\n\n") + 2, body.lastIndexOf(" "));
-                    String subject = by[0];
+                  /*  String subject = by[0];
                     if(subject.contains("*")){
                         subject=subject.substring(1,subject.lastIndexOf("*"));
                     }
@@ -205,7 +225,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                                 animation(0, 50, 10000,courseHolder.progressBar);
                                 // Toast.makeText(context, "..." + subject + "   " + assign[1], Toast.LENGTH_LONG).show();
 
-                                downloadassign(assign[1], section, subject,courseHolder.progressBar);
+                               // downloadassign(assign[1], section, subject,courseHolder.progressBar);
                             } else {
                                 int c = assign.length - 3;
                                 String y = "";
@@ -217,7 +237,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                                 animation(0, 50, 10000,courseHolder.progressBar);
                                 //Toast.makeText(context, "..." + subject + "   " +y, Toast.LENGTH_LONG).show();
 
-                                downloadassign(y, section, subject,courseHolder.progressBar);
+                                //downloadassign(y, section, subject,courseHolder.progressBar);
 
                             }
 
@@ -229,10 +249,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                             downloadstudymaterial(title, section, subject,courseHolder.progressBar);
                         }
                     }
+*/
 
-
-                }
-            });
+                /*}
+            });*/
 
         } else {
             courseHolder.pdf.setVisibility(View.GONE);
@@ -346,8 +366,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
 
 
-
-
     }
 
     @Override
@@ -370,7 +388,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             imageView = (TextView) itemView.findViewById(R.id.date);
             cardView1 = (CardView) itemView.findViewById(R.id.cards);
             pdf = (ImageView) itemView.findViewById(R.id.pdf);
-            progressBar=(ProgressBar)itemView.findViewById(R.id.pres);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pres);
 
 
         }
@@ -381,28 +399,28 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         notifyDataSetChanged();
     }
 
-    public void downloadstudymaterial(String title, String section, String subject,ProgressBar progressBar) {
+    public void downloadstudymaterial(String title, String section, String subject, ProgressBar progressBar) {
         String extension = title.substring(title.lastIndexOf(".") + 1);
-        String hd=title;
+        String hd = title;
 
         String path = "StudyMaterials/" + subject;
         String name;
-        if (extension.equals("") ||extension.equals(title)) {
+        if (extension.equals("") || extension.equals(title)) {
             name = "/" + title + ".pdf";
-            hd=title+".pdf";
-        }else{
-            name="/"+title+"."+extension;
-            hd=title+"."+extension;
+            hd = title + ".pdf";
+        } else {
+            name = "/" + title + "." + extension;
+            hd = title + "." + extension;
         }
 
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
         if (file.exists()) {
             progressBar.setVisibility(View.GONE);
-            if(name.substring(name.lastIndexOf(".")+1).equals("pdf")){
-                PdfViewAct.file1=file;
-                Intent intent=new Intent(context,PdfViewAct.class);
+            if (name.substring(name.lastIndexOf(".") + 1).equals("pdf")) {
+                PdfViewAct.file1 = file;
+                Intent intent = new Intent(context, PdfViewAct.class);
                 context.startActivity(intent);
-            }else{
+            } else {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri apkURI = FileProvider.getUriForFile(
                         context, context.getApplicationContext()
@@ -440,10 +458,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                     try {
                         List<Studymaterial> list = response.body().getStudymaterial();
                         String he = (String) list.get(0).getStuContent();
-                         ext = list.get(0).getExt();
+                        ext = list.get(0).getExt();
                         byte[] decodedString = Base64.decode(he.getBytes(), Base64.DEFAULT);
                         String path = "StudyMaterials/" + subject;
-                        String name = "/" + title + "."+ext;
+                        String name = "/" + title + "." + ext;
                         File root = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
                         try {
                             OutputStream fileOutputStream = new FileOutputStream(root);
@@ -458,7 +476,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                             PdfViewAct.file1 = root;
                             Intent intent = new Intent(context, PdfViewAct.class);
                             context.startActivity(intent);
-                        }else {
+                        } else {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             Uri apkURI = FileProvider.getUriForFile(
                                     context, context.getApplicationContext()
@@ -471,14 +489,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                         Toast.makeText(context, "Your File is Downloaded in your Internal storage/Android/data/com.example.iceb/files", Toast.LENGTH_LONG).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(context, "..." + subject + "   " + title + "......"+name+e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "..." + subject + "   " + title + "......" + name + e.getMessage(), Toast.LENGTH_LONG).show();
 
                     }
                     //  AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
-
-
 
 
                     // appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PDFViewfrag(file)).addToBackStack(null).commit();
@@ -496,7 +512,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public void downloadcourseplan(String section, String subject,ProgressBar progressBar) {
+    public void downloadcourseplan(String section, String subject, ProgressBar progressBar) {
         String path = "CoursePlan/" + subject;
         String name = "/" + subject + ".pdf";
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
@@ -564,7 +580,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public void downloadassign(String title, String section, String subject,ProgressBar progressBar) {
+   /* public void downloadassign(String title, String section, String subject,ProgressBar progressBar) {
         String path = "Assignments/" + subject;
         String name = "/" + title.trim() + ".pdf";
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -630,9 +646,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                 }
             });
         }
-    }
+    }*/
 
-    public void animation(int a, int b, int time,ProgressBar progressBar) {
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
         animation.setDuration(time);
         animation.setInterpolator(new DecelerateInterpolator());
@@ -645,15 +661,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
             public void onAnimationEnd(Animator animator) {
                 //do something when the countdown is complete
                 if (b == 50) {
-                    animation(50, 75, 20000,progressBar);
+                    animation(50, 75, 20000, progressBar);
                 } else if (b == 75) {
-                    animation(75, 88, 40000,progressBar);
+                    animation(75, 88, 40000, progressBar);
                 } else if (b == 88) {
-                    animation(88, 94, 80000,progressBar);
+                    animation(88, 94, 80000, progressBar);
                 } else if (b == 94) {
-                    animation(94, 97, 160000,progressBar);
+                    animation(94, 97, 160000, progressBar);
                 } else if (b == 97) {
-                    animation(97, 99, 320000,progressBar);
+                    animation(97, 99, 320000, progressBar);
                 }
             }
 
@@ -668,7 +684,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         animation.start();
     }
 
-    public void imageview(ImageView imageView,String body){
+    public void imageview(ImageView imageView, String body) {
         String[] by = body.split("\n\n");
 
         // String subject = body.substring(0, body.indexOf("\n"));
@@ -680,7 +696,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
 
         if (title.equals("CoursePlan")) {
-           imageView.setImageResource(R.drawable.pdfic);
+            imageView.setImageResource(R.drawable.pdfic);
         } else {
             String[] assign = title.split(" ");
             if (assign[0].equals("New")) {
@@ -697,14 +713,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                 String extension = title.substring(title.lastIndexOf(".") + 1);
                 if (extension.equals("") || extension.equals(title)) {
                     imageView.setImageResource(R.drawable.pdfic);
-                }else{
+                } else {
                     if (extension.equals("pptx") || extension.equals("ppt")) {
                         imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
                     } else if (extension.equals("doc")) {
                         imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
                     } else if (extension.equals("jpg") || extension.equals("png") || extension.equalsIgnoreCase("jpeg")) {
                         imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
-                    }else if(extension.equals("pdf")){
+                    } else if (extension.equals("pdf")) {
                         imageView.setImageResource(R.drawable.pdfic);
                     } else {
                         imageView.setImageResource(R.drawable.ic_noun_file_);
@@ -714,7 +730,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
     }
 
-    public class TestBack extends AsyncTask<Void,Void,String>{
+    public class TestBack extends AsyncTask<Void, Void, String> {
 
         ImageView imageView;
         String body;
@@ -726,16 +742,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
         @Override
         protected String doInBackground(Void... voids) {
-            String[] by = body.split("\n\n");
+            String[] by = body.split(" ");
+            if(by[0].equals("New")){
+                String u=by[1];
+                return u.substring(u.lastIndexOf("."));
+            }else{
+                /*String u=by[0];
+                return u.substring(u.lastIndexOf("."));*/
+                return ".pdf";
+            }
+
 
             // String subject = body.substring(0, body.indexOf("\n"));
             //String title = body.substring(body.indexOf("\n\n") + 2, body.lastIndexOf(" "));
-            String subject = by[0];
+            /*String subject = by[0];
             String h = by[1];
             //System.out.println("//////////" + subject + h);
             String title = h.substring(0, h.lastIndexOf(" "));
 
-            if (title.equals("CoursePlan")) {
+            if (title.equalsIgnoreCase("CoursePlan")) {
                 return "pdf";
             } else {
                 String[] assign = title.split(" ");
@@ -757,24 +782,22 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
                        return extension;
                     }
                 }
-            }
+            }*/
 
         }
 
 
         @Override
         protected void onPostExecute(String s) {
-            if(s.equals("pdf")){
+            if (s.equals(".pdf")) {
                 imageView.setImageResource(R.drawable.pdfic);
-            }else{
-                if (s.equals("pptx") || s.equals("ppt")) {
+            } else {
+                if (s.equals(".pptx") || s.equals(".ppt")) {
                     imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
-                } else if (s.equals("doc")) {
+                } else if (s.equals(".doc")) {
                     imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
-                } else if (s.equals("jpg") || s.equals("png") || s.equalsIgnoreCase("jpeg")) {
+                } else if (s.equals(".jpg") || s.equals(".png") || s.equalsIgnoreCase(".jpeg")) {
                     imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
-                }else if(s.equals("pdf")){
-                    imageView.setImageResource(R.drawable.pdfic);
                 } else {
                     imageView.setImageResource(R.drawable.ic_noun_file_);
                 }

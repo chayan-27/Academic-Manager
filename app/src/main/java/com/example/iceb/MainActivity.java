@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                        first=1;
                        SharedPreferences.Editor editor=myuser.edit();
                        editor.putInt("first",first);
-                       editor.commit();
+                       editor.apply();
                        startActivity(intent1);
                    }
 

@@ -3,6 +3,7 @@ package com.example.iceb;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
@@ -10,13 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.pdf.PdfRenderer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +32,14 @@ import android.widget.Toast;
 
 import com.example.iceb.server.Assignment;
 import com.example.iceb.server.Controller;
+import com.example.iceb.server2.AdminAssignment;
+import com.example.iceb.server2.FetchInfo2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,11 +48,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.AssignmentHolder> {
     List<Assignment> components;
@@ -56,6 +66,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     int semester;
     String l;
     String subh;
+    List<AdminAssignment> list;
+    String subjectt;
+    SimpleDateFormat sdf;
 
     public AssignmentAdapter(List<Assignment> components, Context context, String section, ProgressBar progressBar, int roll, int semester) {
         this.components = components;
@@ -64,6 +77,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         this.progressBar = progressBar;
         this.roll = roll;
         this.semester = semester;
+    }
+
+    public AssignmentAdapter(int roll, List<AdminAssignment> body, String subjectt, Context context) {
+        this.roll = roll;
+        this.list = body;
+        this.subjectt = subjectt;
+        this.context = context;
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     }
 
     @NonNull
@@ -77,10 +99,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull AssignmentHolder assignmentHolder, int i) {
-        String subject = components.get(i).getSubject();
-        String title = components.get(i).getTitle();
-        String update = components.get(i).getUploadDate();
-        String[] up1 = new String[2];
+        //String subject = components.get(i).getSubject();
+        String title = list.get(i).getTopic();
+        String update = list.get(i).getUploadDate();
+        assignmentHolder.textView.setText(subjectt);
+        assignmentHolder.textView1.setText(title);
+        /*String[] up1 = new String[2];
         try {
 
 
@@ -94,12 +118,14 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 l = up1[0];
             }
         } catch (Exception e) {
-        }
-        String subdate = components.get(i).getSubbmissionDate();
-        subh=subdate;
-        assignmentHolder.textView.setText(subject);
-        assignmentHolder.textView1.setText(title);
-        try {
+        }*/
+        String subdate = list.get(i).getDeadline();
+        assignmentHolder.textView2.setText("Sent : " + getDate(update));
+        assignmentHolder.textView3.setText("DeadLine : " + getDate(subdate));
+
+
+
+       /* try {
 
 
             assignmentHolder.textView2.setText("Sent : " + up1[1]);
@@ -115,34 +141,40 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             strDate = sdf.parse(subdate);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-        if (System.currentTimeMillis() <= strDate.getTime()) {
-            assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#88F39E"));
-        } else {
-            assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#ff726f"));
-            if (subdate.equals(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()))) {
-                assignmentHolder.textView2.setTextColor(Color.BLACK);
-                try {
-                    if (up1[0].charAt(up1[0].length() - 1) == '0') {
+        }*/
+        try {
+            if (System.currentTimeMillis() <= sdf.parse(getDateforMillis(subdate)).getTime()) {
+                assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#88F39E"));
+            } else {
+                assignmentHolder.cardView.setCardBackgroundColor(Color.parseColor("#ff726f"));
+                /*if (subdate.equals(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()))) {
+                    assignmentHolder.textView2.setTextColor(Color.BLACK);
+                    *//*try {
+                        if (up1[0].charAt(up1[0].length() - 1) == '0') {
+                            assignmentHolder.textView3.setText("DeadLine : Today");
+                        }else{
+                            assignmentHolder.textView3.setText("DeadLine : Today\n" + up1[0]);
+
+                        }
+
+                    } catch (Exception e) {
                         assignmentHolder.textView3.setText("DeadLine : Today");
-                    }else{
-                        assignmentHolder.textView3.setText("DeadLine : Today\n" + up1[0]);
+                    }*//*
+                    assignmentHolder.textView3.setTextColor(Color.BLACK);
+                }*/
+                //Toast.makeText(context,new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()),Toast.LENGTH_LONG).show();
 
-                    }
 
-                } catch (Exception e) {
-                    assignmentHolder.textView3.setText("DeadLine : Today");
-                }
-                assignmentHolder.textView3.setTextColor(Color.BLACK);
             }
-            //Toast.makeText(context,new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()),Toast.LENGTH_LONG).show();
-
-
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        String path = "Assignments/" + subject;
-        String name = "/" + title + ".pdf";
+        String extension = list.get(i).getFile().substring(list.get(i).getFile().lastIndexOf("."));
+
+        String path = "Assignments/" + subjectt;
+        String name = "/" + title + extension;
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
-        new TestBack(assignmentHolder.imgpdf).execute(file);
+        new TestBack(assignmentHolder.imgpdf, extension).execute(file);
 
         /*if (file.exists()) {
             ParcelFileDescriptor parcelFileDescriptor= null;
@@ -168,9 +200,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         assignmentHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               assignmentHolder. progressBar.setVisibility(View.VISIBLE);
-               animation(0,50,10000,assignmentHolder.progressBar);
-                downloadassign(title, section, subject,assignmentHolder.imgpdf,assignmentHolder.progressBar);
+                assignmentHolder.progressBar.setVisibility(View.VISIBLE);
+                animation(0, 50, 10000, assignmentHolder.progressBar);
+                downloadassignment(file, extension, list.get(i).getFile(), assignmentHolder.imgpdf, assignmentHolder.progressBar, title, list.get(i).getId().toString());
+                //downloadassign(title, section, subject,assignmentHolder.imgpdf,assignmentHolder.progressBar);
             }
         });
 
@@ -179,7 +212,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
 
     @Override
     public int getItemCount() {
-        return components.size();
+        return list.size();
     }
 
     public class AssignmentHolder extends RecyclerView.ViewHolder {
@@ -198,12 +231,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             textView2 = (TextView) itemView.findViewById(R.id.udate);
             textView3 = (TextView) itemView.findViewById(R.id.sdate);
             cardView = (CardView) itemView.findViewById(R.id.cards);
-            imgpdf=(ImageView)itemView.findViewById(R.id.imgpdf);
-            progressBar=(ProgressBar)itemView.findViewById(R.id.pres);
+            imgpdf = (ImageView) itemView.findViewById(R.id.imgpdf);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.pres);
         }
     }
 
-    public void downloadassign(String title, String section, String subject,ImageView imgpdf,ProgressBar progressBar) {
+    public void downloadassign(String title, String section, String subject, ImageView imgpdf, ProgressBar progressBar) {
         String path = "Assignments/" + subject;
         String name = "/" + title + ".pdf";
         File file = new File(Objects.requireNonNull(context.getExternalFilesDir(path)).getAbsolutePath() + name);
@@ -211,7 +244,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             progressBar.setVisibility(View.GONE);
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
 
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
+            //appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
 
         } else {
             Toast.makeText(context, "Processing Please Wait....", Toast.LENGTH_LONG).show();
@@ -250,11 +283,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                     progressBar.setVisibility(View.GONE);
                     // Toast.makeText(context, "File found", Toast.LENGTH_LONG).show();
 
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
+                    // appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subject, title, semester,subh)).addToBackStack(null).commit();
 
-                    ParcelFileDescriptor parcelFileDescriptor= null;
+                    ParcelFileDescriptor parcelFileDescriptor = null;
                     try {
-                        parcelFileDescriptor = ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY);
+                        parcelFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -282,7 +315,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         }
     }
 
-    public void animation(int a, int b, int time,ProgressBar progressBar) {
+    public void animation(int a, int b, int time, ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", a, b);
         animation.setDuration(time);
         animation.setInterpolator(new DecelerateInterpolator());
@@ -295,15 +328,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             public void onAnimationEnd(Animator animator) {
                 //do something when the countdown is complete
                 if (b == 50) {
-                    animation(50, 75, 20000,progressBar);
+                    animation(50, 75, 20000, progressBar);
                 } else if (b == 75) {
-                    animation(75, 88, 40000,progressBar);
+                    animation(75, 88, 40000, progressBar);
                 } else if (b == 88) {
-                    animation(88, 94, 80000,progressBar);
+                    animation(88, 94, 80000, progressBar);
                 } else if (b == 94) {
-                    animation(94, 97, 160000,progressBar);
+                    animation(94, 97, 160000, progressBar);
                 } else if (b == 97) {
-                    animation(97, 99, 320000,progressBar);
+                    animation(97, 99, 320000, progressBar);
                 }
             }
 
@@ -318,15 +351,17 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         animation.start();
     }
 
-    public class TestBack extends AsyncTask<File,Void,String> {
+    public class TestBack extends AsyncTask<File, Void, String> {
 
 
         ImageView imageView;
+        String extension;
 
         Bitmap bitmap1;
 
-        public TestBack(ImageView imageView) {
-            this.imageView= imageView;
+        public TestBack(ImageView imageView, String extension) {
+            this.imageView = imageView;
+            this.extension = extension;
 
         }
 
@@ -351,7 +386,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected String doInBackground(File... files) {
-            if (files[0].exists()) {
+            if (files[0].exists() && extension.equals(".pdf")) {
 
                 ParcelFileDescriptor parcelFileDescriptor = null;
                 try {
@@ -392,14 +427,182 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
          * @param s The result of the operation computed by {@link #doInBackground}.
          * @see #onPreExecute
          * @see #doInBackground
-         *
          */
         @Override
         protected void onPostExecute(String s) {
-            if(s.equals("exists")){
+            if (s.equals("exists")) {
                 imageView.setImageBitmap(bitmap1);
 
+            } else {
+                if (extension.equals("")) {
+
+                } else {
+                    if (extension.equals(".pptx") || extension.equals(".ppt")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_powerpoint_2019);
+                    } else if (extension.equals(".doc")) {
+                        imageView.setImageResource(R.drawable.ic_icons8_microsoft_word_2019);
+                    } else if (extension.equals(".jpg") || extension.equals(".png") || extension.equalsIgnoreCase(".jpeg")) {
+                        imageView.setImageResource(R.drawable.ic_iconfinder_image_272704);
+                    } else if (extension.equals(".pdf")) {
+                        imageView.setImageResource(R.drawable.pdfic);
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_noun_file_);
+                    }
+                }
             }
         }
     }
+
+    private String getDate(String date) {
+        String actual_date = date.substring(0, date.indexOf("T"));
+        String actual_time = date.substring(date.indexOf("T") + 1, date.indexOf("Z"));
+        String now = actual_date + " " + actual_time;
+        String[] dead = now.split(" ");
+        String[] dead1 = dead[0].split("-");
+        String dead2 = dead1[2] + "-" + dead1[1] + "-" + dead1[0];
+        String[] dead3 = dead[1].split(":");
+        Integer h1 = Integer.parseInt(dead3[0]);
+        String period = "";
+        if (h1 > 12) {
+            h1 = h1 - 12;
+            period = "PM";
+        } else {
+            if (h1 == 0) {
+                h1 = 12;
+            }
+            period = "AM";
+        }
+        String findead = dead2 + " " + h1 + ":" + dead3[1] + " " + period;
+
+        return findead;
+    }
+
+    private String getDateforMillis(String date) {
+        String actual_date = date.substring(0, date.indexOf("T"));
+        String actual_time = date.substring(date.indexOf("T") + 1, date.indexOf("Z"));
+        String now = actual_date + " " + actual_time;
+        return now;
+    }
+
+    public void downloadassignment(File file, String extension, String url, ImageView imageView, ProgressBar progressBar, String title, String assignment_id) {
+        if (file.exists()) {
+            progressBar.setVisibility(View.GONE);
+            if (extension.equals(".pdf")) {
+                AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+
+                appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subjectt, title, semester, subh, assignment_id)).addToBackStack(null).commit();
+
+            } else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri apkURI = FileProvider.getUriForFile(
+                        context, context.getApplicationContext()
+
+                                .getPackageName() + ".provider", file);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setData(apkURI);
+                context.startActivity(intent);
+            }
+        } else {
+           // String base = "http://192.168.1.6:8000/";
+            String base = "http://192.168.1.6:8000/";
+       // String base="https://academic-manager-nitt.el.r.appspot.com/";
+        
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(base)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+            String fileurl = base + url.substring(1);
+            Call<ResponseBody> call1 = fetchInfo.downloadFileWithDynamicUrlSync(fileurl);
+            call1.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (!response.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context, "No Response From The Server", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    boolean b = writeResponseBodyToDisk(response.body(), file);
+                    progressBar.setVisibility(View.GONE);
+                    if (b) {
+                        if (extension.equals(".pdf")) {
+                            AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+
+                            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UploadAssignF(file, section, roll, subjectt, title, semester, subh, assignment_id)).addToBackStack(null).commit();
+//new StudyMaterialAdapter.TestBack(imageView, extension,"").execute(file);
+                        } else {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri apkURI = FileProvider.getUriForFile(
+                                    context, context.getApplicationContext()
+
+                                            .getPackageName() + ".provider", file);
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.setData(apkURI);
+                            context.startActivity(intent);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(context, "Some Error Occured!Please Try Again", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }
+
+    }
+
+    private boolean writeResponseBodyToDisk(ResponseBody body, File file) {
+        try {
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(file);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
 }

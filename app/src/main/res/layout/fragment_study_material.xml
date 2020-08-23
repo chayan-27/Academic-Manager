@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -81,6 +82,29 @@
             />
 
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:rippleColor="#1e4072"
+        android:visibility="visible"
+        android:layout_margin="16dp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+
+
+        android:src="@android:drawable/ic_menu_slideshow"
+        android:tint="@android:color/white"
+        app:rippleColor="#1e4072"
+        android:visibility="visible"
+        android:layout_margin="16dp" />
 
 
 </FrameLayout>

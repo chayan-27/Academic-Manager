@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.Notificationf;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,13 +51,17 @@ public class Coursef extends Fragment {
     int roll;
     String ar[];
     DataBase dataBase;
+    public static boolean admin;
+    String batch;
 
 
 
-    public Coursef(String section, int roll) {
+    public Coursef(String section, int roll,boolean admin,String batch) {
         // Required empty public constructor
         this.section = section;
         this.roll = roll;
+        this.admin=admin;
+        this.batch=batch;
     }
 
 
@@ -66,7 +73,7 @@ public class Coursef extends Fragment {
         dataBase=DataBase.getInstance(getContext());
 
 
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        /*String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int month = Integer.parseInt(currentDate.substring(3, 5));
         int year = Integer.parseInt(currentDate.substring(6));
         if (month >= 1 && month <= 7) {
@@ -87,7 +94,7 @@ public class Coursef extends Fragment {
             } else if (year == 2022) {
                 semester = 7;
             }
-        }
+        }*/
 
 
         /*list = new ArrayList<>();
@@ -159,6 +166,20 @@ public class Coursef extends Fragment {
 
 
         // Inflate the layout for this fragment
+        if(admin||Testingg.admin) {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Notificationf(section)).addToBackStack(null).commit();
+
+                }
+            });
+        }else{
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.GONE);
+        }
         return view;
 
     }
@@ -177,7 +198,7 @@ public class Coursef extends Fragment {
                 }else{
                     Collections.reverse(list);
                 }
-                recyclerView.setAdapter(new CourseAdapter(list, getContext(), section, semester, roll, progressBar));
+                recyclerView.setAdapter(new CourseAdapter(list, getContext(), section, semester, roll, progressBar,batch,admin));
 
             }
         });

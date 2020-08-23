@@ -14,8 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.PollUpload;
+import com.example.iceb.AdminUsage.Studymf;
+import com.example.iceb.AdminUsage.SubjectAdd;
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Poll;
+import com.example.iceb.server2.AdminPollUP;
+import com.example.iceb.server2.FetchInfo2;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,12 +46,14 @@ public class PollF extends Fragment {
     FetchInfo fetchInfo;
     int roll;
     SharedPreferences myuser;
+    boolean admin;
 
-    public PollF(String section,int roll) {
+    public PollF(String section,int roll,boolean admin) {
         // Required empty public constructor
 
         this.section = section;
         this.roll=roll;
+        this.admin=admin;
 
     }
 
@@ -83,14 +91,34 @@ public class PollF extends Fragment {
                 semester = 7;
             }
         }
-        send(section,semester);
+       // send(section,semester);
+
+        getPollList();
+
+        if(admin){
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PollUpload(section)).addToBackStack(null).commit();
+
+                }
+            });
+        }else{
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.GONE);
+        }
+
+
+
 
 
         return view;
     }
 
 
-    public void send(String section, Integer semester) {
+  /*  public void send(String section, Integer semester) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -126,6 +154,40 @@ public class PollF extends Fragment {
 
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
+
+            }
+        });
+
+    }*/
+
+    private void getPollList(){
+        String base = "http://192.168.1.6:8000/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(base)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+        Call<List<AdminPollUP>> call=fetchInfo.getPollforClassroom(section);
+        call.enqueue(new Callback<List<AdminPollUP>>() {
+            @Override
+            public void onResponse(Call<List<AdminPollUP>> call, Response<List<AdminPollUP>> response) {
+                if (!response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No response from the server", Toast.LENGTH_LONG).show();
+
+
+                    // Toast.makeText(getContext(), subject_id+" : "+topic+":"+currentDate, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                recyclerView.setAdapter(new PollAdapter(response.body(), section, semester,roll,getContext(),progressBar));
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<AdminPollUP>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.AssignmentUP;
+import com.example.iceb.AdminUsage.Studymf;
+import com.example.iceb.AdminUsage.SubjectAdd;
+import com.example.iceb.AdminUsage.TimeTablef;
 import com.example.iceb.server.Controller;
 import com.example.iceb.server.Studymaterial;
+import com.example.iceb.server2.AdminSubject;
+import com.example.iceb.server2.FetchInfo2;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,12 +61,24 @@ public class StudyMaterialF extends Fragment {
     FetchInfo fetchInfo;
     String section;
     ProgressBar progressBar;
+    boolean admin;
+    List<String> subject_ids;
+    List<String> subject_name;
+    String assignment;
+    int roll;
+    String courseplan;
+    String batch;
 
 
     @SuppressLint("ValidFragment")
-    public StudyMaterialF(String section) {
+    public StudyMaterialF(String section, String assignment, int roll, String courseplan, boolean admin, String batch) {
         // Required empty public constructor
         this.section = section;
+        this.assignment = assignment;
+        this.roll = roll;
+        this.courseplan = courseplan;
+        this.admin = admin;
+        this.batch = batch;
     }
 
 
@@ -78,7 +99,7 @@ public class StudyMaterialF extends Fragment {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(arrayAdapter);
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        /*String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int month = Integer.parseInt(currentDate.substring(3, 5));
         int year = Integer.parseInt(currentDate.substring(6));
         if (month >= 1 && month <= 7) {
@@ -99,10 +120,18 @@ public class StudyMaterialF extends Fragment {
             } else if (year == 2022) {
                 semester = 7;
             }
-        }
-        sem.setSelection(semester - 1);
+        }*/
+        semester = Integer.parseInt(manipulatesem(batch));
+        sem.setSelection(Integer.parseInt(manipulatesem(batch)) - 1);
         if (semester != 0) {
             try {
+                progressBar.setVisibility(View.VISIBLE);
+                getSubjects(section, String.valueOf(semester));
+            } catch (Exception e) {
+                progressBar.setVisibility(View.GONE);
+
+            }
+           /* try {
                 progressBar.setVisibility(View.VISIBLE);
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -145,7 +174,7 @@ public class StudyMaterialF extends Fragment {
 
                 Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
-            }
+            }*/
         }
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -153,6 +182,13 @@ public class StudyMaterialF extends Fragment {
                 String text = parent.getItemAtPosition(position).toString();
                 semester = Integer.parseInt(text);
                 try {
+                    progressBar.setVisibility(View.VISIBLE);
+                    getSubjects(section, String.valueOf(semester));
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+
+                }
+                /*try {
                     progressBar.setVisibility(View.VISIBLE);
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://ice.com.144-208-108-137.ph103.peopleshostshared.com/")
@@ -195,7 +231,7 @@ public class StudyMaterialF extends Fragment {
 
                     Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
-                }
+                }*/
             }
 
             @Override
@@ -203,6 +239,52 @@ public class StudyMaterialF extends Fragment {
 
             }
         });
+        if (admin) {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (assignment.equals("yes")) {
+                        if (subject_ids != null&&subject_ids.size()>0) {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
+                        }else{
+                            Toast.makeText(getContext(),"No subjects available for this semester",Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        if (subject_ids != null&&subject_ids.size()>0) {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
+                        }else{
+                            Toast.makeText(getContext(),"No subjects available for this semester",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                }
+            });
+
+            FloatingActionButton fab1 = view.findViewById(R.id.fab2);
+            fab1.setVisibility(View.VISIBLE);
+            fab1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectAdd(section, batch)).addToBackStack(null).commit();
+
+                }
+            });
+        } else {
+
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.GONE);
+
+
+            FloatingActionButton fab1 = view.findViewById(R.id.fab2);
+            fab1.setVisibility(View.GONE);
+
+        }
+
 
 
      /*   button.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +336,104 @@ public class StudyMaterialF extends Fragment {
         });*/
 
         return view;
+    }
+
+    public void getSubjects(String class_id, String semester) {
+        String base = "http://192.168.1.6:8000/";
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(base)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
+        Call<List<AdminSubject>> call = fetchInfo.getSubjects(class_id, semester);
+        call.enqueue(new Callback<List<AdminSubject>>() {
+            @Override
+            public void onResponse(Call<List<AdminSubject>> call, Response<List<AdminSubject>> response) {
+                if (!response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                subject_ids = new ArrayList<>();
+                subject_name = new ArrayList<>();
+                for (AdminSubject adminSubject : response.body()) {
+                    subject_ids.add(adminSubject.getId().toString());
+                    subject_name.add(adminSubject.getSubjectCode());
+                }
+
+                recyclerView.setAdapter(new StudyMaterialSubjectAdap(null, getContext(), section, Integer.parseInt(semester), subject_ids, subject_name, assignment, roll, courseplan));
+                progressBar.setVisibility(View.GONE);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<AdminSubject>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    public String manipulatesem(String batc) {
+        Log.d("batch", batc);
+        int semester = 0;
+        int batch = Integer.parseInt(batc);
+        Log.d("batch", String.valueOf(batch));
+        Calendar calendar = Calendar.getInstance();
+
+        int year = calendar.get(Calendar.YEAR);
+        int yearofstudy = year - batch;
+        Log.d("batch", String.valueOf(yearofstudy));
+        switch (yearofstudy) {
+            case 0:
+                calendar.get(Calendar.MONTH);
+                if (calendar.get(Calendar.MONTH) <= 5) {
+
+                } else {
+                    semester = 1;
+                }
+                break;
+
+            case 1:
+                calendar.get(Calendar.MONTH);
+                if (calendar.get(Calendar.MONTH) <= 5) {
+                    semester = 2;
+                } else {
+                    semester = 3;
+                }
+                break;
+            case 2:
+                calendar.get(Calendar.MONTH);
+                if (calendar.get(Calendar.MONTH) <= 5) {
+                    semester = 4;
+                } else {
+                    semester = 5;
+                }
+                break;
+            case 3:
+                calendar.get(Calendar.MONTH);
+                if (calendar.get(Calendar.MONTH) <= 5) {
+                    semester = 6;
+                } else {
+                    semester = 7;
+                }
+                break;
+            case 4:
+                calendar.get(Calendar.MONTH);
+                if (calendar.get(Calendar.MONTH) <= 5) {
+                    semester = 8;
+                }
+                break;
+
+
+        }
+        return String.valueOf(semester);
+
+
     }
 
 

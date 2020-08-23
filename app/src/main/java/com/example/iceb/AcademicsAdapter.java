@@ -21,13 +21,17 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
     String section;
     String url="";
     int roll;
+    boolean admin;
+    String batch;
 
-    public AcademicsAdapter(List<String> components, Context context, int[] ar,String section,int roll) {
+    public AcademicsAdapter(List<String> components, Context context, int[] ar,String section,int roll,boolean admin,String batch) {
         this.components = components;
         this.context = context;
         this.ar = ar;
         this.section=section;
         this.roll=roll;
+        this.admin=admin;
+        this.batch=batch;
     }
 
     @NonNull
@@ -49,23 +53,23 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
             public void onClick(View v) {
                 switch (i) {
                     case 0:
-                        fragment.beginTransaction().replace(R.id.fragment_container, new Timet(section)).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Timet(section,admin,batch)).addToBackStack(null).commit();
                         break;
                     case 1:
-                        fragment.beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section)).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section,"no",roll,"no",admin,batch)).addToBackStack(null).commit();
                         break;
                     case 2:
-                        fragment.beginTransaction().replace(R.id.fragment_container, new CoursePLanF(section)).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section,"no",roll,"yes",admin,batch)).addToBackStack(null).commit();
                         break;
                     case 3:
-                        fragment.beginTransaction().replace(R.id.fragment_container, new Attendance_Test()).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_container, new Attendance_Test(batch,section)).addToBackStack(null).commit();
                         break;
                     case 4:
                         if(section.equals("ICEA")){
                             url="https://docs.google.com/forms/d/e/1FAIpQLSel5KahoMyq6gfUXQolISYV5iyPum1BU4Kwxw-DLvyyGzOQiw/viewform";
                         }else{
                          //   url="https://docs.google.com/forms/d/e/1FAIpQLScd26k0BVjrqC6LQ0UoTpg7a-BOSGI6de3J1cvu5JfPfEqVEg/viewform";
-                            fragment.beginTransaction().replace(R.id.fragment_container, new PollF(section,roll)).addToBackStack(null).commit();
+                            fragment.beginTransaction().replace(R.id.fragment_container, new PollF(section,roll,admin)).addToBackStack(null).commit();
 
                         }
                     //    fragment.beginTransaction().replace(R.id.fragment_container, new Studymf(url)).addToBackStack(null).commit();

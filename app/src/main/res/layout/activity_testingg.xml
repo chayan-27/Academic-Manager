@@ -22,6 +22,7 @@
             <ImageButton android:layout_height="40dp"
                 android:id="@+id/refresh"
                 android:layout_width="50dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_icons8_refresh"
                 android:background="#c6c6c6"
                 android:onClick="reffresh"

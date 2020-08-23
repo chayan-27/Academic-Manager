@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coursef"
     android:background="#e2e2e2"
     tools:context=".Coursef">
@@ -31,5 +32,17 @@
 
 
         android:progressDrawable="@drawable/proglog3"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:rippleColor="#1e4072"
+        android:visibility="invisible"
+
+
+        android:layout_margin="16dp" />
 
 </FrameLayout>
