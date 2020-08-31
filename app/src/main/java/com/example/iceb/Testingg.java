@@ -92,6 +92,7 @@ public class Testingg extends AppCompatActivity {
     public static boolean admin = false;
     String batch;
     String real;
+    public static String extension23;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -119,6 +120,8 @@ public class Testingg extends AppCompatActivity {
         String roll = intent.getStringExtra("roll");
         real = roll.substring(0, 9);
         r = Integer.parseInt(real);
+        extension23=intent.getStringExtra("extension");
+
         checkAdmin(real);
 
 

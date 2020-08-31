@@ -16,6 +16,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.iceb.AdminUsage.AssignmentUP;
 import com.example.iceb.AdminUsage.Studymf;
 import com.example.iceb.AdminUsage.Studymf2;
 import com.example.iceb.server.Controller;
@@ -46,9 +47,11 @@ public class StudyMaterialAF extends Fragment {
     String subject_id;
     String courseplan;
     boolean admin;
+    String assignment;
+    String batch;
 
     @SuppressLint("ValidFragment")
-    public StudyMaterialAF(Integer semester, String subject, String section, String subject_id, String courseplan, boolean admin) {
+    public StudyMaterialAF(Integer semester, String subject, String section, String subject_id, String courseplan, boolean admin, String assignment,String batch) {
         // Required empty public constructor
         this.section = section;
         this.semester = semester;
@@ -56,6 +59,8 @@ public class StudyMaterialAF extends Fragment {
         this.subject_id = subject_id;
         this.courseplan = courseplan;
         this.admin = admin;
+        this.assignment = assignment;
+        this.batch=batch;
     }
 
 
@@ -107,7 +112,13 @@ public class StudyMaterialAF extends Fragment {
                 @Override
                 public void onClick(View v) {
                     // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+                    if (assignment.equals("yes")) {
+                      //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", null, null, batch,subject,subject_id)).addToBackStack(null).commit();
+
+                    } else {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+
+                    }
 
                 }
             });

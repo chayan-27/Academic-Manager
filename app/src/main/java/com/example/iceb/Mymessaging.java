@@ -52,7 +52,7 @@ public class Mymessaging extends FirebaseMessagingService {
             list.addAll(set);
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        */s = "*"+title+"*"+"\n\n"+body + "$" + currentDate + "$" + currentTime;
+        *///s = "*"+title+"*"+"\n\n"+body + "$" + currentDate + "$" + currentTime;
 
        /* if (set != null) {
             list.add(set.size() + " " + s);
@@ -65,7 +65,7 @@ public class Mymessaging extends FirebaseMessagingService {
         set.addAll(list);
         editor.putStringSet("DATE_LIST", set);
         editor.apply();*/
-        dataBase.getDao().insert(new LiveTest(15,s));
+        dataBase.getDao().insert(new LiveTest("*"+title+"*",body,currentDate,currentTime));
         // String url=remoteMessage.getNotification().getLink().toString();
         // if(url!=null) {
         shownotification(title, body);

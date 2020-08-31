@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="ICE 2k23"
+        android:text="ACADEMIC\nMANAGER"
         android:gravity="center"
         android:textColor="#F44336"
-        android:textSize="90sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         app:fontFamily="monospace" />
 

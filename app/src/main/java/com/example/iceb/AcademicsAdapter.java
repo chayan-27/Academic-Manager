@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,8 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
     @Override
     public void onBindViewHolder(@NonNull AcadHolder acadHolder, int i) {
         acadHolder.textView.setText(components.get(i).toUpperCase());
-        acadHolder.imageView.setImageResource(ar[i]);
+       // acadHolder.imageView.setImageResource(ar[i]);
+        new FormImge(acadHolder.imageView).execute(ar[i]);
         AppCompatActivity appCompatActivity = (AppCompatActivity) context;
         FragmentManager fragment = appCompatActivity.getSupportFragmentManager();
         acadHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +108,25 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
             cardView = (CardView) itemView.findViewById(R.id.cards);
             imageView = (ImageView) itemView.findViewById(R.id.pokemi);
 
+        }
+    }
+
+    public class FormImge extends AsyncTask<Integer, Void, Integer[]> {
+
+        ImageView imageView;
+
+        public FormImge(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Integer[] doInBackground(Integer... integers) {
+            return integers;
+        }
+
+        @Override
+        protected void onPostExecute(Integer[] aVoid) {
+            imageView.setImageResource(aVoid[0]);
         }
     }
 }

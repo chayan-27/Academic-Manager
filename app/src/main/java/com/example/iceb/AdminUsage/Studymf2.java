@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iceb.R;
+import com.example.iceb.Testingg;
 import com.example.iceb.server2.FetchInfo2;
 import com.example.iceb.server2.Mess;
 import com.example.iceb.server2.Notif;
@@ -129,6 +130,26 @@ public class Studymf2 extends Fragment {
         button1 = (Button) view.findViewById(R.id.file);
         textView = (TextView) view.findViewById(R.id.path);
         progressBar = (ProgressBar) view.findViewById(R.id.progress);
+
+        if(courseplan.equals("yes")){
+            title="Courseplan";
+            tl.setText(title);
+          //  tl.setVisibility(View.INVISIBLE);
+        }
+
+        if (!(Testingg.extension23==null||Testingg.extension23.equals(""))) {
+            //encoded = others(path);
+            extension = "." + Testingg.extension23;
+            String path = "Last Shared File";
+            String name = "/" + "Transact" + extension;
+            File root = new File(requireContext().getExternalFilesDir(path).getAbsolutePath() + name);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), root);
+
+            multipartBody = MultipartBody.Part.createFormData("file", root.getName(), requestFile);
+
+
+            textView.setText("File Already Selected\nEnter Title and then Upload");
+        }
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,7 +346,7 @@ public class Studymf2 extends Fragment {
 
                             try {
                                 saveFile(getBytes(inputStream),file.getName().substring(file.getName().lastIndexOf(".")));
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class Information extends AppCompatActivity {
     TextView logintext;
     TextView passtext;
     Button webmail;
+    Intent receive;
 
     int x;
     public static int t = 0;
@@ -81,7 +83,7 @@ public class Information extends AppCompatActivity {
             x = 0;
             SharedPreferences.Editor editor = myuser.edit();
             editor.putInt("sign", x);
-            editor.commit();
+            editor.apply();
         }
 
         t1.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +95,10 @@ public class Information extends AppCompatActivity {
                 t = 0;
                 SharedPreferences.Editor editor = myuser.edit();
                 editor.putInt("sign", x);
-                editor.commit();
+                editor.apply();
 
                 Intent intent = new Intent(Information.this, InformActivity.class);
+
                 startActivity(intent);
 
             }
@@ -165,6 +168,10 @@ public class Information extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                     Intent intent = new Intent(Information.this, Testingg.class);
                                     intent.putExtra("roll", rn);
+                                    String ext1=getIntent().getStringExtra("extension");
+                                    intent.putExtra("extension",ext1);
+
+
                                     startActivity(intent);
 
                                     finish();
@@ -290,7 +297,7 @@ public class Information extends AppCompatActivity {
                                         editor.putString("username", rn);
                                         editor.putString("password", pwd);
                                         editor.putInt("flag", flag);
-                                        editor.commit();
+                                        editor.apply();
                                         System.out.println("success");
                                     } else {
                                         SharedPreferences.Editor editor = myuser.edit();
@@ -298,7 +305,7 @@ public class Information extends AppCompatActivity {
                                         editor.putString("username", "");
                                         editor.putString("password", "");
                                         editor.putInt("flag", 0);
-                                        editor.commit();
+                                        editor.apply();
                                     }
                                     startActivity(intent);
                                     finish();

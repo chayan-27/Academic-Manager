@@ -14,19 +14,25 @@ public class LiveTest {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private Integer title;
+    private String title;
     private String body;
+    private String date;
+    private String time;
 
     @Ignore
-    public LiveTest(Integer title, String body) {
+    public LiveTest(String title, String body,String date,String time) {
         this.title = title;
         this.body = body;
+        this.date=date;
+        this.time=time;
     }
 
-    public LiveTest(int id, Integer title, String body) {
+    public LiveTest(int id, String title, String body,String date,String time) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.date=date;
+        this.time=time;
     }
 
     public int getId() {
@@ -37,11 +43,27 @@ public class LiveTest {
         this.id = id;
     }
 
-    public Integer getTitle() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(Integer title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

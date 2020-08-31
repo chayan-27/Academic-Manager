@@ -26,6 +26,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceb.R;
+import com.example.iceb.Testingg;
 import com.example.iceb.server2.AdminAssignment;
 import com.example.iceb.server2.AdminSubject;
 import com.example.iceb.server2.FetchInfo2;
@@ -47,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -94,16 +96,21 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
     MultipartBody.Part multipartBody;
     File file;
     String batch;
+    String subject_na;
+    String subject_i;
+
 
     @SuppressLint("ValidFragment")
-    public AssignmentUP(String section, String path, List<String> subject_id, List<String> subject_name,String batch) {
+    public AssignmentUP(String section, String path, List<String> subject_id, List<String> subject_name,String batch,String subject_na,String subject_i) {
         // Required empty public constructor
         this.section = section;
         this.path = path;
         this.subject_id = subject_id;
         this.subject_name = subject_name;
-        idsub=subject_id.get(0);
+//        idsub=subject_id.get(0);
         this.batch=batch;
+        this.subject_na=subject_na;
+        this.subject_i=subject_i;
     }
 
 
@@ -165,7 +172,7 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
         }*/
         semester=Integer.parseInt(manipulatesem(batch));
         sem.setSelection(Integer.parseInt(manipulatesem(batch))-1);
-        getSubjects(section,manipulatesem(batch));
+      //  getSubjects(section,manipulatesem(batch));
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -185,7 +192,7 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
         arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sub.setAdapter(arrayAdapter1);*/
         ArrayAdapter adapter = new ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, subject_name);
-        sub.setAdapter(adapter);
+//        sub.setAdapter(adapter);
         sub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -199,15 +206,18 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
             }
         });
 
-        if (!(path.equals(""))) {
-            encoded = others(path);
-            if (!(extension.equals("pdf"))) {
-                encoded = "";
-                textView.setText("Only PDF format supported\nSelect new File");
+        if (!(Testingg.extension23==null||Testingg.extension23.equals(""))) {
+            //encoded = others(path);
+            extension="."+Testingg.extension23;
+            String path = "Last Shared File";
+            String name = "/" + "Transact"+extension;
+            File root = new File(requireContext().getExternalFilesDir(path).getAbsolutePath() + name);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),root);
 
-            } else {
-                textView.setText("File Already Selected\nEnter Title and Upload");
-            }
+            multipartBody = MultipartBody.Part.createFormData("file",root.getName(),requestFile);
+
+
+            textView.setText("File Already Selected\nEnter Title and then Upload");
         }
 
 
@@ -224,10 +234,10 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
             public void onClick(View v) {
                 try {
                     title = tl.getText().toString();
-                    if (!(title.equals("") || timee.equals("") || subject.equals("") || semester == 0 || subtime.equals("")||multipartBody==null)) {
+                    if (!(title.equals("") || timee.equals("") || subject_na.equals("") || semester == 0 || subtime.equals("")||multipartBody==null)) {
                         progressBar.setVisibility(View.VISIBLE);
-                        getFiletoBeSent(idsub,title,timee+" "+subtime);
-                        notification(subject, "New " + title+extension+ " Assignment Uploaded");
+                        getFiletoBeSent(subject_i,title,timee+" "+subtime);
+                        notification(subject_na, "New " + title+extension+ " Assignment Uploaded");
                     } else {
                         Toast.makeText(getContext(), "Enter Valid Details", Toast.LENGTH_LONG).show();
                     }
@@ -242,9 +252,9 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
             public void onClick(View v) {
                 try {
                     //title = tl.getText().toString();
-                    if (!(subject.equals("") || semester == 0)) {
+                    if (!(subject_na.equals("") || semester == 0)) {
 
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TitlesF(idsub, semester, subject)).addToBackStack(null).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TitlesF(subject_i, semester, subject_na)).addToBackStack(null).commit();
                     } else {
                         Toast.makeText(getContext(), "Enter Title,Subject and Semester to see responses ", Toast.LENGTH_LONG).show();
 
@@ -288,7 +298,7 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
 
                             try {
                                 saveFile(getBytes(inputStream),file.getName().substring(file.getName().lastIndexOf(".")));
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -629,6 +639,7 @@ public class AssignmentUP extends Fragment implements DatePickerDialog.OnDateSet
                 }
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
+                requireActivity().onBackPressed();
             }
 
             @Override

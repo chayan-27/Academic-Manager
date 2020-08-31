@@ -27,10 +27,11 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
     int roll;
     String courseplan;
     boolean admin;
+    String batch;
 
 
     public StudyMaterialSubjectAdap(List<Studymaterial> components, Context context, String section, Integer semester, List<String> subject_ids,
-                                    List<String> subject_names, String assignment,int roll,String courseplan,boolean admin) {
+                                    List<String> subject_names, String assignment,int roll,String courseplan,boolean admin,String batch) {
         this.components = components;
         this.context = context;
         this.section = section;
@@ -41,6 +42,7 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
         this.roll=roll;
         this.courseplan=courseplan;
         this.admin=admin;
+        this.batch=batch;
     }
 
     @NonNull
@@ -61,9 +63,11 @@ public class StudyMaterialSubjectAdap extends RecyclerView.Adapter<StudyMaterial
             public void onClick(View v) {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                 if (assignment.equals("yes")) {
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AssignmentF(subject_ids.get(i),roll,subject_names.get(i),subject_ids,subject_names)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AssignmentF(subject_ids.get(i),roll,subject_names.get(i),subject_ids,subject_names,admin,batch,subject_names.get(i),section)).addToBackStack(null).commit();
+                   // appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialAF(semester, subject_names.get(i), section, subject_ids.get(i),courseplan,admin,assignment,batch)).addToBackStack(null).commit();
+
                 } else {
-                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialAF(semester, subject_names.get(i), section, subject_ids.get(i),courseplan,admin)).addToBackStack(null).commit();
+                    appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudyMaterialAF(semester, subject_names.get(i), section, subject_ids.get(i),courseplan,admin,assignment,batch)).addToBackStack(null).commit();
                 }
             }
         });

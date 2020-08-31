@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.iceb.R;
 import com.example.iceb.StudyMaterialSubjectAdap;
+import com.example.iceb.Testingg;
 import com.example.iceb.server2.AdminSubject;
 import com.example.iceb.server2.FetchInfo2;
 import com.example.iceb.server2.Mess;
@@ -69,7 +70,7 @@ public class Studymf extends Fragment {
     Spinner sub;
     int semester = 0;
     String subject;
-     FetchInfo2 notiApi;
+    FetchInfo2 notiApi;
     EditText tl;
     String title;
     TextView textView;
@@ -87,14 +88,14 @@ public class Studymf extends Fragment {
 
 
     @SuppressLint("ValidFragment")
-    public Studymf(String section, String path, List<String> subject_id, List<String> subject_name,String batch) {
+    public Studymf(String section, String path, List<String> subject_id, List<String> subject_name, String batch) {
         // Required empty public constructor
         this.section = section;
         this.path = path;
         this.subject_id = subject_id;
         this.subject_name = subject_name;
-        idsub=subject_id.get(0);
-        this.batch=batch;
+        idsub = subject_id.get(0);
+        this.batch = batch;
     }
 
 
@@ -112,7 +113,6 @@ public class Studymf extends Fragment {
         sub = view.findViewById(R.id.subject);
         ArrayAdapter adapter = new ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, subject_name);
         sub.setAdapter(adapter);
-
 
 
         sem = view.findViewById(R.id.sem);
@@ -141,15 +141,15 @@ public class Studymf extends Fragment {
                 semester = 7;
             }
         }*/
-        semester=Integer.parseInt(manipulatesem(batch));
-        sem.setSelection(Integer.parseInt(manipulatesem(batch))-1);
-        getSubjects(section,manipulatesem(batch));
+        semester = Integer.parseInt(manipulatesem(batch));
+        sem.setSelection(Integer.parseInt(manipulatesem(batch)) - 1);
+        getSubjects(section, manipulatesem(batch));
         sem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 semester = Integer.parseInt(text);
-                getSubjects(section,text);
+                getSubjects(section, text);
 
             }
 
@@ -176,10 +176,24 @@ public class Studymf extends Fragment {
                 subject = "";
             }
         });
+        try {
+            Log.d("ext1", Testingg.extension23);
+        }catch (Exception e){
+            Log.d("ext1", "no");
+
+        }
+
+        if (!(Testingg.extension23.equals(""))) {
+            //encoded = others(path);
+            extension = "." + Testingg.extension23;
+            String path = "Last Shared File";
+            String name = "/" + "Transact" + extension;
+            File root = new File(requireContext().getExternalFilesDir(path).getAbsolutePath() + name);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), root);
+
+            multipartBody = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
 
-        if (!(path.equals(""))) {
-            encoded = others(path);
             textView.setText("File Already Selected\nEnter Title and then Upload");
         }
 
@@ -196,9 +210,9 @@ public class Studymf extends Fragment {
             public void onClick(View v) {
                 try {
                     title = tl.getText().toString();
-                    if (!(title.equals("") || idsub.equals("") || multipartBody==null)) {
+                    if (!(title.equals("") || idsub.equals("") || multipartBody == null)) {
                         progressBar.setVisibility(View.VISIBLE);
-                        getFiletoBeSent(idsub,title);
+                        getFiletoBeSent(idsub, title);
                         //  send();
                     } else {
                         Toast.makeText(getContext(), "Enter Valid Details", Toast.LENGTH_LONG).show();
@@ -230,7 +244,7 @@ public class Studymf extends Fragment {
                 try {
                     final String filepath = uri.getPath();
                     file = new File(filepath);
-                    Thread thread=new Thread(new Runnable() {
+                    Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             InputStream inputStream = null;
@@ -241,14 +255,14 @@ public class Studymf extends Fragment {
                             }
 
                             try {
-                                saveFile(getBytes(inputStream),file.getName().substring(file.getName().lastIndexOf(".")));
+                                saveFile(getBytes(inputStream), file.getName().substring(file.getName().lastIndexOf(".")));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
                     thread.start();
-                    extension = filepath.substring(filepath.lastIndexOf(".") );
+                    extension = filepath.substring(filepath.lastIndexOf("."));
 
 
                    /* InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -259,8 +273,9 @@ public class Studymf extends Fragment {
 
                     textView.setText(filepath);
 
-                   /* encoded = encoded.replace("\n", "").replace("\r", "");
-                   */ String h = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.lastIndexOf("."));
+                    /* encoded = encoded.replace("\n", "").replace("\r", "");
+                     */
+                    String h = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.lastIndexOf("."));
                     tl.setText(h);
                     tl.setSelection(h.length());
                     //   Toast.makeText(getContext(), extension, Toast.LENGTH_LONG).show();
@@ -325,7 +340,7 @@ public class Studymf extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         notiApi = retrofit.create(FetchInfo2.class);
-        String topic="/topics/class"+section;
+        String topic = "/topics/class" + section;
         /*if (section.equals("ICEB")) {
             //  topic = "/topics/weather";
            // topic = "/topics/test";
@@ -333,7 +348,7 @@ public class Studymf extends Fragment {
             //  topic = "/topics/weather1";
             topic = "/topics/test";
         }*/
-        Call<Mess> call = notiApi.sendnoti(new Notif(topic, new Notification(title,  body + "!", "no")));
+        Call<Mess> call = notiApi.sendnoti(new Notif(topic, new Notification(title, body + "!", "no")));
         call.enqueue(new Callback<Mess>() {
             @Override
             public void onResponse(Call<Mess> call, Response<Mess> response) {
@@ -377,33 +392,33 @@ public class Studymf extends Fragment {
         return encoded;
     }
 
-    public void getFiletoBeSent(String subject_id,String topic){
-      String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
-       // String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
+    public void getFiletoBeSent(String subject_id, String topic) {
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(base)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
         RequestBody subjectt_id = RequestBody.create(MediaType.parse("text/plain"), subject_id);
-        RequestBody topicc=RequestBody.create(MediaType.parse("text/plain"), topic);
+        RequestBody topicc = RequestBody.create(MediaType.parse("text/plain"), topic);
         String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-        RequestBody upload_datee=RequestBody.create(MediaType.parse("text/plain"), currentDate);
-        Call<SubjectResponse> call=fetchInfo.sendMaterial(subjectt_id,topicc,upload_datee,multipartBody);
+        RequestBody upload_datee = RequestBody.create(MediaType.parse("text/plain"), currentDate);
+        Call<SubjectResponse> call = fetchInfo.sendMaterial(subjectt_id, topicc, upload_datee, multipartBody);
         call.enqueue(new Callback<SubjectResponse>() {
             @Override
             public void onResponse(Call<SubjectResponse> call, Response<SubjectResponse> response) {
                 if (!response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
 
-                    Toast.makeText(getContext(), subject_id+" : "+topic+":"+currentDate, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), subject_id + " : " + topic + ":" + currentDate, Toast.LENGTH_LONG).show();
                     return;
                 }
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Successfully Uploaded", Toast.LENGTH_LONG).show();
-                notification(subject,title+extension+" Uploaded");
+                notification(subject, title + extension + " Uploaded");
             }
 
             @Override
@@ -419,9 +434,9 @@ public class Studymf extends Fragment {
 
     }
 
-    public void saveFile(byte[] decodedString,String extension) {
+    public void saveFile(byte[] decodedString, String extension) {
         String path = "Last Shared File";
-        String name = "/" + "Transact"+extension;
+        String name = "/" + "Transact" + extension;
         File root = new File(requireContext().getExternalFilesDir(path).getAbsolutePath() + name);
         try {
             OutputStream fileOutputStream = new FileOutputStream(root);
@@ -432,46 +447,43 @@ public class Studymf extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),root);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), root);
 
-        multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+        multipartBody = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
     }
 
-    public void getSubjects(String class_id,String semester){
-      String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
-       // String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
+    public void getSubjects(String class_id, String semester) {
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(base)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
-        Call<List<AdminSubject>> call=fetchInfo.getSubjects(class_id,semester);
+        Call<List<AdminSubject>> call = fetchInfo.getSubjects(class_id, semester);
         call.enqueue(new Callback<List<AdminSubject>>() {
             @Override
             public void onResponse(Call<List<AdminSubject>> call, Response<List<AdminSubject>> response) {
                 if (!response.isSuccessful()) {
-                  return;
+                    return;
                 }
-                subject_id=new ArrayList<>();
-                subject_name=new ArrayList<>();
-                for(AdminSubject adminSubject:response.body()){
+                subject_id = new ArrayList<>();
+                subject_name = new ArrayList<>();
+                for (AdminSubject adminSubject : response.body()) {
                     subject_id.add(adminSubject.getId().toString());
                     subject_name.add(adminSubject.getSubjectCode());
                 }
                 ArrayAdapter adapter = new ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, subject_name);
                 sub.setAdapter(adapter);
 
-                if(subject_id.size()!=0) {
+                if (subject_id.size() != 0) {
                     idsub = subject_id.get(0);
-                }else{
-                    idsub="0";
+                } else {
+                    idsub = "0";
                 }
-
-
-
 
 
             }
@@ -484,13 +496,13 @@ public class Studymf extends Fragment {
     }
 
     public String manipulatesem(String batc) {
-        Log.d("batch",batc);
+        Log.d("batch", batc);
         int semester = 0;
         int batch = Integer.parseInt(batc);
         Log.d("batch", String.valueOf(batch));
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
 
-        int year =calendar.get(Calendar.YEAR);
+        int year = calendar.get(Calendar.YEAR);
         int yearofstudy = year - batch;
         Log.d("batch", String.valueOf(yearofstudy));
         switch (yearofstudy) {
@@ -533,7 +545,6 @@ public class Studymf extends Fragment {
                     semester = 8;
                 }
                 break;
-
 
 
         }

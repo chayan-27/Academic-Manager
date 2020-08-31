@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.iceb.AdminUsage.AssignmentUP;
 import com.example.iceb.AdminUsage.Studymf;
+import com.example.iceb.AdminUsage.Studymf2;
 import com.example.iceb.server.Assignment;
 import com.example.iceb.server.Controller;
 import com.example.iceb.server2.AdminAssignment;
@@ -59,15 +60,23 @@ public class AssignmentF extends Fragment {
     String subjectt;
     List<String> subject_id;
     List<String> subject_name;
+    boolean admin;
+    String batch;
+    String subject;
+    String class_id;
 
     @SuppressLint("ValidFragment")
-    public AssignmentF(String section, int roll,String subjectt,List<String> subject_id,List<String> subject_name) {
+    public AssignmentF(String section, int roll, String subjectt, List<String> subject_id, List<String> subject_name, boolean admin, String batch, String subject, String class_id) {
         // Required empty public constructor
         this.section = section;
         this.roll = roll;
-        this.subjectt=subjectt;
-        this.subject_id=subject_id;
-        this.subject_name=subject_name;
+        this.subjectt = subjectt;
+        this.subject_id = subject_id;
+        this.subject_name = subject_name;
+        this.admin = admin;
+        this.batch = batch;
+        this.subject = subject;
+        this.class_id = class_id;
     }
 
 
@@ -335,41 +344,67 @@ public class AssignmentF extends Fragment {
             }
         });*/
 
+        if (admin) {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(class_id, "", null, null, batch, subject, section)).addToBackStack(null).commit();
+                    // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
+                   /* if (assignment.equals("yes")) {
+                        //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", null, null, batch,subject,subject_id)).addToBackStack(null).commit();
+
+                    } else {
+                       // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+
+                    }*/
+
+                }
+            });
+        } else {
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+            fab.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
-    public void materials(String subject_id){
+    public void materials(String subject_id) {
         //String base = "http://192.168.1.6:8000/";
-       String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
-       // String base="https://academic-manager-nitt.el.r.appspot.com/";
-        
+        String base = "https://academic-manager-nitt.el.r.appspot.com/";
+
+        // String base="https://academic-manager-nitt.el.r.appspot.com/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(base)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         FetchInfo2 fetchInfo = retrofit.create(FetchInfo2.class);
-       Call<List<AdminAssignment>> call=fetchInfo.getAssignments(subject_id);
-       call.enqueue(new Callback<List<AdminAssignment>>() {
-           @Override
-           public void onResponse(Call<List<AdminAssignment>> call, Response<List<AdminAssignment>> response) {
-               if (!response.isSuccessful()) {
-                   progressBar.setVisibility(View.GONE);
-                   Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
-                   return;
-               }
-               recyclerView.setAdapter(new AssignmentAdapter(roll,response.body(),subjectt,getContext()));
+        Call<List<AdminAssignment>> call = fetchInfo.getAssignments(subject_id);
+        call.enqueue(new Callback<List<AdminAssignment>>() {
+            @Override
+            public void onResponse(Call<List<AdminAssignment>> call, Response<List<AdminAssignment>> response) {
+                if (!response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No Response From The Server", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (response.body() != null) {
+                    Collections.reverse(response.body());
+                }
+                recyclerView.setAdapter(new AssignmentAdapter(roll, response.body(), subjectt, getContext()));
 
-               progressBar.setVisibility(View.GONE);
-           }
+                progressBar.setVisibility(View.GONE);
+            }
 
-           @Override
-           public void onFailure(Call<List<AdminAssignment>> call, Throwable t) {
-               progressBar.setVisibility(View.GONE);
-               Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
+            @Override
+            public void onFailure(Call<List<AdminAssignment>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error Occured!!Please Try Again Later", Toast.LENGTH_LONG).show();
 
-           }
-       });
+            }
+        });
     }
 
 

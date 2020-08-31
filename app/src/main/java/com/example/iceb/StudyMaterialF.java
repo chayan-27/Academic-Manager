@@ -3,6 +3,7 @@ package com.example.iceb;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -255,12 +256,19 @@ public class StudyMaterialF extends Fragment {
         if (admin) {
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
+            /*if(assignment.equals("yes")){
+                //fab.setBackgroundResource(R.drawable.ic_open_book_top_view_svgrepo_com);
+               // fab.setImageResource(R.drawable.ic_open_book_top_view_svgrepo_com);
+
+            }else {
+                //fab.setBackgroundResource();
+            }*/
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (assignment.equals("yes")) {
+                    if (assignment.equals("ghfhgf")) {
                         if (subject_ids != null && subject_ids.size() > 0) {
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
+                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
                         } else {
                             Toast.makeText(getContext(), "No subjects available for this semester", Toast.LENGTH_SHORT).show();
                         }
@@ -320,7 +328,7 @@ public class StudyMaterialF extends Fragment {
 
             FloatingActionButton fab1 = view.findViewById(R.id.fab2);
             if (assignment.equals("yes")) {
-                fab1.setVisibility(View.VISIBLE);
+               fab1.setVisibility(View.GONE);
 
                 fab1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -463,7 +471,7 @@ public class StudyMaterialF extends Fragment {
                     subject_name.add(adminSubject.getSubjectCode());
                 }
 
-                recyclerView.setAdapter(new StudyMaterialSubjectAdap(null, getContext(), section, Integer.parseInt(semester), subject_ids, subject_name, assignment, roll, courseplan, admin));
+                recyclerView.setAdapter(new StudyMaterialSubjectAdap(null, getContext(), section, Integer.parseInt(semester), subject_ids, subject_name, assignment, roll, courseplan, admin,batch));
                 progressBar.setVisibility(View.GONE);
 
 

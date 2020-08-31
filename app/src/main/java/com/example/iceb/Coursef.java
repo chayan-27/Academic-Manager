@@ -189,7 +189,7 @@ public class Coursef extends Fragment {
         liveTests.observe(getViewLifecycleOwner(), new Observer<List<LiveTest>>() {
             @Override
             public void onChanged(List<LiveTest> liveTests) {
-                List<String> list=new ArrayList<>();
+                /*List<String> list=new ArrayList<>();
                 for(LiveTest liveTest:liveTests){
                     list.add(" "+liveTest.getBody());
                 }
@@ -197,8 +197,12 @@ public class Coursef extends Fragment {
                     list.add("12 Welcome To ICE 2k23$00$00");
                 }else{
                     Collections.reverse(list);
+                }*/
+                if(liveTests.size()==0){
+                    liveTests.add(new LiveTest("*Hello*","Welcome To Academic Manager",new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()),new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date())));
                 }
-                recyclerView.setAdapter(new CourseAdapter(list, getContext(), section, semester, roll, progressBar,batch,admin));
+                Collections.reverse(liveTests);
+                recyclerView.setAdapter(new CourseAdapter(null, getContext(), section, semester, roll, progressBar,batch,admin,liveTests));
 
             }
         });

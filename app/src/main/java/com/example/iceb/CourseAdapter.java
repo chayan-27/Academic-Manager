@@ -74,9 +74,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     String uu;
     String batch;
     boolean admin;
+    List<LiveTest> liveTests;
 
 
-    public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar, String batch, boolean admin) {
+    public CourseAdapter(List<String> components, Context context, String section, Integer semester, int roll, ProgressBar progressBar, String batch, boolean admin,List<LiveTest> liveTests) {
         this.components = components;
         this.context = context;
         this.section = section;
@@ -85,6 +86,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         this.progressBar = progressBar;
         this.batch = batch;
         this.admin = admin;
+        this.liveTests=liveTests;
     }
 
     @NonNull
@@ -99,12 +101,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
     @Override
     public void onBindViewHolder(@NonNull CourseHolder courseHolder, int i) {
         // courseHolder.textView.setText(components.get(i).substring(0,components.get(i).indexOf("$")).toUpperCase());
-        String j = components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$"));
+       String j=liveTests.get(i).getDate();
+        //String j = components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$"));
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         Date mydate = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String yestr = dateFormat.format(mydate);
-        String body = components.get(i).substring(components.get(i).indexOf(" ") + 1, components.get(i).indexOf("$"));
+       // String body = components.get(i).substring(components.get(i).indexOf(" ") + 1, components.get(i).indexOf("$"));
+        String body=liveTests.get(i).getTitle()+"\n\n"+liveTests.get(i).getBody();
         SpannableStringBuilder sb = new SpannableStringBuilder(body + " ");
         List<Integer> list = new ArrayList<>();
 
@@ -130,11 +134,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         }
 
 
-        if (body.substring(body.lastIndexOf(" ") + 1).equals("Uploaded!")) {
+        /*if (body.substring(body.lastIndexOf(" ") + 1).equals("Uploaded!")) {
             bss = new StyleSpan(Typeface.BOLD);
             sb.setSpan(bss, 0, body.indexOf("\n"), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-        }
+        }*/
 
         courseHolder.textView.setText(sb);
         courseHolder.textView.setMovementMethod(BetterLinkMovementMethod.getInstance());
@@ -159,10 +163,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
         } else if (j.equals(yestr)) {
             courseHolder.imageView.setText("Yesterday");
         } else {
-            courseHolder.imageView.setText(components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$")));
+            //courseHolder.imageView.setText(components.get(i).substring(components.get(i).indexOf("$") + 1, components.get(i).lastIndexOf("$")));
+            courseHolder.imageView.setText(liveTests.get(i).getDate());
+
 
         }
-        courseHolder.cardView.setText(components.get(i).substring(components.get(i).lastIndexOf("$") + 1));
+       // courseHolder.cardView.setText(components.get(i).substring(components.get(i).lastIndexOf("$") + 1));
+        courseHolder.cardView.setText(liveTests.get(i).getTime());
 
 
         if (i == 0) {
@@ -370,7 +377,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseHold
 
     @Override
     public int getItemCount() {
-        return components.size();
+        return liveTests.size();
     }
 
     public class CourseHolder extends RecyclerView.ViewHolder {
