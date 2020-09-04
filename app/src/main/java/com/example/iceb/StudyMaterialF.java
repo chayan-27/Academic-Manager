@@ -78,6 +78,7 @@ public class StudyMaterialF extends Fragment {
     LinearLayout subject_add;
     Button button1;
     EditText editText;
+    FloatingActionButton fab;
 
 
     @SuppressLint("ValidFragment")
@@ -105,6 +106,7 @@ public class StudyMaterialF extends Fragment {
         subject_add = view.findViewById(R.id.subject_add);
         button1 = (Button) view.findViewById(R.id.button2);
         editText = (EditText) view.findViewById(R.id.editText4);
+        fab = view.findViewById(R.id.fab);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -198,6 +200,9 @@ public class StudyMaterialF extends Fragment {
                 try {
                     progressBar.setVisibility(View.VISIBLE);
                     getSubjects(section, String.valueOf(semester));
+                    subject_add.setVisibility(View.GONE);
+                    fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+
                 } catch (Exception e) {
                     progressBar.setVisibility(View.GONE);
 
@@ -254,7 +259,7 @@ public class StudyMaterialF extends Fragment {
             }
         });
         if (admin) {
-            FloatingActionButton fab = view.findViewById(R.id.fab);
+           // FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
             /*if(assignment.equals("yes")){
                 //fab.setBackgroundResource(R.drawable.ic_open_book_top_view_svgrepo_com);
@@ -274,8 +279,15 @@ public class StudyMaterialF extends Fragment {
                         }
 
                     } else {
-                        fab.setVisibility(View.GONE);
-                        subject_add.setVisibility(View.VISIBLE);
+                        //fab.setVisibility(View.GONE);
+                        if(subject_add.getVisibility()==View.VISIBLE){
+                            subject_add.setVisibility(View.GONE);
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+
+                        }else {
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_delete));
+                            subject_add.setVisibility(View.VISIBLE);
+                        }
                         button1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -383,7 +395,7 @@ public class StudyMaterialF extends Fragment {
             }
         } else {
 
-            FloatingActionButton fab = view.findViewById(R.id.fab);
+           // FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.GONE);
 
 
@@ -441,6 +453,7 @@ public class StudyMaterialF extends Fragment {
                 }
             }
         });*/
+
 
         return view;
     }
@@ -584,6 +597,8 @@ public class StudyMaterialF extends Fragment {
             }
         });
     }
+
+
 
 }
 

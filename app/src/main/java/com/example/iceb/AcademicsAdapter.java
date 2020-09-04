@@ -56,7 +56,7 @@ public class AcademicsAdapter extends RecyclerView.Adapter<AcademicsAdapter.Acad
             public void onClick(View v) {
                 switch (i) {
                     case 0:
-                        fragment.beginTransaction().replace(R.id.fragment_container, new Timet(section,admin,batch)).addToBackStack(null).commit();
+                        fragment.beginTransaction().replace(R.id.fragment_containe, new Timet(section,admin,batch)).addToBackStack(null).commit();
                         break;
                     case 1:
                         fragment.beginTransaction().replace(R.id.fragment_container, new StudyMaterialF(section,"no",roll,"no",admin,batch)).addToBackStack(null).commit();

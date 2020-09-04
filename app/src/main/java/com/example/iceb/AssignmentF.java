@@ -345,12 +345,28 @@ public class AssignmentF extends Fragment {
         });*/
 
         if (admin) {
+            final boolean[] check = {false};
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(class_id, "", null, null, batch, subject, section)).addToBackStack(null).commit();
+                    if(!check[0]){
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new AssignmentUP(class_id, "", null, null, batch, subject, section)).addToBackStack(null).commit();
+                        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_delete));
+                        check[0] =true;
+
+
+
+                    }else {
+                        getActivity().onBackPressed();
+                        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+                        check[0] =false;
+
+
+                        //fab.setVisibility(View.GONE);
+                    }
+
                     // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf(section, "", subject_ids, subject_name, batch)).addToBackStack(null).commit();
                    /* if (assignment.equals("yes")) {
                         //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", null, null, batch,subject,subject_id)).addToBackStack(null).commit();

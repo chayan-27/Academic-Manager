@@ -400,7 +400,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                bitmap1 = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_4444);
+                bitmap1 = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_4444);
                 PdfRenderer.Page page = renderer.openPage(0);
                 page.render(bitmap1, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
                 return "exists";

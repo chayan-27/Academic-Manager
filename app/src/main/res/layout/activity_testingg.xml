@@ -55,6 +55,15 @@
 
             app:menu="@menu/bottom_nav_menu" />
 
+        <ProgressBar
+            android:id="@+id/progresso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminateDrawable="@drawable/proglog"
+            />
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -40,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,6 +93,7 @@ public class Testingg extends AppCompatActivity {
     public static boolean admin = false;
     String batch;
     String real;
+    ProgressBar progressBar;
     public static String extension23;
 
 
@@ -103,6 +105,7 @@ public class Testingg extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setupToolBar();
+        progressBar=(ProgressBar)findViewById(R.id.progresso);
 
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -582,6 +585,7 @@ public class Testingg extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new Coursef(String.valueOf(classid), r, admin, batch)).commit();
                 toolbar.setTitle("Announcements");
+                progressBar.setVisibility(View.GONE);
 
                 //Toast.makeText(Testingg.this,""+response.body().get(0).getId(),Toast.LENGTH_SHORT).show();
 

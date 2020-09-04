@@ -106,6 +106,7 @@ public class StudyMaterialAF extends Fragment {
         });*/
 
         if (admin) {
+            final boolean[] check = {false};
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +117,22 @@ public class StudyMaterialAF extends Fragment {
                       //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AssignmentUP(section, "", null, null, batch,subject,subject_id)).addToBackStack(null).commit();
 
                     } else {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+                       //  fab.setVisibility(View.GONE);
+                        if(!check[0]){
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Studymf2(subject, subject_id, section, courseplan)).addToBackStack(null).commit();
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_delete));
+                            check[0] =true;
+
+
+
+                        }else {
+                            getActivity().onBackPressed();
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+                            check[0] =false;
+
+
+                            //fab.setVisibility(View.GONE);
+                        }
 
                     }
 

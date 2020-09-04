@@ -30,7 +30,6 @@ public class acadf extends Fragment {
 
     @SuppressLint("ValidFragment")
     public acadf(String section,int roll,boolean admin,String batch) {
-        // Required empty public constructor
         this.section = section;
         this.roll=roll;
         this.admin=admin;

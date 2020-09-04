@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.iceb.AdminUsage.Notificationf;
+import com.example.iceb.AdminUsage.Studymf2;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -55,13 +56,12 @@ public class Coursef extends Fragment {
     String batch;
 
 
-
-    public Coursef(String section, int roll,boolean admin,String batch) {
+    public Coursef(String section, int roll, boolean admin, String batch) {
         // Required empty public constructor
         this.section = section;
         this.roll = roll;
-        this.admin=admin;
-        this.batch=batch;
+        this.admin = admin;
+        this.batch = batch;
     }
 
 
@@ -70,7 +70,7 @@ public class Coursef extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coursef, container, false);
         progressBar = view.findViewById(R.id.progresso);
-        dataBase=DataBase.getInstance(getContext());
+        dataBase = DataBase.getInstance(getContext());
 
 
         /*String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
@@ -131,7 +131,7 @@ public class Coursef extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         TestLive();
 
-       // recyclerView.setAdapter(new CourseAdapter(list1, getContext(), section, semester, roll, progressBar));
+        // recyclerView.setAdapter(new CourseAdapter(list1, getContext(), section, semester, roll, progressBar));
 
        /* MutableLiveData<Set<String>> setLiveData = new MutableLiveData<>();
         setLiveData.setValue(sharedPreferences.getStringSet("DATE_LIST", null));
@@ -166,17 +166,31 @@ public class Coursef extends Fragment {
 
 
         // Inflate the layout for this fragment
-        if(admin||Testingg.admin) {
+        if (admin || Testingg.admin) {
+            final boolean[] check = {false};
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.VISIBLE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new Notificationf(section)).addToBackStack(null).commit();
+                      if(!check[0]){
+                          getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.coursef, new Notificationf(section)).addToBackStack(null).commit();
+                          fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_delete));
+                        check[0] =true;
 
+
+
+                    }else {
+                        getActivity().onBackPressed();
+                        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+                        check[0] =false;
+
+
+                        //fab.setVisibility(View.GONE);
+                    }
                 }
             });
-        }else{
+        } else {
             FloatingActionButton fab = view.findViewById(R.id.fab);
             fab.setVisibility(View.GONE);
         }
@@ -184,8 +198,8 @@ public class Coursef extends Fragment {
 
     }
 
-    public void TestLive(){
-        LiveData<List<LiveTest>> liveTests=dataBase.getDao().loadall();
+    public void TestLive() {
+        LiveData<List<LiveTest>> liveTests = dataBase.getDao().loadall();
         liveTests.observe(getViewLifecycleOwner(), new Observer<List<LiveTest>>() {
             @Override
             public void onChanged(List<LiveTest> liveTests) {
@@ -198,11 +212,12 @@ public class Coursef extends Fragment {
                 }else{
                     Collections.reverse(list);
                 }*/
-                if(liveTests.size()==0){
-                    liveTests.add(new LiveTest("*Hello*","Welcome To Academic Manager",new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()),new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date())));
+                if (liveTests.size() == 0) {
+                    liveTests.add(new LiveTest("*Hello*", "Welcome To Academic Manager", new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()), new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date())));
                 }
                 Collections.reverse(liveTests);
-                recyclerView.setAdapter(new CourseAdapter(null, getContext(), section, semester, roll, progressBar,batch,admin,liveTests));
+
+                recyclerView.setAdapter(new CourseAdapter(null, getContext(), section, semester, roll, progressBar, batch, admin, liveTests));
 
             }
         });

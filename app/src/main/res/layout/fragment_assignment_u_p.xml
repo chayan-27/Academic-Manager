@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2e2e2"
+    android:background="#80E2E2E2"
     android:clickable="true"
     android:id="@+id/frame"
     tools:context=".AssignmentUP">

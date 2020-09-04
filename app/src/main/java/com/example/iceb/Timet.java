@@ -22,6 +22,7 @@ import com.example.iceb.server.Timetable;
 import com.example.iceb.server2.FetchInfo2;
 import com.example.iceb.server2.TimeTable1;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jsibbold.zoomage.ZoomageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +52,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
  */
 @SuppressLint("ValidFragment")
 public class Timet extends Fragment {
-    ImageView imageView;
+    ZoomageView imageView;
     ProgressBar progressBar;
     FetchInfo fetchInfo;
     String section;
@@ -73,9 +74,10 @@ public class Timet extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timet, container, false);
-        imageView = (ImageView) view.findViewById(R.id.timetable);
+        imageView = (ZoomageView) view.findViewById(R.id.timetable);
         progressBar = (ProgressBar) view.findViewById(R.id.progresso);
         progressBar.setVisibility(View.VISIBLE);
+        semester=Integer.parseInt(manipulatesem(batch));
        /* String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int month = Integer.parseInt(currentDate.substring(3, 5));
         int year = Integer.parseInt(currentDate.substring(6));

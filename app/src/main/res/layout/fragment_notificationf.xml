@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2e2e2"
+    android:background="#B3D8DAE3"
+
+
     android:layout_gravity="center"
 
     android:clickable="true"
@@ -13,7 +15,7 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -56,11 +58,11 @@
             android:text="SEND"
 
 
-            android:drawableTint="@android:color/holo_blue_dark"
+            android:drawableTint="#000000"
             android:drawableRight="@android:drawable/ic_menu_send"
 
 
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="#000000"
             android:textStyle="bold" />
 
 

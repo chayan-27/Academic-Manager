@@ -345,6 +345,7 @@ public class Studymf2 extends Fragment {
                             }
 
                             try {
+
                                 saveFile(getBytes(inputStream),file.getName().substring(file.getName().lastIndexOf(".")));
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -352,7 +353,9 @@ public class Studymf2 extends Fragment {
                         }
                     });
                     thread.start();
-                    extension = filepath.substring(filepath.lastIndexOf(".") );
+                    try {
+                        extension = filepath.substring(filepath.lastIndexOf("."));
+
 
 
                    /* InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
@@ -367,6 +370,9 @@ public class Studymf2 extends Fragment {
                      */ String h = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.lastIndexOf("."));
                     tl.setText(h);
                     tl.setSelection(h.length());
+                    }catch (Exception e){
+
+                    }
                     //   Toast.makeText(getContext(), extension, Toast.LENGTH_LONG).show();
 
 

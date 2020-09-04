@@ -5,10 +5,11 @@
     android:id="@+id/timet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2e2e2"
+    android:background="#80E2E2E2"
 
     android:clickable="true"
-    tools:context=".Timet">
+    tools:context=".Timet"
+    android:focusable="true">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -16,18 +17,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
 
-        <ImageView
+        <com.jsibbold.zoomage.ZoomageView
             android:id="@+id/timetable"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            app:zoomage_zoomable="true"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-
-
-
             android:src="@drawable/stfinal"
-
             />
 
         <ProgressBar
@@ -36,10 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-
             android:indeterminateDrawable="@drawable/proglog"
-
-
             />
 
     </RelativeLayout>
@@ -52,8 +46,6 @@
         android:tint="@android:color/white"
         app:rippleColor="#1e4072"
         android:visibility="visible"
-
-
         android:layout_margin="16dp" />
 
 </FrameLayout>
