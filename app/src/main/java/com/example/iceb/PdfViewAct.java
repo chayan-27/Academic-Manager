@@ -1,12 +1,14 @@
 package com.example.iceb;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,14 +72,18 @@ public class PdfViewAct extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (brush == false) {
-                    brush = true;
-                    imageButton.setColorFilter(Color.GREEN);
-                } else {
-                    brush = false;
-                    imageButton.setColorFilter(Color.BLACK);
 
-                }
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri apkURI = FileProvider.getUriForFile(
+                      getBaseContext(), getApplicationContext()
+
+                                .getPackageName() + ".provider", file1);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                intent.setData(apkURI);
+                getApplicationContext().startActivity(intent);
+
             }
         });
 
@@ -90,7 +96,10 @@ public class PdfViewAct extends AppCompatActivity {
                 totalpages = pageCount;
             }
         }).enableAntialiasing(true)
+
                 .load();
+
+
 
 
         current.setOnClickListener(new View.OnClickListener() {

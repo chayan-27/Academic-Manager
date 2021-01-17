@@ -23,13 +23,10 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_marginRight="300dp"
-            android:tint="@android:color/black"
-
-
-            android:src="@drawable/ic_pen_svgrepo_com"
-            />
+            android:src="@drawable/ic_noun_file_"
+            android:layout_marginEnd="300dp" />
 
         <TextView
             android:id="@+id/current"
