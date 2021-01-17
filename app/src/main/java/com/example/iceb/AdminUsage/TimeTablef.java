@@ -106,7 +106,7 @@ public class TimeTablef extends Fragment {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(getContext(), R.array.semester, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(arrayAdapter);
-      //  showChooser(getContext());
+        //showChooser(getContext());
         /*String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int month = Integer.parseInt(currentDate.substring(3, 5));
         int year = Integer.parseInt(currentDate.substring(6));
@@ -206,8 +206,9 @@ public class TimeTablef extends Fragment {
                             }
 
                             try {
+                              //  saveFile(getBytes(inputStream),file.getName().substring(file.getName().lastIndexOf(".")));
                                 saveFile(getBytes(inputStream),".jpg");
-                            } catch (Exception e) {
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
@@ -230,7 +231,7 @@ public class TimeTablef extends Fragment {
 
                     textView.setText(filepath);
 
-                    /*AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
+                  /*  AlertDialog.Builder alertdialog = new AlertDialog.Builder(getContext());
                     alertdialog.setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
@@ -382,7 +383,7 @@ public class TimeTablef extends Fragment {
         }
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),root);
 
-        multipartBody = MultipartBody.Part.createFormData("file",file.getName()+extension,requestFile);
+        multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
 
     }
 

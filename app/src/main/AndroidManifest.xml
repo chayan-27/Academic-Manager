@@ -12,12 +12,11 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ice"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ice_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -110,7 +109,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-
 
 
 </manifest>

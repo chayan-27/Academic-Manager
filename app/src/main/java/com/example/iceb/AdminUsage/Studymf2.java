@@ -2,6 +2,7 @@ package com.example.iceb.AdminUsage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -32,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -333,7 +335,12 @@ public class Studymf2 extends Fragment {
                 final Uri uri = data.getData();
                 try {
                     final String filepath = uri.getPath();
+                   // final String filepath =getPath(getContext(),uri);
                     file = new File(filepath);
+                    /*RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+
+                    multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+*/
                     Thread thread=new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -416,5 +423,27 @@ public class Studymf2 extends Fragment {
         multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
 
     }
+    public static String getPath(Context context, Uri uri) throws URISyntaxException {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = { "_data" };
+            Cursor cursor = null;
+
+            try {
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow("_data");
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
 
 }

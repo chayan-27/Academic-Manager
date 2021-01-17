@@ -82,7 +82,7 @@
                 android:layout_alignTop="@id/uuu"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="170dp"
-                android:text="CORE DEVELOPER"
+                android:text="DEVELOPER"
                 android:textColor="#000000"
                 android:textSize="13sp"
                 android:textStyle="bold" />

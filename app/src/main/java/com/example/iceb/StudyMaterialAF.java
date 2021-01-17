@@ -126,7 +126,7 @@ public class StudyMaterialAF extends Fragment {
 
 
                         }else {
-                            getActivity().onBackPressed();
+                            getActivity().getSupportFragmentManager().popBackStack();
                             fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
                             check[0] =false;
 

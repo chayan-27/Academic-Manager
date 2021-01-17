@@ -1,9 +1,14 @@
 package com.example.iceb;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -129,6 +134,16 @@ public class Coursef extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.course);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
+        int check1 = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int check2=ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+      //  int check3=ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS);
+        if (!(check1 == PackageManager.PERMISSION_GRANTED&&check2 == PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+
+        } else {
+
+           // per = true;
+        }
         TestLive();
 
         // recyclerView.setAdapter(new CourseAdapter(list1, getContext(), section, semester, roll, progressBar));
@@ -181,8 +196,10 @@ public class Coursef extends Fragment {
 
 
                     }else {
-                        getActivity().onBackPressed();
-                        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+                       getActivity().getSupportFragmentManager().popBackStack();
+                        //  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.coursef, new Notificationf(section)).addToBackStack(null).commit();
+
+                          fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
                         check[0] =false;
 
 
@@ -221,5 +238,31 @@ public class Coursef extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 123) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                //per = true;
+                // sendSms();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
+
+            }
+        }/*else if(requestCode==124){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED) {
+                //per = true;
+                // sendSms();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_CONTACTS}, 124);
+
+            }
+        }*//*else if(requestCode==125){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 125);
+
+        }*/
     }
 }

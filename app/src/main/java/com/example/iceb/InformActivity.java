@@ -127,7 +127,7 @@ public class InformActivity extends AppCompatActivity {
 
                         // int rn1 = Integer.parseInt(rollno1);
 
-                        if (!(name1.equals("")) && (rn1 >= 110119001 && rn1 <= 110119129) && (iu.equals("@nitt.edu"))) {
+                        if (!(name1.equals("")) && (iu.equals("@nitt.edu"))) {
                             if ((mobile1.equals(password1)) && mobile1.length() >= 6) {
 
 
